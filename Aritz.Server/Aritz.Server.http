@@ -1,0 +1,6 @@
+@Aritz.Server_HostAddress = http://localhost:5121
+
+GET {{Aritz.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
