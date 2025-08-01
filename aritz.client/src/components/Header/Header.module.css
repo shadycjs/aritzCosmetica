@@ -1,3 +1,8 @@
 .navbar{
     background-color: rgb(109, 182, 89);
+    height: 10vh;
+}
+
+.aritzLogo:hover {
+    color: #fff;
 }

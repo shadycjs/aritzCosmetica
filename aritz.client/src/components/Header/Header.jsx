@@ -7,7 +7,11 @@ const Header = () => {
         <nav className={`navbar navbar-expand-lg ${styles.navbar}`}>
             <div className="container d-flex justify-content-evenly">
                 {/* Logo */}
-                <NavLink className="navbar-brand" to="/">
+                <NavLink
+                    className={`navbar-brand ${styles.aritzLogo}`}
+                    to="/"
+                    style={{ fontFamily: '"Dancing Script", cursive', fontWeight: "600", fontSize: "4rem"}}
+                >
                     Aritz
                 </NavLink>
 
