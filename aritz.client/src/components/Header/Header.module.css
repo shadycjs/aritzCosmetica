@@ -6,3 +6,7 @@
 .aritzLogo:hover {
     color: #fff;
 }
+
+a.nav-link{
+    display: flex !important;
+}

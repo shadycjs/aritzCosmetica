@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import styles from './Header.module.css';
+import { FaHome, FaBoxOpen, FaEnvelope } from 'react-icons/fa';
 
 const Header = () => {
     return (
@@ -33,26 +34,33 @@ const Header = () => {
                     <ul className="navbar-nav">
                         <li className="nav-item">
                             <NavLink
+                                style={{ display: "flex", alignItems: "center" }}
                                 className={({ isActive }) =>
                                     isActive ? "nav-link active" : "nav-link"
                                 }
                                 to="/">
+                                <FaHome />
                                 Home
                             </NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink
+                                style={{ display: "flex", alignItems: "center" }}
                                 className={({ isActive }) =>
                                     isActive ? "nav-link active" : "nav-link"
-                                }                                to="/product">
-                                Product
+                                } to="/product">
+                                <FaBoxOpen />
+                                Products
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className={({ isActive }) =>
+                            <NavLink
+                                style={{ display: "flex", alignItems: "center", gap: "2px" }}
+                                className={({ isActive }) =>
                                 isActive ? "nav-link active" : "nav-link"
                                 }
                                 to="/contact">
+                                <FaEnvelope />
                                 Contact
                             </NavLink>
                         </li>
