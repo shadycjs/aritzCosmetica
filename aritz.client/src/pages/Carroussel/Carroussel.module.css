@@ -1,7 +1,8 @@
-.carrouselContainer{
-    height: 60vh;
+.carrouselContainer {
+    height: 80vh;
     object-fit: contain;
     overflow: hidden;
+    margin-top: 10px;
 }
 
 .carrouselContainerSub {

@@ -6,7 +6,7 @@ import { FaHome, FaBoxOpen, FaEnvelope } from 'react-icons/fa';
 const Header = () => {
     return (
         <nav className={`navbar navbar-expand-lg ${styles.navbar}`}>
-            <div className="container d-flex justify-content-evenly">
+            <div className="container d-flex">
                 {/* Logo */}
                 <NavLink
                     className={`navbar-brand ${styles.aritzLogo}`}
@@ -30,13 +30,13 @@ const Header = () => {
                 </button>
 
                 {/* Enlaces de navegación */}
-                <div className="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
+                <div className="collapse navbar-collapse d-flex">
                     <ul className="navbar-nav">
                         <li className="nav-item d-flex">
                             <NavLink
                                 style={{ display: "flex", alignItems: "center", gap: "5px" }}
                                 className={({ isActive }) =>
-                                    isActive ? "nav-link active" : "nav-link"
+                                    isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`
                                 }
                                 to="/">
                                 <FaHome />
@@ -47,7 +47,7 @@ const Header = () => {
                             <NavLink
                                 style={{ display: "flex", alignItems: "center", gap: "5px" }}
                                 className={({ isActive }) =>
-                                    isActive ? "nav-link active" : "nav-link"
+                                    isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`
                                 } to="/product">
                                 <FaBoxOpen />
                                 Products
@@ -57,7 +57,7 @@ const Header = () => {
                             <NavLink
                                 style={{ display: "flex", alignItems: "center", gap: "5px" }}
                                 className={({ isActive }) =>
-                                isActive ? "nav-link active" : "nav-link"
+                                    isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`
                                 }
                                 to="/contact">
                                 <FaEnvelope />

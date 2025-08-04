@@ -6,9 +6,9 @@ function Home() {
         <>
         <Carroussel />
         <ImageWithText
-            imageSrc="./assets/images/CalendulaPlanta.png"
+            imageSrc="./src/assets/images/CalendulaPlanta.png"
             altText="calendula"
-            description="Esto es boca che"
+            description="Somos una forma natural de cuidarte."
             textAlign="center"
             />
         </>
