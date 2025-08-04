@@ -1,0 +1,17 @@
+.carrouselContainer{
+    height: 60vh;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.carrouselContainerSub {
+    width: 100% !important;
+    height: 100%;
+}
+
+.carrouselImage {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: bottom;
+}

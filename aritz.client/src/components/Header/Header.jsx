@@ -11,7 +11,7 @@ const Header = () => {
                 <NavLink
                     className={`navbar-brand ${styles.aritzLogo}`}
                     to="/"
-                    style={{ fontFamily: '"Dancing Script", cursive', fontWeight: "600", fontSize: "4rem"}}
+                    style={{ fontFamily: '"Dancing Script", cursive'}}
                 >
                     Aritz
                 </NavLink>
@@ -32,9 +32,9 @@ const Header = () => {
                 {/* Enlaces de navegación */}
                 <div className="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className="nav-item">
+                        <li className="nav-item d-flex">
                             <NavLink
-                                style={{ display: "flex", alignItems: "center" }}
+                                style={{ display: "flex", alignItems: "center", gap: "5px" }}
                                 className={({ isActive }) =>
                                     isActive ? "nav-link active" : "nav-link"
                                 }
@@ -45,7 +45,7 @@ const Header = () => {
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                style={{ display: "flex", alignItems: "center" }}
+                                style={{ display: "flex", alignItems: "center", gap: "5px" }}
                                 className={({ isActive }) =>
                                     isActive ? "nav-link active" : "nav-link"
                                 } to="/product">
@@ -55,7 +55,7 @@ const Header = () => {
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                style={{ display: "flex", alignItems: "center", gap: "2px" }}
+                                style={{ display: "flex", alignItems: "center", gap: "5px" }}
                                 className={({ isActive }) =>
                                 isActive ? "nav-link active" : "nav-link"
                                 }

@@ -1,6 +1,8 @@
+import Carroussel from "./Carroussel/Carroussel";
+
 function Home() {
-  return (
-    <p>Hello world!</p>
+    return (
+        <Carroussel />
   );
 }
 
