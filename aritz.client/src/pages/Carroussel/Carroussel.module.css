@@ -3,6 +3,7 @@
     object-fit: contain;
     overflow: hidden;
     margin-top: 10px;
+    z-index: 1;
 }
 
 .carrouselContainerSub {

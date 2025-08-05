@@ -3,29 +3,38 @@
     height: 10vh;
 }
 
-.aritzLogo{
+.aritzLogo {
     color: #fff !important;
     border-radius: 100%;
     padding: 10px;
     font-weight: bold !important;
     font-size: 3rem !important;
-
+    font-family: Dancing Script, cursive;
 }
 
 a.nav-link {
     display: flex !important;
     margin: 10px;
-    font-family: "Dancing Script, cursive";
+
+}
+
+.item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    border-radius: 5%;
+    font-family: Calibri;
 }
 
 .item:hover{
-    background-color: rgb(146, 198, 132) !important;
-    border-radius: 5%;
+    border-bottom: 4px solid #fff;
+
 }
 
 /* Dropdown: contenedor principal */
 .navItem {
     position: relative !important; /* Necesario para posicionar el dropdown relativo al contenedor principal */
+    text-decoration: none;
 }
 
 /* Dropdown inicial: oculto */
@@ -38,7 +47,9 @@ a.nav-link {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
     border-radius: 4px; /* Bordes redondeados */
     padding: 10px 0; /* Espaciado interno */
-    min-width: 200px;
+    min-width: 30vw;
+    z-index: 10;
+    box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.2);
 }
 
 .dropdownItem {
@@ -52,11 +63,21 @@ a.nav-link {
 .dropdownItem:hover {
     background-color: #f8f9fa; /* Fondo al pasar el mouse */
     color: #007bff; /* Cambia el color del texto */
+
+}
+
+.dropdown ul li h5 b {
+    font-weight: bold;
+    font-family: Dancing Script, cursive;
+}
+
+li {
+    list-style-type: none;
 }
 
 /* Mostramos el dropdown al hacer hover sobre el contenedor */
 .navItem:hover .dropdown {
-    display: block; /* Muestra el dropdown */
+    display: flex; /* Muestra el dropdown */
 }
 
 /* Responsive: Ajusta para pantallas pequeñas */

@@ -11,7 +11,6 @@ const Header = () => {
                 <NavLink
                     className={`navbar-brand ${styles.aritzLogo}`}
                     to="/"
-                    style={{ fontFamily: '"Dancing Script", cursive'}}
                 >
                     Aritz
                 </NavLink>
@@ -32,25 +31,23 @@ const Header = () => {
                 {/* Enlaces de navegación */}
                 <div className="collapse navbar-collapse d-flex">
                     <ul className="navbar-nav">
-                        <li className="nav-item d-flex">
+                        <li className={`${styles.navItem} d-flex`}>
                             <NavLink
-                                style={{ display: "flex", alignItems: "center", gap: "5px" }}
                                 className={({ isActive }) =>
                                     isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`
                                 }
                                 to="/">
                                 <FaHome />
-                                Home
+                                Inicio
                             </NavLink>
                         </li>
                         <li className={styles.navItem}>
                             <NavLink
-                                style={{ display: "flex", alignItems: "center", gap: "5px" }}
                                 className={({ isActive }) =>
                                     isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`
                                 } to="/product">
                                 <FaBoxOpen />
-                                Products
+                                Productos
                             </NavLink>
                             <div className={styles.dropdown}>
                                 <ul>
@@ -75,19 +72,40 @@ const Header = () => {
                                             Producto 3
                                         </NavLink>
                                     </li>
-                                    
+                                </ul>
+                                                                <ul>
+                                    <li>
+                                        <h5><b> Desodorantes </b></h5>
+                                        <NavLink to="/products/cremas-faciales/product-1" className={styles.dropdownItem}>
+                                            Producto 1
+                                        </NavLink>
+                                        <NavLink to="/products/cremas-faciales/product-1" className={styles.dropdownItem}>
+                                            Producto 1
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <h5><b> Shampoos </b></h5>
+                                        <NavLink to="/products/pastas-dentales/product-2" className={styles.dropdownItem}>
+                                            Producto 2
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <h5><b> Jabones </b></h5>
+                                        <NavLink to="/products/product-3" className={styles.dropdownItem}>
+                                            Producto 3
+                                        </NavLink>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                style={{ display: "flex", alignItems: "center", gap: "5px" }}
                                 className={({ isActive }) =>
                                     isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`
                                 }
                                 to="/contact">
                                 <FaEnvelope />
-                                Contact
+                                Contacto
                             </NavLink>
                         </li>
                     </ul>
