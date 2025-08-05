@@ -23,6 +23,42 @@ a.nav-link {
     border-radius: 5%;
 }
 
+/* Dropdown: contenedor principal */
+.navItem {
+    position: relative !important; /* Necesario para posicionar el dropdown relativo al contenedor principal */
+}
+
+/* Dropdown inicial: oculto */
+.dropdown {
+    position: absolute;
+    left: 0; /* Aparece alineado al enlace de Products */
+    top: 100%; /* Aparece justo debajo del enlace */
+    display: none; /* Ocultamos el dropdown inicialmente */
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 10px 0; /* Espaciado interno */
+    min-width: 200px;
+}
+
+.dropdownItem {
+    color: #333;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block; /* Cada item ocupa una línea */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdownItem:hover {
+    background-color: #f8f9fa; /* Fondo al pasar el mouse */
+    color: #007bff; /* Cambia el color del texto */
+}
+
+/* Mostramos el dropdown al hacer hover sobre el contenedor */
+.navItem:hover .dropdown {
+    display: block; /* Muestra el dropdown */
+}
+
 /* Responsive: Ajusta para pantallas pequeñas */
 @media (max-width: 992px) {
     .navbar{

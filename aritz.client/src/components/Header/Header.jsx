@@ -43,7 +43,7 @@ const Header = () => {
                                 Home
                             </NavLink>
                         </li>
-                        <li className="nav-item">
+                        <li className={styles.navItem}>
                             <NavLink
                                 style={{ display: "flex", alignItems: "center", gap: "5px" }}
                                 className={({ isActive }) =>
@@ -52,6 +52,32 @@ const Header = () => {
                                 <FaBoxOpen />
                                 Products
                             </NavLink>
+                            <div className={styles.dropdown}>
+                                <ul>
+                                    <li>
+                                        <h5><b> Cremas faciales </b></h5>
+                                        <NavLink to="/products/cremas-faciales/product-1" className={styles.dropdownItem}>
+                                            Producto 1
+                                        </NavLink>
+                                        <NavLink to="/products/cremas-faciales/product-1" className={styles.dropdownItem}>
+                                            Producto 1
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <h5><b> Pastas dentales </b></h5>
+                                        <NavLink to="/products/pastas-dentales/product-2" className={styles.dropdownItem}>
+                                            Producto 2
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <h5><b> Sprays </b></h5>
+                                        <NavLink to="/products/product-3" className={styles.dropdownItem}>
+                                            Producto 3
+                                        </NavLink>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
                         </li>
                         <li className="nav-item">
                             <NavLink
