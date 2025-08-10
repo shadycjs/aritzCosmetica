@@ -87,9 +87,24 @@ li {
     cursor: pointer;
 }
 
-.carrito{
+.carritoContainer{
+    position: relative;
+}
+
+.carritoContador {
+    position: absolute;
+    left: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 15px;
+    text-align: center;
+    font-size: .7rem;
+}
+
+.carrito {
     font-size: 1.4rem;
     cursor: pointer;
+
 }
 
 /* Mostramos el dropdown al hacer hover sobre el contenedor */

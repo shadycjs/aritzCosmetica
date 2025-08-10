@@ -121,6 +121,7 @@ const Header = () => {
                     </div>
                     <div className={styles.carritoContainer}>
                         <FaShoppingCart className={styles.carrito} />
+                        <p className={styles.carritoContador}>0</p>
                     </div>
                 </div>
             </div>
