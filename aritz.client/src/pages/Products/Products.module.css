@@ -18,9 +18,6 @@
     flex: 1; /* Toma espacio proporcional */
     min-width: 300px;
     max-width: 600px; /* Limita el ancho del aside */
-    background-color: #f8f9fa; /* Fondo claro */
-    border: 1px solid #ddd; /* Borde del aside */
-    border-radius: 8px; /* Bordes redondeados */
     padding: 20px; /* Espaciado interno */
 }
 
@@ -36,7 +33,26 @@
 }
 
 .filterItem {
+    display: flex;
     margin-bottom: 10px;
+}
+
+.filterItem label{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+/* Grilla de productos */
+
+.carta{
+    height: 400px !important;
+}
+
+.cuerpoCarta{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /* Para pantallas pequeñas */
@@ -48,6 +64,10 @@
     .filters {
         max-width: 100%; /* El aside ocupa todo el ancho */
         margin-bottom: 20px; /* Espaciado debajo del aside */
+    }
+
+    .carta {
+        height: auto !important;
     }
 
 }
