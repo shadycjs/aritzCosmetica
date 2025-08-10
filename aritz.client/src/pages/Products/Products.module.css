@@ -16,7 +16,7 @@
 /* Aside (barra lateral para filtros) */
 .filters {
     flex: 1; /* Toma espacio proporcional */
-    min-width: 500px;
+    min-width: 300px;
     max-width: 600px; /* Limita el ancho del aside */
     background-color: #f8f9fa; /* Fondo claro */
     border: 1px solid #ddd; /* Borde del aside */
@@ -37,4 +37,17 @@
 
 .filterItem {
     margin-bottom: 10px;
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 768px) {
+    .productsPage {
+        flex-direction: column; /* El aside y el grid se colocan en una columna */
+    }
+
+    .filters {
+        max-width: 100%; /* El aside ocupa todo el ancho */
+        margin-bottom: 20px; /* Espaciado debajo del aside */
+    }
+
 }
