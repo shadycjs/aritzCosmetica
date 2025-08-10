@@ -76,6 +76,22 @@ li {
     list-style-type: none;
 }
 
+/* Logeo y carrito de compras */
+
+.logAndCart{
+    display: flex;
+    gap: 40px;
+}
+
+.logueo{
+    cursor: pointer;
+}
+
+.carrito{
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
 /* Mostramos el dropdown al hacer hover sobre el contenedor */
 .navItem:hover .dropdown {
     display: flex; /* Muestra el dropdown */

@@ -1,9 +1,12 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import styles from './Header.module.css';
-import { FaHome, FaBoxOpen, FaEnvelope } from 'react-icons/fa';
+import { FaHome, FaBoxOpen, FaEnvelope, FaShoppingCart } from 'react-icons/fa';
 
 const Header = () => {
+
+    var itsLog = 1;
+
     return (
         <nav className={`navbar navbar-expand-lg ${styles.navbar}`}>
             <div className="container d-flex">
@@ -109,6 +112,16 @@ const Header = () => {
                             </NavLink>
                         </li>
                     </ul>
+                </div>
+
+                {/* Carrito de compras y LogIn */}
+                <div className={styles.logAndCart}>
+                    <div className={styles.logueo}>
+                        {itsLog == 1 ? "LogIn / Register" : "Ramiro"}
+                    </div>
+                    <div className={styles.carritoContainer}>
+                        <FaShoppingCart className={styles.carrito} />
+                    </div>
                 </div>
             </div>
         </nav>
