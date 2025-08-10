@@ -18,6 +18,7 @@
     <Folder Include="src\components\Footer\" />
     <Folder Include="src\components\Header\" />
     <Folder Include="src\components\CenteredContainer\" />
+    <Folder Include="src\components\Auth\" />
     <Folder Include="src\layouts\" />
     <Folder Include="src\hooks\" />
     <Folder Include="src\contexts\" />
