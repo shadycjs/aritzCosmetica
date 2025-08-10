@@ -17,6 +17,7 @@
     <Folder Include="src\components\NavBar\" />
     <Folder Include="src\components\Footer\" />
     <Folder Include="src\components\Header\" />
+    <Folder Include="src\components\CenteredContainer\" />
     <Folder Include="src\layouts\" />
     <Folder Include="src\hooks\" />
     <Folder Include="src\contexts\" />
