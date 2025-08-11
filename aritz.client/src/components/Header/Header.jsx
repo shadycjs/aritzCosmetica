@@ -4,11 +4,13 @@ import styles from './Header.module.css';
 import { FaHome, FaBoxOpen, FaEnvelope, FaShoppingCart } from 'react-icons/fa';
 import Auth from '../Auth/Auth';
 import { useSession } from '../../context/SessionContext';
+import { useCart } from '../../context/CartContext';
 
 
 const Header = () => {
 
     const { isLoggedIn } = useSession();
+    const { cartCounter } = useCart();
 
     return (
         <nav className={`navbar navbar-expand-lg ${styles.navbar}`}>
@@ -134,7 +136,7 @@ const Header = () => {
                         style={ {color: "#fff"} }
                     >
                         <FaShoppingCart className={styles.carrito} />
-                        <p className={styles.carritoContador}>0</p>
+                        <p className={styles.carritoContador}>{cartCounter}</p>
                     </NavLink>
                 </div>
             </div>

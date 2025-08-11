@@ -4,7 +4,33 @@ import product1 from '../../assets/images/product1.png'
 import product2 from '../../assets/images/product2.png'
 import product3 from '../../assets/images/product3.jpg'
 import { FaFilter } from "react-icons/fa";
+import { useCart } from "../../context/CartContext";
 function Products() {
+
+    const { addToCart, sumCartCounter } = useCart();
+
+    // Productos de prueba
+    const Productos = [
+        {
+            id: 1, // ID único del producto, útil para identificarlos
+            name: "Pasta dental", // Nombre del producto
+            price: 19.99, // Precio del producto
+            image: product1 // URL de la imagen
+        },
+        {
+            id: 2,
+            name: "Crema facial",
+            price: 29.99,
+            image: product2
+        },
+        {
+            id: 3,
+            name: "Unguento calendula",
+            price: 65.99,
+            image: product3
+        }
+    ]
+
     return (
         <>
             <CenteredContainer>
@@ -43,37 +69,18 @@ function Products() {
                         <div className="col-sm-9">
                             <div className="row">
                                 {/* Producto 1 */}
-                                <div className={`col-md-4 ${styles.columna}`}>
+                                {Productos.map((producto) => (
+                                    <div key={producto.id} className={`col-md-4 ${styles.columna}`}>
                                     <div className={`card ${styles.carta}`}>
-                                        <img src={product1} className="card-img-top" alt="Producto 1" />
+                                        <img src={producto.image} className="card-img-top" alt="Producto 1" />
                                         <div className={`card-body ${styles.cuerpoCarta}`}>
-                                            <h5 className="card-title">Pasta dental</h5>
-                                            <p className="card-text">$19.99</p>
-                                        </div>
-                                        <button className="btn btn-primary">Agregar al carrito</button>
+                                            <h5 className="card-title">{producto.name}</h5>
+                                            <p className="card-text">{producto.price}</p>
+                                            </div>
+                                            <button onClick={() => { sumCartCounter; addToCart(producto) }} className="btn btn-primary">Agregar al carrito</button>
                                     </div>
                                 </div>
-                                {/* Repetir productos */}
-                                <div className={`col-md-4 ${styles.columna}`}>
-                                    <div className={`card ${styles.carta}`}>
-                                        <img src={product2} className="card-img-top" alt="Producto 1" />
-                                        <div className={`card-body ${styles.cuerpoCarta}`}>
-                                            <h5 className="card-title">Crema facial</h5>
-                                            <p className="card-text">$44.99</p>
-                                        </div>
-                                        <button className="btn btn-primary">Agregar al carrito</button>
-                                    </div>
-                                </div>
-                                <div className={`col-md-4 ${styles.columna}`}>
-                                    <div className={`card ${styles.carta}`}>
-                                        <img src={product3} className="card-img-top" alt="Producto 1" />
-                                        <div className={`card-body ${styles.cuerpoCarta}`}>
-                                            <h5 className="card-title">Unguento calendula</h5>
-                                            <p className="card-text">$99.99</p>
-                                        </div>
-                                        <button className="btn btn-primary">Agregar al carrito</button>
-                                    </div>
-                                </div>
+                                )) }
                             </div>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ const CartContext = createContext();
 // Proveedor del carrito
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]); // Estado inicial del carrito, vacío.
+    const [cartCounter, setCartCounter] = useState(0);
 
     // Función para agregar un producto al carrito
     const addToCart = (product) => {
@@ -39,6 +40,15 @@ export const CartProvider = ({ children }) => {
     const getTotalPrice = () => {
         return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
     };
+
+    //Contador del carrito
+    const sumCartCounter = () => {
+        setCartCounter(cartCounter + 1);
+    }
+
+    const resCartCounter = () => {
+        setCartCounter(cartCounter - 1);
+    }
 
     return (
         <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart, getTotalPrice }}>
