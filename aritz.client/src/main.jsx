@@ -6,12 +6,15 @@ import { BrowserRouter } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { SessionProvider } from './context/SessionContext'
+import { CartProvider } from './context/CartContext'
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <BrowserRouter>
             <SessionProvider>
-                <App />
+                <CartProvider>
+                    <App />
+                </CartProvider>
             </SessionProvider>
         </BrowserRouter>
   </StrictMode>,

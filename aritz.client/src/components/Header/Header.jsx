@@ -128,10 +128,14 @@ const Header = () => {
                                 LogIn / Sing In
                             </NavLink>  }
                     </div>
-                    <div className={styles.carritoContainer}>
+                    <NavLink
+                        className={styles.carritoContainer}
+                        to="/cart"
+                        style={ {color: "#fff"} }
+                    >
                         <FaShoppingCart className={styles.carrito} />
                         <p className={styles.carritoContador}>0</p>
-                    </div>
+                    </NavLink>
                 </div>
             </div>
         </nav>
