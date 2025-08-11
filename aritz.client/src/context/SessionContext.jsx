@@ -8,6 +8,7 @@ export const SessionProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado de autenticación
     const [user, setUser] = useState(null); // Información del usuario
     const [token, setToken] = useState(null); // Token de autenticación
+    const [screenLogIn, setScreenLogIn] = useState(false);
 
     // Función para iniciar sesión
     const login = (userData, authToken) => {
@@ -23,6 +24,16 @@ export const SessionProvider = ({ children }) => {
         setToken(null);
     };
 
+    // Funcion para cambiar pantalla de logueo
+    const screenIn = () => {
+        setScreenLogIn(true);
+    };
+
+    // Funcion para cambiar pantalla de registro
+    const screenOut = () => {
+        setScreenLogIn(false);
+    };
+
     // Valor que proporciona el contexto
     const value = {
         isLoggedIn,
@@ -30,6 +41,9 @@ export const SessionProvider = ({ children }) => {
         token,
         login,
         logout,
+        screenLogIn,
+        screenIn,
+        screenOut,
     };
 
     return (
