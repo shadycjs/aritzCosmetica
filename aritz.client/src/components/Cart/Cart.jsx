@@ -4,7 +4,7 @@ import styles from "./Cart.module.css";
 import CenteredContainer from "../CenteredContainer/CenteredContainer";
 
 function Carrito() {
-    const { cartItems, removeFromCart, clearCart, getTotalPrice } = useCart();
+    const { cartItems, removeFromCart, clearCart, getTotalPrice, resCartCounter } = useCart();
 
     return (
         <CenteredContainer>
@@ -24,7 +24,7 @@ function Carrito() {
                                         <p>Precio: ${item.price}</p>
                                         <p>Cantidad: {item.quantity}</p>
                                         <button
-                                            onClick={() => removeFromCart(item.id)}
+                                            onClick={() => { removeFromCart(item.id); resCartCounter(item.quantity) }}
                                             className={styles.removeButton}
                                         >
                                             Eliminar

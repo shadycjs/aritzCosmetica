@@ -34,6 +34,7 @@ export const CartProvider = ({ children }) => {
     // Función para vaciar el carrito por completo
     const clearCart = () => {
         setCartItems([]);
+        setCartCounter(0);
     };
 
     // Total del carrito
@@ -46,12 +47,12 @@ export const CartProvider = ({ children }) => {
         setCartCounter(cartCounter + 1);
     }
 
-    const resCartCounter = () => {
-        setCartCounter(cartCounter - 1);
+    const resCartCounter = (cantidad) => {
+        setCartCounter(cartCounter - cantidad);
     }
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart, getTotalPrice }}>
+        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart, getTotalPrice, cartCounter, sumCartCounter, resCartCounter }}>
             {children}
         </CartContext.Provider>
     );
