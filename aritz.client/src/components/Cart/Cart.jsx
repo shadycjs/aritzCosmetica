@@ -2,9 +2,15 @@ import React from "react";
 import { useCart } from "../../context/CartContext";
 import styles from "./Cart.module.css";
 import CenteredContainer from "../CenteredContainer/CenteredContainer";
+import { useNavigate } from "react-router-dom";
 
 function Carrito() {
     const { cartItems, removeFromCart, clearCart, getTotalPrice, resCartCounter } = useCart();
+    const navigate = useNavigate();
+
+    const handleProceedToCheckout = () => {
+        navigate("/checkout/shipping-info"); // Redirige al paso 1 del checkout
+    };
 
     return (
         <CenteredContainer>
@@ -42,7 +48,7 @@ function Carrito() {
                             <button className={styles.clearButton} onClick={clearCart}>
                                 Vaciar Carrito
                             </button>
-                            <button className={styles.checkoutButton}>Proceder al Pago</button>
+                                <button onClick={handleProceedToCheckout} className={styles.checkoutButton}>Proceder al Pago</button>
                         </div>
                     </>
                 )}

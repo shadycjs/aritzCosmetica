@@ -20,9 +20,11 @@
     <Folder Include="src\components\CenteredContainer\" />
     <Folder Include="src\components\Auth\" />
     <Folder Include="src\components\Cart\" />
+    <Folder Include="src\components\CheckoutSteps\" />
     <Folder Include="src\layouts\" />
     <Folder Include="src\hooks\" />
     <Folder Include="src\contexts\" />
+    <Folder Include="src\pages\Checkout\" />
     <Folder Include="src\utils\" />
     <Folder Include="src\services\" />
   </ItemGroup>
