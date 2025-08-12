@@ -35,7 +35,7 @@ function Products() {
         <>
             <CenteredContainer>
                 <h1 className={styles.title}>Nuestros productos</h1>
-                <p>lorem ipsum</p>
+                <p style={{ color: "#777" }}>Elegi los mejores productos al mejor precio.</p>
             </CenteredContainer>
 
             <div className={styles.productsPage}>
@@ -75,7 +75,7 @@ function Products() {
                                         <img src={producto.image} className="card-img-top" alt="Producto 1" />
                                         <div className={`card-body ${styles.cuerpoCarta}`}>
                                             <h5 className="card-title">{producto.name}</h5>
-                                            <p className="card-text">{producto.price}</p>
+                                            <p className="card-text">${producto.price}</p>
                                             </div>
                                             <button onClick={() => { sumCartCounter(); addToCart(producto) }} className="btn btn-primary">Agregar al carrito</button>
                                     </div>

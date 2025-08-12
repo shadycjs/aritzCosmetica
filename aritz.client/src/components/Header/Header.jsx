@@ -125,7 +125,10 @@ const Header = () => {
                         {
                             isLoggedIn ? "Ramiro" :
                             <NavLink
-                                to="/login"
+                                    to="/login"
+                                    className={({ isActive }) =>
+                                        isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`
+                                    }
                             >
                                 LogIn / Sing In
                             </NavLink>  }

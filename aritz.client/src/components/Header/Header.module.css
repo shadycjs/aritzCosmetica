@@ -15,7 +15,6 @@
 a.nav-link {
     display: flex !important;
     margin: 10px;
-
 }
 
 .item {
@@ -26,10 +25,10 @@ a.nav-link {
     font-family: Calibri;
 }
 
-.item:hover{
-    border-bottom: 4px solid #fff;
+    .item:hover{
+        border-bottom: 4px solid #fff;
 
-}
+    }
 
 /* Dropdown: contenedor principal */
 .navItem {
