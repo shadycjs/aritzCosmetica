@@ -48,3 +48,38 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+/* METODOS DE PAGO */
+
+.containerPayments {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 50px;
+    height: 300px;
+    width: 100%;
+}
+
+.buttonsPayments {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 600px;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 5px;
+    border: none;
+}
+
+    .buttonsPayments:hover{
+        border: 2px solid #000;
+        cursor: pointer;
+    }
+
+.imgMp{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 35%;
+}
