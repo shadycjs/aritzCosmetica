@@ -10,8 +10,8 @@ function TimeLapseCheckout() {
       <div className="d-flex justify-content-center gap-3 align-items-center">
           <p className={`${location.pathname === "/cart" ? styles.pathBlack : styles.pathNormal} d-flex align-items-center`}>Carrito</p><AiOutlineDoubleRight />
           <p className={`${location.pathname === "/checkout/shipping-info" ? styles.pathBlack : styles.pathNormal} d-flex align-items-center`}>Datos de envio</p><AiOutlineDoubleRight />
-          <p className={`${location.pathname === "/checkout/shipping-method" ? styles.pathBlack : styles.pathNormal} d-flex align-items-center`}>Forma de envio</p><AiOutlineDoubleRight />
-          <p className={`${location.pathname === "/checkout/payment-method" ? styles.pathBlack : styles.pathNormal} d-flex align-items-center`}>Pago</p>
+          <p className={`${location.pathname === "/checkout/payment-method" ? styles.pathBlack : styles.pathNormal} d-flex align-items-center`}>Forma de pago</p><AiOutlineDoubleRight />
+          <p className={`${location.pathname === "/checkout/pay" ? styles.pathBlack : styles.pathNormal} d-flex align-items-center`}>Pago</p>
       </div>
   );
 }

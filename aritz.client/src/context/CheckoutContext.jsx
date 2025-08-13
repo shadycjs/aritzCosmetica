@@ -14,7 +14,6 @@ export const CheckoutProvider = ({ children }) => {
         cellphone: "",
     });
 
-    const [shippingMethod, setShippingMethod] = useState(""); // Ejemplo: "Estándar" o "Exprés"
     const [paymentMethod, setPaymentMethod] = useState("");   // Ejemplo: "Tarjeta" o "PayPal"
 
     return (
@@ -22,8 +21,6 @@ export const CheckoutProvider = ({ children }) => {
             value={{
                 customerInfo,
                 setCustomerInfo,
-                shippingMethod,
-                setShippingMethod,
                 paymentMethod,
                 setPaymentMethod,
             }}

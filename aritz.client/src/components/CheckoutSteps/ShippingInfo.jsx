@@ -23,7 +23,7 @@ function ShippingInfo() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setCustomerInfo(formData); // Actualiza el contexto con los datos ingresados
-        navigate("/checkout/shipping-method"); // Ir al siguiente paso
+        navigate("/checkout/payment-method"); // Ir al siguiente paso
     };
 
     const back = () => {
@@ -58,7 +58,7 @@ function ShippingInfo() {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            required
+                            
                             placeholder="Nombre"
                         />
                         <input
@@ -67,7 +67,7 @@ function ShippingInfo() {
                             name="surname"
                             value={formData.name}
                             onChange={handleChange}
-                            required
+                            
                             placeholder="Apellido"
                         />
                     </label>
@@ -94,7 +94,7 @@ function ShippingInfo() {
                             name="city"
                             value={formData.city}
                             onChange={handleChange}
-                            required
+                            
                             placeholder="Ciudad"
                         />
                     </label>
@@ -105,7 +105,7 @@ function ShippingInfo() {
                             name="address"
                             value={formData.address}
                             onChange={handleChange}
-                            required
+                            
                             placeholder="Direccion"
                         />
                         <input
@@ -114,7 +114,7 @@ function ShippingInfo() {
                             name="postal"
                             value={formData.postalCode}
                             onChange={handleChange}
-                            required
+                            
                             placeholder="Codigo Postal"
                         />
                     </label>
@@ -125,13 +125,13 @@ function ShippingInfo() {
                             name="cellphone"
                             value={formData.cellphone}
                             onChange={handleChange}
-                            required
+                            
                             placeholder="Telefono"
                         />
                     </label>
                     <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
-                        <button onClick={back} className={styles.btnShippingBack}>Volver</button>
-                        <button className={styles.btnShippingNext} type="submit">Siguiente</button>
+                        <button type="button" onClick={back} className={styles.btnShippingBack}>Volver</button>
+                        <button onClick={handleSubmit} className={styles.btnShippingNext} type="submit">Siguiente</button>
                     </label>
                 </form>
             </div>

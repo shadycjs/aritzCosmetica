@@ -11,9 +11,7 @@ function PaymentInfo() {
 
     return (
         <div>
-            <h2>Método de Pago</h2>
-            <button onClick={() => handleSelectMethod("Credit Card")}>Tarjeta de Crédito</button>
-            <button onClick={() => handleSelectMethod("PayPal")}>PayPal</button>
+            a
         </div>
     );
 }
