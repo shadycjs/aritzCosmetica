@@ -1,6 +1,18 @@
+import { AiOutlineDoubleRight } from "react-icons/ai";
+import styles from "./TimelapseCheckout.module.css";
+import { useLocation } from "react-router-dom";
+
 function TimeLapseCheckout() {
+    const location = useLocation();
+    console.log(location.pathname);
+
   return (
-    <p>Hello world!</p>
+      <div className="d-flex justify-content-center gap-3 align-items-center">
+          <p className={`${location.pathname === "/cart" ? styles.pathBlack : styles.pathNormal} d-flex align-items-center`}>Carrito</p><AiOutlineDoubleRight />
+          <p className={`${location.pathname === "/checkout/shipping-info" ? styles.pathBlack : styles.pathNormal} d-flex align-items-center`}>Datos de envio</p><AiOutlineDoubleRight />
+          <p className={`${location.pathname === "/checkout/shipping-method" ? styles.pathBlack : styles.pathNormal} d-flex align-items-center`}>Forma de envio</p><AiOutlineDoubleRight />
+          <p className={`${location.pathname === "/checkout/payment-method" ? styles.pathBlack : styles.pathNormal} d-flex align-items-center`}>Pago</p>
+      </div>
   );
 }
 

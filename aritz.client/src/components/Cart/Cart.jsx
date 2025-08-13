@@ -3,6 +3,7 @@ import { useCart } from "../../context/CartContext";
 import styles from "./Cart.module.css";
 import CenteredContainer from "../CenteredContainer/CenteredContainer";
 import { useNavigate } from "react-router-dom";
+import TimeLapseCheckout from "../CheckoutSteps/Timelapse/TimelapseCheckout";
 
 function Carrito() {
     const { cartItems, removeFromCart, clearCart, getTotalPrice, resCartCounter } = useCart();
@@ -14,6 +15,7 @@ function Carrito() {
 
     return (
         <CenteredContainer>
+            {cartItems.length === 0 ? '' : <TimeLapseCheckout />}
             <div className={styles.container}>
                 <h1 className={styles.title}>Tu Carrito</h1>
 

@@ -1,8 +1,11 @@
+.container {
+    padding: 20px;
+}
+
 .formShippingInfo{
     flex-direction: column;
     gap: 10px;
 }
-
 
 .shippingLabels {
     padding: 0 30%;
