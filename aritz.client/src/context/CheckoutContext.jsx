@@ -11,6 +11,7 @@ export const CheckoutProvider = ({ children }) => {
         city: "",
         postalCode: "",
         country: "",
+        cellphone: "",
     });
 
     const [shippingMethod, setShippingMethod] = useState(""); // Ejemplo: "Estándar" o "Exprés"

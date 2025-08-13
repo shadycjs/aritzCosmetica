@@ -1,0 +1,47 @@
+.formShippingInfo{
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.shippingLabels {
+    padding: 0 30%;
+}
+
+.shippingInputs{
+    height: 40px;
+    width: 100%;
+}
+
+.btnShippingNext {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+    .btnShippingNext:hover {
+        background-color: #0056b3;
+    }
+
+.btnShippingBack {
+    width: 100%;
+    background-color: #fff;
+    color: #216993;
+    border: none;
+    padding: 1px 10px;
+    cursor: pointer;
+}
+
+    .btnShippingBack:hover {
+        text-decoration: underline;
+    }
+
+.shippingSeparate{
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
