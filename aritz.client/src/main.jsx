@@ -8,6 +8,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { SessionProvider } from './context/SessionContext'
 import { CartProvider } from './context/CartContext'
 import { CheckoutProvider } from './context/CheckoutContext'
+import { initMercadoPago } from '@mercadopago/sdk-react'
+initMercadoPago('TEST-aa2427a9-e156-4f55-b4c0-d9c5e9b5774c');
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
@@ -20,5 +22,5 @@ createRoot(document.getElementById('root')).render(
                 </CartProvider>
             </SessionProvider>
         </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 )

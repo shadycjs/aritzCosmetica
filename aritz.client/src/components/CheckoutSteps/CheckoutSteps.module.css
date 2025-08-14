@@ -98,3 +98,13 @@
     .buttonsPayments:not(.selected):hover {
         opacity: 1; /* Opacidad completa al pasar el mouse */
     }
+
+/* Boton de MercadoPago */
+
+.mpContainer{
+    padding: 50px;
+}
+
+.tableDetails{
+    padding: 50px;
+}
