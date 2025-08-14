@@ -27,8 +27,12 @@ function PaymentInfo() {
             <div className={styles.container}>
                 <h2>Elija la forma de pago</h2>
                 <div className={styles.containerPayments}>
-                    <button className={styles.buttonsPayments} style={{ backgroundColor: "#F5F5DC", color: "#000" }} onClick={() => handleSelectMethod("Tarjeta")} onClick={() => handleSelectMethod("Credit Card")}><img src={CreditCardIcon} className={styles.imgMp} />Tarjeta de Credito</button>
-                    <button className={styles.buttonsPayments} style={{ backgroundColor: "#00B1EA", color: "#fff" }} onClick={() => handleSelectMethod("MercadoPago")}><img src={MercadoPagoIcon} className={styles.imgMp} /></button>
+                    <button className={`
+                                ${styles.buttonsPayments}
+                                ${paymentMethod === 'Tarjeta' ? styles.selected : ''}`} style={{ backgroundColor: "#F5F5DC", color: "#000" }} onClick={() => {handleSelectMethod("Tarjeta")}}><img src={CreditCardIcon} className={styles.imgMp} />Tarjeta de Credito</button>
+                    <button className={`
+                                ${styles.buttonsPayments}
+                                ${paymentMethod === 'MercadoPago' ? styles.selected : ''}`} style={{ backgroundColor: "#00B1EA", color: "#fff" }} onClick={() => handleSelectMethod("MercadoPago")}><img src={MercadoPagoIcon} className={styles.imgMp} /></button>
                 </div>
                 <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                     <button onClick={back} className={styles.btnShippingBack}>Volver</button>
