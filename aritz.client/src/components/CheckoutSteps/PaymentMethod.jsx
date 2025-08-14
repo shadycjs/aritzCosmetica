@@ -9,16 +9,25 @@ import CreditCardIcon from "../../assets/icons/creditcard.svg"
 
 function PaymentInfo() {
     const { paymentMethod, setPaymentMethod } = useCheckout();
-    const navigate2 = useNavigate();
+    const navigate = useNavigate();
 
     const handleSelectMethod = (method) => {
         setPaymentMethod(method);
         //alert("Pedido completado con éxito!"); // Aquí irías a la lógica de confirmación
 
     };
+    console.log(paymentMethod);
+
+    const next = () => {
+        if (paymentMethod === "") {
+            alert("Debe seleccionar una forma de pago para continuar");
+        } else {
+            navigate("/checkout/pay");
+        }
+    }
 
     const back = () => {
-        navigate2("/checkout/shipping-info");
+        navigate("/checkout/shipping-info");
     };
 
     return (
@@ -36,7 +45,7 @@ function PaymentInfo() {
                 </div>
                 <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                     <button onClick={back} className={styles.btnShippingBack}>Volver</button>
-                    <button className={styles.btnShippingNext} type="submit">Siguiente</button>
+                    <button onClick={next} className={styles.btnShippingNext} type="submit">Siguiente</button>
                 </label>
             </div>
         </CenteredContainer>
