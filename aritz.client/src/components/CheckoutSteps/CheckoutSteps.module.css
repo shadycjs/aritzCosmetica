@@ -99,12 +99,80 @@
         opacity: 1; /* Opacidad completa al pasar el mouse */
     }
 
-/* Boton de MercadoPago */
+/* Transferencia bancaria */
+.bankContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+}
 
-.mpContainer{
+/* Boton de MercadoPago */
+.mpContainer {
     padding: 50px;
 }
 
+/* Tabla de detalle */
+
 .tableDetails{
     padding: 50px;
+}
+
+th {
+    padding: 10px;
+}
+
+td{
+    padding: 10px;
+}
+
+/* Comprobante */
+
+.containerComprobante{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fileInput {
+    display: inline-block;
+    position: relative;
+    padding: 10px 20px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+    .fileInput input {
+        display: none; /* Ocultar el elemento input real */
+    }
+
+    .fileInput span {
+        display: inline-block;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+.loading {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.success {
+    color: #fff;
+    font-weight: bold;
+}
+
+.total {
+    color: #24e41c;
 }

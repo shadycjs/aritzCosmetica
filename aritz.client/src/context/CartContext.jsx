@@ -38,8 +38,10 @@ export const CartProvider = ({ children }) => {
     };
 
     // Total del carrito
-    const getTotalPrice = () => {
-        return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
+    const getTotalPrice = (send) => {
+        if (!send) { return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2); }
+
+        return cartItems.reduce((acc, item) => acc + send + item.price * item.quantity, 0).toFixed(2);
     };
 
     //Contador del carrito

@@ -71,6 +71,10 @@ function PaymentInfo() {
         */
     };
 
+    const next = () => {
+        navigate('/checkout/pay-success');
+    }
+
     return (
         <CenteredContainer>
             <TimeLapseCheckout />
@@ -102,34 +106,14 @@ function PaymentInfo() {
                         </tr>
                     </tbody>
                 </table>
+                <h1>Total: <b className={styles.total}>${getTotalPrice(3000)}</b></h1>
                 {paymentMethod === 'Tarjeta' ?
                     <div>
-                        <h2>Datos de la Tarjeta de Crédito</h2>
-                        <form>
-                            <div className="form-group">
-                                <label for="card-holder">Nombre del Titular</label>
-                                <input type="text" id="card-holder" placeholder="Juan Pérez" required />
-                            </div>
-
-                            <div className="form-group">
-                                <label for="card-number">Número de la Tarjeta</label>
-                                <input type="text" id="card-number" placeholder="1234 5678 9876 5432" required />
-                            </div>
-
-                            <div className="form-row">
-                                <div className="form-group form-group-half">
-                                    <label for="expiry-date">Fecha de Vencimiento</label>
-                                    <input type="text" id="expiry-date" placeholder="MM/AA" required />
-                                </div>
-
-                                <div className="form-group form-group-half">
-                                    <label for="cvv">CVV</label>
-                                    <input type="text" id="cvv" placeholder="123" required />
-                                </div>
-                            </div>
-
-                            <button type="submit" className="submit-btn">Pagar Ahora</button>
-                        </form>
+                        <h2>Cuenta a transferir</h2>
+                        <div className={styles.bankContainer}>
+                            <b>CBU: 0000003100048344628186</b>
+                            <b>Alias: ramiro.unrein </b>
+                        </div>
                     </div> :
 
 
@@ -145,8 +129,8 @@ function PaymentInfo() {
                 }
                 <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                     <button onClick={back} className={styles.btnShippingBack}>Volver</button>
-                {paymentMethod === 'Tarjeta' ?
-                        <button className={styles.btnShippingNext} type="submit">Siguiente</button>
+                    {paymentMethod === 'Tarjeta' ?
+                        <button className={styles.btnShippingNext} onClick={next} type="submit">Confirmar pedido</button>
                 : ''}
                 </label>
 
