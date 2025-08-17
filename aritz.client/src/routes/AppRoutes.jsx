@@ -9,6 +9,7 @@ import ShippingInfo from '../components/CheckoutSteps/ShippingInfo';
 import ShippingMehod from '../components/CheckoutSteps/PaymentMethod';
 import PaymentInfo from '../components/CheckoutSteps/PaymentInfo';
 import Success from '../pages/Checkout/Success';
+import ProductDetail from '../pages/Products/ProductDetail';
 
 const AppRoutes = () => {
     return (
@@ -22,6 +23,7 @@ const AppRoutes = () => {
             <Route path="/checkout/payment-method" element={<ShippingMehod />} />
             <Route path="/checkout/pay" element={<PaymentInfo />} />
             <Route path="/checkout/pay-success" element={<Success />} />
+            <Route path="/product/product-detail/:id" element={<ProductDetail />} />
         </Routes>
     );
 };

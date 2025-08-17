@@ -1,0 +1,53 @@
+.centeredContainer {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    padding: 20px; /* Espaciado interno */
+    width: 100vw;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    width: 100%;
+    padding: 5%;
+}
+
+/* Seccion imagenes */
+
+.imgContainer{
+    display: flex;
+    width: 40%;
+}
+
+.imgMain{
+    width: 70%;
+    order: 2;
+    padding: 10px;
+}
+
+.imgSubContainer {
+    width: 30%;
+}
+
+img{
+    width: 100%;
+}
+
+
+/* Seccion info */
+
+.infoContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+}
+
+.titleInfo{
+    font-size: 4rem;
+}
+
+.priceInfo{
+    font-size: 2rem;
+}

@@ -5,9 +5,16 @@ import product2 from '../../assets/images/product2.png'
 import product3 from '../../assets/images/product3.jpg'
 import { FaFilter } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function Products() {
 
     const { addToCart, sumCartCounter } = useCart();
+    const navigate = useNavigate();
+
+    const next = (id) => {
+        navigate(`/product/product-detail/${id}`);
+    }
 
     // Productos de prueba
     const Productos = [
@@ -70,11 +77,14 @@ function Products() {
                             <div className="row">
                                 {/* Producto 1 */}
                                 {Productos.map((producto) => (
-                                    <div key={producto.id} className={`col-md-4 ${styles.columna}`}>
+                                    <div
+                                        key={producto.id}
+                                        className={`col-md-4 ${styles.columna}`}
+                                        >
                                     <div className={`card ${styles.carta}`}>
                                         <img src={producto.image} className="card-img-top" alt="Producto 1" />
                                         <div className={`card-body ${styles.cuerpoCarta}`}>
-                                            <h5 className="card-title">{producto.name}</h5>
+                                                <h5 onClick={() => next(producto.id)} className={`card-title ${styles.productTitle}`}>{producto.name}</h5>
                                             <p className="card-text">${producto.price}</p>
                                             </div>
                                             <button onClick={() => { sumCartCounter(); addToCart(producto) }} className="btn btn-primary">Agregar al carrito</button>

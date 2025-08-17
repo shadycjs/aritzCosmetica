@@ -4,3 +4,7 @@
     padding: 20px; /* Espaciado interno */
     text-align: center; /* Centra el contenido si es texto */
 }
+
+.centeredContainer {
+    width: 100vw !important;
+}
