@@ -1,4 +1,14 @@
+using Aritz.Server.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Configura el DbContext con la cadena de conexión
+builder.Services.AddDbContext<AritzDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Agrega servicios para controladores
+builder.Services.AddControllers();
 
 // Add services to the container.
 
