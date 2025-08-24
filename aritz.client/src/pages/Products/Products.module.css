@@ -59,6 +59,18 @@
     cursor: pointer;
 }
 
+.cartaAddCart {
+    min-height: 40px;
+    background-color: rgb(179, 222, 167);
+    border: none;
+    color: #fff;
+}
+
+    .cartaAddCart:hover{
+        background-color: #fff;
+        color: rgb(179, 222, 167);
+    }
+
 /* Para pantallas pequeñas */
 @media (max-width: 768px) {
     .productsPage {

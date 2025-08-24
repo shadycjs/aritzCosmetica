@@ -20,9 +20,9 @@ function ProductDetail() {
                     </div>
                 </div>
                 <div className={styles.infoContainer}>
-                    <h3 className={styles.titleInfo}>Unguento de calendulas</h3>
+                    <h3 className={styles.titleInfo}>Pasta dental</h3>
                     <b className={styles.priceInfo}>$30</b>
-                    <p className={styles.descInfo}>Descripcion del producto</p>
+                    <p className={styles.descInfo}>A highly potent, bioactive, multi-targeting age-defying serum—clinically proven to work at the cellular level to visibly reduce fine lines, brighten dark spots, firm, smooth, and hydrate—while optimizing skin’s natural collagen levels.</p>
                     <button className={styles.addCartInfo}>Agregar al carrito</button>
                 </div>
                 

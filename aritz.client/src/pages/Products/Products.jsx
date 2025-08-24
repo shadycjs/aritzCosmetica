@@ -87,7 +87,7 @@ function Products() {
                                                 <h5 onClick={() => next(producto.id)} className={`card-title ${styles.productTitle}`}>{producto.name}</h5>
                                             <p className="card-text">${producto.price}</p>
                                             </div>
-                                            <button onClick={() => { sumCartCounter(); addToCart(producto) }} className="btn btn-primary">Agregar al carrito</button>
+                                            <button onClick={() => { sumCartCounter(); addToCart(producto) }} className={styles.cartaAddCart}>Agregar al carrito</button>
                                     </div>
                                 </div>
                                 )) }

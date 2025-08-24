@@ -32,6 +32,7 @@
 
 img{
     width: 100%;
+    object-fit: cover;
 }
 
 
@@ -51,3 +52,16 @@ img{
 .priceInfo{
     font-size: 2rem;
 }
+
+.addCartInfo{
+    min-height: 40px;
+    background-color: rgb(179, 222, 167);
+    border: none;
+    color: #fff;
+}
+
+    .addCartInfo:hover {
+        background-color: #fff;
+        color: rgb(179, 222, 167);
+        border: 2px solid rgb(179, 222, 167);
+    }
