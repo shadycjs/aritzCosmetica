@@ -3,9 +3,25 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configura CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("https://localhost:50833") // Añade la URL del frontend
+              .AllowAnyHeader()    // Permite cualquier encabezado
+              .AllowAnyMethod();   // Permite cualquier método (GET, POST, etc.)
+    });
+});
+
 // Configura el DbContext con la cadena de conexión
 builder.Services.AddDbContext<AritzDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure()
+    ).LogTo(Console.WriteLine, LogLevel.Information)); // Log de consultas SQL
+
+
 
 // Agrega servicios para controladores
 builder.Services.AddControllers();

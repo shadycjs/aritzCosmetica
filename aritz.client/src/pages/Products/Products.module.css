@@ -1,7 +1,7 @@
 .title {
     font-style: normal;
-    font-size: 4rem;
-    font-family: Dancing Script, cursive;
+    font-size: 3.5rem;
+    font-family: "Montserrat", sans-serif;
 }
 
 /* Contenedor principal de la página */
@@ -47,6 +47,7 @@
 
 .carta{
     height: 400px !important;
+    margin-bottom: 10px;
 }
 
 .cuerpoCarta{
@@ -55,8 +56,9 @@
     justify-content: space-between;
 }
 
-.productTitle{
+.productTitle {
     cursor: pointer;
+    font-family: "Montserrat", sans-serif;
 }
 
 .cartaAddCart {

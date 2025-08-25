@@ -7,36 +7,39 @@ import { FaFilter } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axiosInstance from "../../api/axiosConfig";
 function Products() {
 
     const { addToCart, sumCartCounter } = useCart();
     const navigate = useNavigate();
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true); // Estado para controlar el spinner o carga
+    const [error, setError] = useState(null); // Estado para gestionar errores
 
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axiosInstance.get('products'); // Realiza una solicitud GET a /api/products
+                setProducts(response.data); // Actualiza el estado con los datos obtenidos
+                setLoading(false); // Indica que ya terminó la carga
+            } catch (err) {
+                console.error("Error al obtener los productos", err); // Muestra el error en consola
+                setError(err.message); // Guarda el mensaje de error en el estado
+                setLoading(false); // Indica que ya terminó la carga, incluso si hubo error
+            }
+        };
+
+        fetchProducts();
+    }, []); // El uso de un array vacío asegura que solo se ejecute al montar el componente
+    if (loading) return <div>Cargando productos...</div>;
+    if (error) return <div>Error: {error}</div>;
+
+
+    console.log(products);
     const next = (id) => {
         navigate(`/product/product-detail/${id}`);
     }
-
-    // Productos de prueba
-    const Productos = [
-        {
-            id: 1, // ID único del producto, útil para identificarlos
-            name: "Pasta dental", // Nombre del producto
-            price: 19.99, // Precio del producto
-            image: product1 // URL de la imagen
-        },
-        {
-            id: 2,
-            name: "Crema facial",
-            price: 29.99,
-            image: product2
-        },
-        {
-            id: 3,
-            name: "Unguento calendula",
-            price: 65.99,
-            image: product3
-        }
-    ]
 
     return (
         <>
@@ -76,16 +79,16 @@ function Products() {
                         <div className="col-sm-9">
                             <div className="row">
                                 {/* Producto 1 */}
-                                {Productos.map((producto) => (
+                                {products.map((producto) => (
                                     <div
-                                        key={producto.id}
+                                        key={producto.prD_ID}
                                         className={`col-md-4 ${styles.columna}`}
                                         >
                                     <div className={`card ${styles.carta}`}>
-                                        <img src={producto.image} className="card-img-top" alt="Producto 1" />
+                                            <img src={`src/assets/images/${producto.prD_IMAGE}`} className="card-img-top" alt="Producto 1" />
                                         <div className={`card-body ${styles.cuerpoCarta}`}>
-                                                <h5 onClick={() => next(producto.id)} className={`card-title ${styles.productTitle}`}>{producto.name}</h5>
-                                            <p className="card-text">${producto.price}</p>
+                                                <h5 onClick={() => next(producto.prD_ID)} className={`card-title ${styles.productTitle}`}>{producto.prD_NAME}</h5>
+                                            <p className="card-text">${producto.prD_PRICE}</p>
                                             </div>
                                             <button onClick={() => { sumCartCounter(); addToCart(producto) }} className={styles.cartaAddCart}>Agregar al carrito</button>
                                     </div>

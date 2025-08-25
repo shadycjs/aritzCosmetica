@@ -2,6 +2,7 @@
 using Aritz.Server.Data;
 using Aritz.Server.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Aritz.Server.Controllers
 {
@@ -19,9 +20,10 @@ namespace Aritz.Server.Controllers
 
         // GET: api/products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            var products = await _context.Products.ToListAsync(); // Consulta la tabla "Products"
+            return Ok(products); // Retorna los productos
         }
 
         // GET: api/products/{id}
@@ -29,7 +31,6 @@ namespace Aritz.Server.Controllers
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);
-
             if (product == null)
             {
                 return NotFound();
