@@ -36,6 +36,7 @@ function Products() {
     if (error) return <div>Error: {error}</div>;
 
 
+
     console.log(products);
     const next = (id) => {
         navigate(`/product/product-detail/${id}`);
@@ -44,8 +45,12 @@ function Products() {
     return (
         <>
             <CenteredContainer>
-                <h1 className={styles.title}>Nuestros productos</h1>
-                <p style={{ color: "#777" }}>Elegi los mejores productos al mejor precio.</p>
+                {   products.length == 0 ? <h2>No se encontraron productos</h2> :
+                    <div>
+                        <h1 className={styles.title}>Nuestros productos</h1>
+                        <p style={{ color: "#777" }}>Elegi los mejores productos al mejor precio.</p>
+                    </div>
+                }
             </CenteredContainer>
 
             <div className={styles.productsPage}>
@@ -78,7 +83,6 @@ function Products() {
                     <div className="row">
                         <div className="col-sm-9">
                             <div className="row">
-                                {/* Producto 1 */}
                                 {products.map((producto) => (
                                     <div
                                         key={producto.prD_ID}
@@ -89,14 +93,14 @@ function Products() {
                                         <div className={`card-body ${styles.cuerpoCarta}`}>
                                                 <h5 onClick={() => next(producto.prD_ID)} className={`card-title ${styles.productTitle}`}>{producto.prD_NAME}</h5>
                                             <p className="card-text">${producto.prD_PRICE}</p>
-                                            </div>
+                                        </div>
                                             <button onClick={() => { sumCartCounter(); addToCart(producto) }} className={styles.cartaAddCart}>Agregar al carrito</button>
                                     </div>
                                 </div>
-                                )) }
+                                ))}
                             </div>
                         </div>
-                    </div>
+                        </div>
                 </div>
             </div>
         </>
