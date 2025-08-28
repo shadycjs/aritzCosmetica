@@ -5,8 +5,9 @@ namespace Aritz.Server.Models
 {
     public class Users
     {
-        [Key]
+        [Key] 
         public int USR_ID { get; set; }
+
         public required string USR_NAME { get; set; }
         public required string USR_SURNAME { get; set; }
         public required string USR_EMAIL { get; set; }
@@ -14,6 +15,6 @@ namespace Aritz.Server.Models
         public string? USR_PHONE_NUMBER { get; set; }
         public string? USR_ADDRESS { get; set; }
         public DateTime? USR_CREATED_DATE { get; set; }
-        public bool USR_IS_ADMIN { get; set; }
+        public bool? USR_IS_ADMIN { get; set; }
     }
 }

@@ -1,8 +1,5 @@
 import CenteredContainer from "../../components/CenteredContainer/CenteredContainer";
 import styles from './Products.module.css'
-import product1 from '../../assets/images/product1.png'
-import product2 from '../../assets/images/product2.png'
-import product3 from '../../assets/images/product3.jpg'
 import { FaFilter } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
 import { NavLink } from "react-router-dom";
@@ -11,7 +8,7 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 function Products() {
 
-    const { addToCart, sumCartCounter } = useCart();
+    const { sumCartCounter } = useCart();
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true); // Estado para controlar el spinner o carga
@@ -35,9 +32,24 @@ function Products() {
     if (loading) return <div>Cargando productos...</div>;
     if (error) return <div>Error: {error}</div>;
 
+    const handleAddToCart = async (productId, quantity = 1) => {
+        try {
+            const userId = 2; // Por ahora, un ID fijo del usuario autenticado
+            console.log("Datos enviados al backend:", { userId, productId, quantity });
+            const response = await axiosInstance.post("Cart/add-to-cart", {
+                userId,
+                productId,
+                quantity,
+            });
 
+            console.log(response.data); // Muestra el mensaje del backend
+            alert("Producto agregado al carrito.");
+        } catch (error) {
+            console.error("Error al agregar al carrito:", error);
+            alert("No se pudo agregar el producto al carrito.");
+        }
+    };
 
-    console.log(products);
     const next = (id) => {
         navigate(`/product/product-detail/${id}`);
     }
@@ -94,7 +106,7 @@ function Products() {
                                                 <h5 onClick={() => next(producto.prD_ID)} className={`card-title ${styles.productTitle}`}>{producto.prD_NAME}</h5>
                                             <p className="card-text">${producto.prD_PRICE}</p>
                                         </div>
-                                            <button onClick={() => { sumCartCounter(); addToCart(producto) }} className={styles.cartaAddCart}>Agregar al carrito</button>
+                                            <button onClick={() => { sumCartCounter(); handleAddToCart(producto.prD_ID) }} className={styles.cartaAddCart}>Agregar al carrito</button>
                                     </div>
                                 </div>
                                 ))}

@@ -13,9 +13,28 @@ namespace Aritz.Server.Data
         public DbSet<Product> Products { get; set; }
         // Declara la tabla Categories
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItems> CartItems { get; set; }
+        public DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Mapea la tabla "Users"
+            modelBuilder.Entity<Users>(entity =>
+            {
+                entity.ToTable("Users"); // Nombre exacto de la tabla
+
+                entity.HasKey(u => u.USR_ID); // Clave primaria
+
+                entity.Property(u => u.USR_NAME).HasColumnName("USR_NAME");
+                entity.Property(u => u.USR_SURNAME).HasColumnName("USR_SURNAME");
+                entity.Property(u => u.USR_EMAIL).HasColumnName("USR_EMAIL");
+                entity.Property(u => u.USR_PHONE_NUMBER).HasColumnName("USR_PHONE_NUMBER");
+                entity.Property(u => u.USR_ADDRESS).HasColumnName("USR_ADDRESS");
+                entity.Property(u => u.USR_CREATED_DATE).HasColumnName("USR_CREATED_DATE");
+                entity.Property(u => u.USR_IS_ADMIN).HasColumnName("USR_IS_ADMIN");
+            });
+
             // Configura la tabla "Products"
             modelBuilder.Entity<Product>(entity =>
             {
@@ -38,6 +57,20 @@ namespace Aritz.Server.Data
             {
                 entity.ToTable("Categories");
                 entity.HasKey(e => e.CAT_ID);
+            });
+
+            // Configura la tabla "Cart"
+            modelBuilder.Entity<Cart>(entity =>
+            {
+                entity.ToTable("Cart"); // Cambia "Cart" por el nombre correcto en tu base de datos
+                entity.HasKey(c => c.CAR_ID);
+                entity.HasOne(c => c.Users)
+                      .WithMany()
+                      .HasForeignKey(c => c.CAR_USR_ID)
+                      .OnDelete(DeleteBehavior.Restrict);
+                entity.HasMany(c => c.Items)
+                      .WithOne(i => i.Cart)
+                      .HasForeignKey(i => i.CAI_CAR_ID);
             });
         }
     }
