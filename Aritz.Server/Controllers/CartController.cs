@@ -91,6 +91,7 @@ namespace Aritz.Server.Controllers
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetCart(int userId)
         {
+            Console.WriteLine(userId);
             var cart = await _context.Carts
                 .Include(c => c.Items)
                 .ThenInclude(i => i.Product)
@@ -105,8 +106,10 @@ namespace Aritz.Server.Controllers
             {
                 i.CAI_ID,
                 i.Product.PRD_NAME,
+                i.Product.PRD_PRICE,
+                i.Product.PRD_IMAGE,
                 i.CAI_QUANTITY,
-                i.CAI_TOTAL_PRICE
+                i.CAI_TOTAL_PRICE,
             }));
         }
     }
