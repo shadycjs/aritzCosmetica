@@ -5,14 +5,45 @@ import CenteredContainer from "../CenteredContainer/CenteredContainer";
 import styles from "./CheckoutSteps.module.css";
 import TimeLapseCheckout from "../CheckoutSteps/Timelapse/TimelapseCheckout";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axiosInstance from "../../api/axiosConfig";
 //import { BrickBuilder } from "@mercadopago/sdk-react";
 import { initMercadoPago, Payment } from '@mercadopago/sdk-react'
 initMercadoPago('TEST-aa2427a9-e156-4f55-b4c0-d9c5e9b5774c');
 
 function PaymentInfo() {
     const { paymentMethod, setPaymentMethod } = useCheckout();
-    const { cartItems, removeFromCart, clearCart, getTotalPrice, resCartCounter } = useCart();
     const navigate = useNavigate();
+
+    const { fetchCountCart, fetchSumTotalCart, totalSumCart } = useCart();
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [cart, setCart] = useState([]);
+
+    useEffect(() => {
+        const fetchCart = async () => {
+            try {
+                const response = await axiosInstance.get(`Cart/user/2`);
+                setCart(response.data); // 
+                console.log(response.data);
+                setLoading(false); // 
+                // Actualiza la cantidad del carrito dinámicamente desde el backend
+                fetchCountCart();
+                fetchSumTotalCart();
+            } catch (err) {
+                console.error("Error al obtener los productos", err);
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+
+        fetchCart();
+    }, []);
+
+    if (loading) return <div>Cargando carrito...</div>;
+    if (error) return <div>Error: {error}</div>;
+
 
     const handleSelectMethod = (method) => {
         setPaymentMethod(method);
@@ -90,12 +121,12 @@ function PaymentInfo() {
                         </tr>
                     </thead>
                     <tbody>
-                        {cartItems.map((item) => (
-                        <tr key={item.id}>
-                            <td>{item.name}</td>
-                            <td>${item.price}</td>
-                            <td>{item.quantity}</td>
-                            <td>${item.quantity*item.price}</td>
+                        {cart.map((item) => (
+                        <tr key={item.caI_id}>
+                            <td>{item.prD_NAME}</td>
+                            <td>${item.caI_TOTAL_PRICE}</td>
+                            <td>{item.caI_QUANTITY}</td>
+                            <td>${item.caI_QUANTITY*item.caI_TOTAL_PRICE}</td>
                         </tr>
                         ))}
                         <tr>
@@ -106,7 +137,7 @@ function PaymentInfo() {
                         </tr>
                     </tbody>
                 </table>
-                <h1>Total: <b className={styles.total}>${getTotalPrice(3000)}</b></h1>
+                <h1>Total: <b className={styles.total}>${totalSumCart+3000}</b></h1>
                 {paymentMethod === 'Tarjeta' ?
                     <div>
                         <h2>Cuenta a transferir</h2>
