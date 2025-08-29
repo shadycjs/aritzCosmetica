@@ -38,6 +38,24 @@ function Carrito() {
     if (loading) return <div>Cargando carrito...</div>;
     if (error) return <div>Error: {error}</div>;
 
+    const handleRemoveFromCart = async (productId) => {
+        try {
+            const userId = 2; // ID del usuario autenticado
+            console.log(`Eliminando producto con ID: ${productId} para el usuario: ${userId}`);
+
+            // Realiza la solicitud DELETE al backend
+            const response = await axiosInstance.delete(`Cart/user/${userId}/product/${productId}`);
+
+            // Remueve el producto del carrito en el estado del frontend
+            setCart(cart.filter((item) => item.prD_ID !== productId));
+
+            alert("Producto eliminado del carrito.");
+        } catch (error) {
+            console.error("Error al eliminar el producto del carrito:", error);
+            alert("No se pudo eliminar el producto del carrito.");
+        }
+    };
+
     return (
         <CenteredContainer>
             {cart.length === 0 ? '' : <TimeLapseCheckout />}
@@ -57,6 +75,7 @@ function Carrito() {
                                         <p>Precio: ${car.caI_TOTAL_PRICE}</p>
                                         <p>Cantidad: {car.caI_QUANTITY}</p>
                                         <button
+                                            onClick={() => { handleRemoveFromCart(car.prD_ID) }}
                                             className={styles.removeButton}
                                         >
                                             Eliminar

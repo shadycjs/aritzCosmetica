@@ -105,12 +105,56 @@ namespace Aritz.Server.Controllers
             return Ok(cart.Items.Select(i => new
             {
                 i.CAI_ID,
+                i.Product.PRD_ID,
                 i.Product.PRD_NAME,
                 i.Product.PRD_PRICE,
                 i.Product.PRD_IMAGE,
                 i.CAI_QUANTITY,
                 i.CAI_TOTAL_PRICE,
             }));
+        }
+
+        //DEL: api/cart/user/{productId}
+        [HttpDelete("user/{userId}/product/{productId}")]
+        public async Task<IActionResult> DelCartItem(int productId, int userId)
+        {
+            try
+            {
+                Console.WriteLine($"Intentando eliminar producto con ID {productId} para el usuario con ID {userId}");
+
+                // Busca el carrito del usuario
+                var cart = await _context.Carts
+                    .Include(c => c.Items) // Incluye los ítems en el carrito
+                    .FirstOrDefaultAsync(c => c.CAR_USR_ID == userId);
+
+                if (cart == null)
+                {
+                    Console.WriteLine("Carrito no encontrado.");
+                    return NotFound("El carrito no existe.");
+                }
+
+                // Busca el ítem en el carrito
+                var cartItem = await _context.CartItems
+                    .FirstOrDefaultAsync(ci => ci.CAI_CAR_ID == cart.CAR_ID && ci.CAI_PRD_ID == productId);
+
+                if (cartItem == null)
+                {
+                    Console.WriteLine("Producto no encontrado en el carrito.");
+                    return NotFound("El producto no se encuentra en el carrito.");
+                }
+
+                // Elimina el ítem del carrito
+                _context.CartItems.Remove(cartItem);
+                await _context.SaveChangesAsync(); // Guarda los cambios en la base de datos
+                Console.WriteLine("Producto eliminado del carrito.");
+
+                return Ok("Producto eliminado del carrito.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al intentar eliminar el producto: {ex.Message}");
+                return StatusCode(500, "Ocurrió un error al intentar eliminar el producto del carrito.");
+            }
         }
     }
 }

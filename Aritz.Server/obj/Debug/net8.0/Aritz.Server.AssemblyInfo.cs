@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Aritz.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f9db0c79811539e0a52a58a2c6e356195bb4625")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+39f19886a60575bc80f4f1aa30302bfb1ac53a93")]
 [assembly: System.Reflection.AssemblyProductAttribute("Aritz.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Aritz.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
