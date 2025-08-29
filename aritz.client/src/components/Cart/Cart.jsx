@@ -9,7 +9,7 @@ import axiosInstance from "../../api/axiosConfig";
 
 function Carrito() {
     const navigate = useNavigate();
-    const { fetchCountCart } = useCart();
+    const { fetchCountCart, fetchSumTotalCart, totalSumCart } = useCart();
 
     const handleProceedToCheckout = () => {
         navigate("/checkout/shipping-info"); // Redirige al paso 1 del checkout
@@ -28,6 +28,7 @@ function Carrito() {
                 setLoading(false); // 
                 // Actualiza la cantidad del carrito dinámicamente desde el backend
                 fetchCountCart();
+                fetchSumTotalCart();
             } catch (err) {
                 console.error("Error al obtener los productos", err);
                 setError(err.message);
@@ -54,6 +55,7 @@ function Carrito() {
 
             alert("Producto eliminado del carrito.");
             fetchCountCart();
+            fetchSumTotalCart();
         } catch (error) {
             console.error("Error al eliminar el producto del carrito:", error);
             alert("No se pudo eliminar el producto del carrito.");
@@ -90,7 +92,7 @@ function Carrito() {
                         </ul>
 
                         <div className={styles.total}>
-                            <h3>Total: $</h3>
+                                <h3>Total: ${totalSumCart}</h3>
                         </div>
 
                         <div className={styles.actions}>

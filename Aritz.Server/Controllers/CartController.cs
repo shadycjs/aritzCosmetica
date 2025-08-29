@@ -147,6 +147,26 @@ namespace Aritz.Server.Controllers
             }
         }
 
+        [HttpGet("user/{userId}/total-cart")]
+        public async Task<IActionResult> GetTotalCart(int userId)
+        {
+            // Verifica si el carrito del usuario existe
+            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.CAR_USR_ID == userId);
+
+            if (cart == null)
+            {
+                Console.WriteLine("Carrito no encontrado para el usuario.");
+                return NotFound("El carrito no existe para este usuario.");
+            }
+
+            var totalSum = await _context.CartItems
+                .Where(ci => ci.CAI_CAR_ID == cart.CAR_ID)
+                .SumAsync(ci => ci.CAI_TOTAL_PRICE * ci.CAI_QUANTITY);
+
+            Console.WriteLine($"Cantidad total obtenida: {totalSum}");
+            return Ok(totalSum);
+        }
+
         //DEL: api/cart/user/{productId}
         [HttpDelete("user/{userId}/product/{productId}")]
         public async Task<IActionResult> DelCartItem(int productId, int userId)
