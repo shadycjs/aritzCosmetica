@@ -9,6 +9,7 @@ import axiosInstance from "../../api/axiosConfig";
 
 function Carrito() {
     const navigate = useNavigate();
+    const { fetchCountCart } = useCart();
 
     const handleProceedToCheckout = () => {
         navigate("/checkout/shipping-info"); // Redirige al paso 1 del checkout
@@ -25,6 +26,8 @@ function Carrito() {
                 setCart(response.data); // 
                 console.log(response.data);
                 setLoading(false); // 
+                // Actualiza la cantidad del carrito dinámicamente desde el backend
+                fetchCountCart();
             } catch (err) {
                 console.error("Error al obtener los productos", err);
                 setError(err.message);
@@ -50,6 +53,7 @@ function Carrito() {
             setCart(cart.filter((item) => item.prD_ID !== productId));
 
             alert("Producto eliminado del carrito.");
+            fetchCountCart();
         } catch (error) {
             console.error("Error al eliminar el producto del carrito:", error);
             alert("No se pudo eliminar el producto del carrito.");

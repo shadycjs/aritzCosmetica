@@ -1,3 +1,4 @@
+/// <reference path="../../context/cartcontext.jsx" />
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import styles from './Header.module.css';
@@ -5,12 +6,19 @@ import { FaHome, FaBoxOpen, FaEnvelope, FaShoppingCart } from 'react-icons/fa';
 import Auth from '../Auth/Auth';
 import { useSession } from '../../context/SessionContext';
 import { useCart } from '../../context/CartContext';
+import { useState, useEffect } from "react";
+import axiosInstance from "../../api/axiosConfig";
 
 
 const Header = () => {
 
     const { isLoggedIn } = useSession();
-    const { cartCounter } = useCart();
+    const { totalQuantity, fetchCountCart } = useCart();
+
+    useEffect(() => {
+        fetchCountCart(); // Vuelve a cargar los datos si es necesario
+    }, []);
+
 
     return (
         <nav className={`navbar navbar-expand-lg ${styles.navbar}`}>
@@ -139,7 +147,7 @@ const Header = () => {
                         style={ {color: "#fff"} }
                     >
                         <FaShoppingCart className={styles.carrito} />
-                        <p className={styles.carritoContador}>{cartCounter}</p>
+                        <p className={styles.carritoContador}>{totalQuantity}</p>
                     </NavLink>
                 </div>
             </div>

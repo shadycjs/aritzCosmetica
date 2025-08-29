@@ -7,12 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 function Products() {
-
-    const { sumCartCounter } = useCart();
+    
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true); // Estado para controlar el spinner o carga
     const [error, setError] = useState(null); // Estado para gestionar errores
+    const { fetchCountCart } = useCart();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -44,6 +44,7 @@ function Products() {
 
             console.log(response.data); // Muestra el mensaje del backend
             alert("Producto agregado al carrito.");
+            fetchCountCart();
         } catch (error) {
             console.error("Error al agregar al carrito:", error);
             alert("No se pudo agregar el producto al carrito.");
@@ -106,7 +107,7 @@ function Products() {
                                                 <h5 onClick={() => next(producto.prD_ID)} className={`card-title ${styles.productTitle}`}>{producto.prD_NAME}</h5>
                                             <p className="card-text">${producto.prD_PRICE}</p>
                                         </div>
-                                            <button onClick={() => { sumCartCounter(); handleAddToCart(producto.prD_ID) }} className={styles.cartaAddCart}>Agregar al carrito</button>
+                                            <button onClick={() => { handleAddToCart(producto.prD_ID) }} className={styles.cartaAddCart}>Agregar al carrito</button>
                                     </div>
                                 </div>
                                 ))}

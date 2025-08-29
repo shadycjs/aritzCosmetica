@@ -99,7 +99,8 @@ namespace Aritz.Server.Controllers
 
             if (cart == null || cart.Items == null || !cart.Items.Any())
             {
-                return Ok(new { Message = "El carrito está vacío." });
+                // Devuelve un array vacío si no hay ítems en el carrito
+                return Ok(new List<object>());
             }
 
             return Ok(cart.Items.Select(i => new
@@ -112,6 +113,38 @@ namespace Aritz.Server.Controllers
                 i.CAI_QUANTITY,
                 i.CAI_TOTAL_PRICE,
             }));
+        }
+
+        [HttpGet("user/{userId}/total-quantity")]
+        public async Task<IActionResult> GetTotalQuantity(int userId)
+        {
+            try
+            {
+                Console.WriteLine($"Calculando la cantidad total para el usuario con ID: {userId}");
+
+                // Verifica si el carrito del usuario existe
+                var cart = await _context.Carts.FirstOrDefaultAsync(c => c.CAR_USR_ID == userId);
+
+                if (cart == null)
+                {
+                    Console.WriteLine("Carrito no encontrado para el usuario.");
+                    return NotFound("El carrito no existe para este usuario.");
+                }
+
+                // Sumar las cantidades de los ítems
+                var totalQuantity = await _context.CartItems
+                    .Where(ci => ci.CAI_CAR_ID == cart.CAR_ID)
+                    .SumAsync(ci => ci.CAI_QUANTITY);
+
+                Console.WriteLine($"Cantidad total obtenida: {totalQuantity}");
+
+                return Ok(totalQuantity); // Devuelve el total de cantidad como JSON
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error durante el cálculo: {ex.Message}");
+                return StatusCode(500, "Hubo un error al calcular la cantidad total en el carrito.");
+            }
         }
 
         //DEL: api/cart/user/{productId}
