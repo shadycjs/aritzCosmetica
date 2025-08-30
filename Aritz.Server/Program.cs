@@ -1,4 +1,5 @@
 using Aritz.Server.Data;
+using Aritz.Server.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,9 @@ builder.Services.AddControllers();
 // Agrega servicios para Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddTransient<IEmailService, EmailService>(); // Crea esta interfaz y clase abajo
 
 var app = builder.Build();
 
