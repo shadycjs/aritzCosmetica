@@ -6,11 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Configura CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", policy =>
+    options.AddPolicy("AllowReactApp", builder =>
     {
-        policy.WithOrigins("https://localhost:50833") // Añade la URL del frontend
-              .AllowAnyHeader()    // Permite cualquier encabezado
-              .AllowAnyMethod();   // Permite cualquier método (GET, POST, etc.)
+        builder.WithOrigins("https://localhost:50833") // Actualiza al origen correcto de tu React app
+               .AllowAnyMethod()  // Permite GET, POST, PUT, DELETE, etc.
+               .AllowAnyHeader()  // Permite headers como Authorization, Content-Type
+               .AllowCredentials(); // Opcional: si usas cookies o autenticación
     });
 });
 
@@ -21,24 +22,16 @@ builder.Services.AddDbContext<AritzDbContext>(options =>
         sqlOptions => sqlOptions.EnableRetryOnFailure()
     ).LogTo(Console.WriteLine, LogLevel.Information)); // Log de consultas SQL
 
-
-
 // Agrega servicios para controladores
 builder.Services.AddControllers();
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Agrega servicios para Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
-
-// Configure the HTTP request pipeline.
+// Configura el pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -46,11 +39,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
+app.UseRouting(); // Asegura que el enrutamiento esté habilitado antes de CORS
+app.UseCors("AllowReactApp"); // Mueve CORS después de UseRouting pero antes de UseAuthorization
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.MapFallbackToFile("/index.html");
 
 app.Run();
