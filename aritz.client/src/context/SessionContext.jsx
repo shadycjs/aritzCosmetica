@@ -8,7 +8,7 @@ export const SessionProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado de autenticación
     const [user, setUser] = useState(null); // Información del usuario
     const [token, setToken] = useState(null); // Token de autenticación
-    const [screenLogIn, setScreenLogIn] = useState(false);
+    const [screenLogIn, setScreenLogIn] = useState(true);
 
     // Función para iniciar sesión
     const login = (userData, authToken) => {

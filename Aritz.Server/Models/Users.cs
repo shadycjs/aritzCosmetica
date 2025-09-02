@@ -17,7 +17,7 @@ namespace Aritz.Server.Models
         public DateTime? USR_CREATED_DATE { get; set; }
         public bool? USR_IS_ADMIN { get; set; }
         public bool USR_IS_VERIFIED { get; set; } = false;
-        public string USR_VERIFICATION_CODE { get; set; }
+        public string? USR_VERIFICATION_CODE { get; set; }
         public DateTime? USR_VERIFICATION_EXPIRATION { get; set; }
     }
 }
