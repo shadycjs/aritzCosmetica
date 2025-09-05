@@ -3,7 +3,12 @@ using Aritz.Server.Models;
 using Aritz.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Aritz.Server.Controllers
 {
@@ -13,11 +18,13 @@ namespace Aritz.Server.Controllers
     {
         private readonly AritzDbContext _context;
         private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(AritzDbContext context, IEmailService emailService)
+        public AuthController(AritzDbContext context, IEmailService emailService, IConfiguration configuration)
         {
             _context = context;
             _emailService = emailService;
+            _configuration = configuration;
         }
 
         // Registro: POST /api/auth/register
@@ -107,7 +114,33 @@ namespace Aritz.Server.Controllers
                 if (user.USR_IS_VERIFIED == null || !user.USR_IS_VERIFIED)
                     return Unauthorized("Cuenta no verificada. Revisa tu email.");
 
-                return Ok("Login exitoso.");
+                // Generar JWT
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.USR_ID.ToString()),
+                    new Claim(ClaimTypes.Email, user.USR_EMAIL),
+                    new Claim(ClaimTypes.Name, user.USR_NAME)
+                };
+
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var token = new JwtSecurityToken(
+                    issuer: _configuration["Jwt:Issuer"],
+                    audience: _configuration["Jwt:Audience"],
+                    claims: claims,
+                    expires: DateTime.Now.AddHours(1),
+                    signingCredentials: creds
+                );
+
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+                return Ok(new
+                {
+                    Token = tokenString,
+                    UserName = user.USR_NAME,
+                    Message = "Login exitoso."
+                });
             }
             catch (Exception ex)
             {

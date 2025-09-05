@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import axiosInstance from "../api/axiosConfig";
+import { useNavigate } from "react-router-dom";
 
 // Crea el contexto inicial
 const SessionContext = createContext();
@@ -21,6 +22,17 @@ export const SessionProvider = ({ children }) => {
         address: ''
     });
     const [code, setCode] = useState('');
+    const [userName, setUserName] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        const storedUserName = localStorage.getItem('userName');
+        if (token && storedUserName) {
+            setIsLoggedIn(true);
+            setUserName(storedUserName);
+        }
+    }, []);
 
     // Funcion para cambiar pantalla de logueo
     const screenIn = () => {
@@ -79,8 +91,14 @@ export const SessionProvider = ({ children }) => {
                 email: formData.email,
                 password: formData.password
             });
+            // Almacenar token y nombre del usuario
+            localStorage.setItem('authToken', response.data.Token);
+            localStorage.setItem('userName', response.data.UserName);
             setIsLoggedIn(true);
-            console.log(isLoggedIn);
+            setUserName(response.data.UserName);
+            alert(response.data.Message || 'Login exitoso');
+            navigate('/');
+            setIsLoggedIn(true);
             alert(response.data || 'Login exitoso');
         } catch (error) {
             console.error('Error en login:', error.response);
@@ -104,7 +122,8 @@ export const SessionProvider = ({ children }) => {
         code,
         setCode,
         formData,
-        setIsRegister
+        setIsRegister,
+        userName
     };
 
     return (

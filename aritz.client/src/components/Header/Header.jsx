@@ -8,12 +8,22 @@ import { useSession } from '../../context/SessionContext';
 import { useCart } from '../../context/CartContext';
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
+import { useNavigate } from 'react-router-dom';
 
 
 const Header = () => {
 
-    const { isLoggedIn } = useSession();
+    const { isLoggedIn, setIsLoggedIn, userName, setUserName } = useSession();
     const { totalQuantity, fetchCountCart } = useCart();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userName');
+        setIsLoggedIn(false);
+        setUserName('');
+        navigate('/'); // Redirige al inicio
+    };
 
     useEffect(() => {
         fetchCountCart(); // Vuelve a cargar los datos si es necesario
@@ -131,24 +141,35 @@ const Header = () => {
                 <div className={styles.logAndCart}>
                     <div className={styles.logueo}>
                         {
-                            isLoggedIn ? "Ramiro" :
+                            isLoggedIn ? (
+                                <div className="d-flex">
+                                    <div className="d-flex flex-column">
+                                        <b>{userName}</b> 
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={handleLogout}>Cerrar Sesion</button>
+                                    </div>
+                                    <NavLink
+                                        className={styles.carritoContainer}
+                                        to="/cart"
+                                        style={ {color: "#fff"} }
+                                    >
+                                        <FaShoppingCart className={styles.carrito} />
+                                        <p className={styles.carritoContador}>{totalQuantity}</p>
+                                    </NavLink>
+                                </div   >
+                            ) : (
                             <NavLink
-                                    to="/login"
-                                    className={({ isActive }) =>
-                                        isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`
-                                    }
+                                to="/login"
+                                className={({ isActive }) =>
+                                    isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`
+                                }
                             >
+                            
                                 LogIn / Sing In
-                            </NavLink>  }
+                            </NavLink>  )}
                     </div>
-                    <NavLink
-                        className={styles.carritoContainer}
-                        to="/cart"
-                        style={ {color: "#fff"} }
-                    >
-                        <FaShoppingCart className={styles.carrito} />
-                        <p className={styles.carritoContador}>{totalQuantity}</p>
-                    </NavLink>
+
                 </div>
             </div>
         </nav>
