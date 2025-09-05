@@ -90,9 +90,18 @@ namespace Aritz.Server.Controllers
 
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.USR_EMAIL == dto.Email);
                 if (user == null)
+                {
+                    Console.WriteLine($"Usuario no encontrado para email: {dto.Email}");
                     return Unauthorized("Credenciales inválidas.");
+                }
 
-                if (string.IsNullOrEmpty(user.USR_PASSWORD_HASH) || !BCrypt.Net.BCrypt.Verify(dto.Password, user.USR_PASSWORD_HASH))
+                Console.WriteLine($"Email recibido: {dto.Email}");
+                Console.WriteLine($"Contraseña recibida: {dto.Password}");
+                Console.WriteLine($"Hash almacenado: {user.USR_PASSWORD_HASH}");
+                bool isPasswordValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.USR_PASSWORD_HASH);
+                Console.WriteLine($"Verificación de contraseña: {isPasswordValid}");
+
+                if (string.IsNullOrEmpty(user.USR_PASSWORD_HASH) || !isPasswordValid)
                     return Unauthorized("Credenciales inválidas.");
 
                 if (user.USR_IS_VERIFIED == null || !user.USR_IS_VERIFIED)

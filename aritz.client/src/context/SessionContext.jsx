@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
+import axiosInstance from "../api/axiosConfig";
 
 // Crea el contexto inicial
 const SessionContext = createContext();
@@ -6,23 +7,20 @@ const SessionContext = createContext();
 // Este será tu componente proveedor para envolver toda la app
 export const SessionProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado de autenticación
-    const [user, setUser] = useState(null); // Información del usuario
-    const [token, setToken] = useState(null); // Token de autenticación
     const [screenLogIn, setScreenLogIn] = useState(true);
-
-    // Función para iniciar sesión
-    const login = (userData, authToken) => {
-        setIsLoggedIn(true);
-        setUser(userData);
-        setToken(authToken);
-    };
-
-    // Función para cerrar sesión
-    const logout = () => {
-        setIsLoggedIn(false);
-        setUser(null);
-        setToken(null);
-    };
+    const [isRegister, setIsRegister] = useState(false);
+    const [isVerifying, setIsVerifying] = useState(false);
+    const [email, setEmail] = useState('');
+    const [formData, setFormData] = useState({
+        name: '',
+        surname: '',
+        email: '',
+        password: '',
+        confirmPassword: '', // Nuevo campo para confirmación
+        phoneNumber: '',
+        address: ''
+    });
+    const [code, setCode] = useState('');
 
     // Funcion para cambiar pantalla de logueo
     const screenIn = () => {
@@ -34,16 +32,79 @@ export const SessionProvider = ({ children }) => {
         setScreenLogIn(false);
     };
 
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        if (formData.password !== formData.confirmPassword) {
+            alert("Las contraseñas no coinciden");
+            return;
+        }
+        try {
+            await axiosInstance.post('auth/register', {
+                name: formData.name,
+                surname: formData.surname,
+                email: formData.email,
+                password: formData.password,
+                phoneNumber: formData.phoneNumber,
+                address: formData.address
+            });
+            setEmail(formData.email);
+            setIsVerifying(true);
+            alert('Revisa tu email para el código.');
+        } catch (error) {
+            alert(error.response?.data?.Message || 'Error en registro');
+        }
+    };
+
+    const handleVerify = async (e) => {
+        e.preventDefault();
+        try {
+            await axiosInstance.post('auth/verify', { email, code });
+            setIsVerifying(false);
+            setIsRegister(false);
+            screenIn();
+            alert('Cuenta verificada. Ahora puedes loguearte.');
+        } catch (error) {
+            alert(error.response?.data?.Message || 'Código inválido');
+        }
+    };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axiosInstance.post('auth/login', {
+                email: formData.email,
+                password: formData.password
+            });
+            setIsLoggedIn(true);
+            console.log(isLoggedIn);
+            alert(response.data || 'Login exitoso');
+        } catch (error) {
+            console.error('Error en login:', error.response);
+            alert(error.response?.data || 'Error en login. Revisa tus credenciales.');
+        }
+    };
+
     // Valor que proporciona el contexto
     const value = {
         isLoggedIn,
-        user,
-        token,
-        login,
-        logout,
+        setIsLoggedIn,
         screenLogIn,
         screenIn,
         screenOut,
+        handleChange,
+        handleRegister,
+        handleVerify,
+        handleLogin,
+        isRegister,
+        isVerifying,
+        code,
+        setCode,
+        formData,
+        setIsRegister
     };
 
     return (

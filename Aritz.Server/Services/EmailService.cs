@@ -22,7 +22,7 @@ namespace Aritz.Server.Services
             var senderPassword = _config["EmailSettings:SenderPassword"];
 
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Tu E-commerce", senderEmail));
+            message.From.Add(new MailboxAddress("Aritz Cosmetica Natural", senderEmail));
             message.To.Add(new MailboxAddress("", toEmail));
             message.Subject = "Código de Verificación";
             message.Body = new TextPart("plain") { Text = $"Tu código de verificación es: {code}. Expira en 15 minutos." };

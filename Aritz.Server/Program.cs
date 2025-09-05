@@ -1,6 +1,8 @@
 using Aritz.Server.Data;
 using Aritz.Server.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +11,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", builder =>
     {
-        builder.WithOrigins("https://localhost:50833") // Actualiza al origen correcto de tu React app
-               .AllowAnyMethod()  // Permite GET, POST, PUT, DELETE, etc.
-               .AllowAnyHeader()  // Permite headers como Authorization, Content-Type
-               .AllowCredentials(); // Opcional: si usas cookies o autenticación
+        builder.WithOrigins("https://localhost:50833")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials();
     });
 });
 
@@ -21,17 +23,28 @@ builder.Services.AddDbContext<AritzDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         sqlOptions => sqlOptions.EnableRetryOnFailure()
-    ).LogTo(Console.WriteLine, LogLevel.Information)); // Log de consultas SQL
+    ).LogTo(Console.WriteLine, LogLevel.Information));
 
-// Agrega servicios para controladores
-builder.Services.AddControllers();
+// Agrega servicios para controladores con System.Text.Json
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.WriteIndented = true; // Opcional: para JSON legible
+    });
+
+// Agrega soporte explícito para JSON
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+});
 
 // Agrega servicios para Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-builder.Services.AddTransient<IEmailService, EmailService>(); // Crea esta interfaz y clase abajo
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 var app = builder.Build();
 
@@ -44,8 +57,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting(); // Asegura que el enrutamiento esté habilitado antes de CORS
-app.UseCors("AllowReactApp"); // Mueve CORS después de UseRouting pero antes de UseAuthorization
+app.UseRouting();
+
+app.UseCors("AllowReactApp");
 app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
