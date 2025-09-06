@@ -6,10 +6,12 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
+import { useSession } from "../../context/SessionContext";
 function Products() {
     
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const { userId } = useSession();
     const [loading, setLoading] = useState(true); // Estado para controlar el spinner o carga
     const [error, setError] = useState(null); // Estado para gestionar errores
     const { fetchCountCart } = useCart();
@@ -19,6 +21,7 @@ function Products() {
             try {
                 const response = await axiosInstance.get('products'); // Realiza una solicitud GET a /api/products
                 setProducts(response.data); // Actualiza el estado con los datos obtenidos
+                console.log('Productos obtenidos:', response.data);
                 setLoading(false); // Indica que ya terminó la carga
             } catch (err) {
                 console.error("Error al obtener los productos", err); // Muestra el error en consola
@@ -34,7 +37,6 @@ function Products() {
 
     const handleAddToCart = async (productId, quantity = 1) => {
         try {
-            const userId = 2; // Por ahora, un ID fijo del usuario autenticado
             console.log("Datos enviados al backend:", { userId, productId, quantity });
             const response = await axiosInstance.post("Cart/add-to-cart", {
                 userId,
@@ -97,17 +99,17 @@ function Products() {
                         <div className="col-sm-9">
                             <div className="row">
                                 {products.map((producto) => (
-                                    <div
-                                        key={producto.prD_ID}
+                                <div
+                                        key={producto.PRD_ID}
                                         className={`col-md-4 ${styles.columna}`}
                                         >
                                     <div className={`card ${styles.carta}`}>
-                                            <img src={`src/assets/images/${producto.prD_IMAGE}`} className="card-img-top" alt="Producto 1" />
+                                            <img src={`src/assets/images/${producto.PRD_IMAGE}`} className="card-img-top" alt="Producto 1" />
                                         <div className={`card-body ${styles.cuerpoCarta}`}>
-                                                <h5 onClick={() => next(producto.prD_ID)} className={`card-title ${styles.productTitle}`}>{producto.prD_NAME}</h5>
-                                            <p className="card-text">${producto.prD_PRICE}</p>
+                                                <h5 onClick={() => next(producto.PRD_ID)} className={`card-title ${styles.productTitle}`}>{producto.PRD_NAME}</h5>
+                                            <p className="card-text">${producto.PRD_PRICE}</p>
                                         </div>
-                                            <button onClick={() => { handleAddToCart(producto.prD_ID) }} className={styles.cartaAddCart}>Agregar al carrito</button>
+                                            <button onClick={() => { handleAddToCart(producto.PRD_ID) }} className={styles.cartaAddCart}>Agregar al carrito</button>
                                     </div>
                                 </div>
                                 ))}

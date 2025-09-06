@@ -6,10 +6,12 @@ import { useNavigate } from "react-router-dom";
 import TimeLapseCheckout from "../CheckoutSteps/Timelapse/TimelapseCheckout";
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
+import { useSession } from "../../context/SessionContext";
 
 function Carrito() {
     const navigate = useNavigate();
     const { fetchCountCart, fetchSumTotalCart, totalSumCart } = useCart();
+    const { userId } = useSession();
 
     const handleProceedToCheckout = () => {
         navigate("/checkout/shipping-info"); // Redirige al paso 1 del checkout
@@ -22,7 +24,7 @@ function Carrito() {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                const response = await axiosInstance.get(`Cart/user/2`);
+                const response = await axiosInstance.get(`Cart/user/${userId}`);
                 setCart(response.data); // 
                 console.log(response.data);
                 setLoading(false); // 
@@ -44,7 +46,6 @@ function Carrito() {
 
     const handleRemoveFromCart = async (productId) => {
         try {
-            const userId = 2; // ID del usuario autenticado
             console.log(`Eliminando producto con ID: ${productId} para el usuario: ${userId}`);
 
             // Realiza la solicitud DELETE al backend
@@ -74,14 +75,14 @@ function Carrito() {
                     <>
                         <ul className={styles.cartList}>
                             {cart.map((car) => (
-                                <li key={car.caI_ID} className={styles.cartItem}>
-                                    <img src={`src/assets/images/${car.prD_IMAGE}`} className={styles.itemImage} />
+                                <li key={car.CAI_ID} className={styles.cartItem}>
+                                    <img src={`src/assets/images/${car.PRD_IMAGE}`} className={styles.itemImage} />
                                     <div className={styles.itemDetails}>
-                                        <h4>{car.prD_NAME}</h4>
-                                        <p>Precio: ${car.caI_TOTAL_PRICE}</p>
-                                        <p>Cantidad: {car.caI_QUANTITY}</p>
+                                        <h4>{car.PRD_NAME}</h4>
+                                        <p>Precio: ${car.CAI_TOTAL_PRICE}</p>
+                                        <p>Cantidad: {car.CAI_QUANTITY}</p>
                                         <button
-                                            onClick={() => { handleRemoveFromCart(car.prD_ID) }}
+                                            onClick={() => { handleRemoveFromCart(car.PRD_ID) }}
                                             className={styles.removeButton}
                                         >
                                             Eliminar

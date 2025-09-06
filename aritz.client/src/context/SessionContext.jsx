@@ -23,14 +23,17 @@ export const SessionProvider = ({ children }) => {
     });
     const [code, setCode] = useState('');
     const [userName, setUserName] = useState('');
+    const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
         const storedUserName = localStorage.getItem('userName');
+        const storedUserId = localStorage.getItem('userId');
         if (token && storedUserName) {
             setIsLoggedIn(true);
             setUserName(storedUserName);
+            setUserId(parseInt(storedUserId));
         }
     }, []);
 
@@ -94,12 +97,13 @@ export const SessionProvider = ({ children }) => {
             // Almacenar token y nombre del usuario
             localStorage.setItem('authToken', response.data.Token);
             localStorage.setItem('userName', response.data.UserName);
+            localStorage.setItem('userId', response.data.UserId.toString());
             setIsLoggedIn(true);
             setUserName(response.data.UserName);
+            console.log(response.data.UserId);
+            setUserId(parseInt(response.data.UserId));
             alert(response.data.Message || 'Login exitoso');
             navigate('/');
-            setIsLoggedIn(true);
-            alert(response.data || 'Login exitoso');
         } catch (error) {
             console.error('Error en login:', error.response);
             alert(error.response?.data || 'Error en login. Revisa tus credenciales.');
@@ -123,7 +127,9 @@ export const SessionProvider = ({ children }) => {
         setCode,
         formData,
         setIsRegister,
-        userName
+        userName,
+        userId,
+        setUserId
     };
 
     return (

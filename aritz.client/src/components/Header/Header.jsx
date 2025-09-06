@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
 
-    const { isLoggedIn, setIsLoggedIn, userName, setUserName } = useSession();
+    const { isLoggedIn, setIsLoggedIn, userName, setUserName, userId } = useSession();
     const { totalQuantity, fetchCountCart } = useCart();
     const navigate = useNavigate();
 
@@ -142,12 +142,17 @@ const Header = () => {
                     <div className={styles.logueo}>
                         {
                             isLoggedIn ? (
-                                <div className="d-flex">
-                                    <div className="d-flex flex-column">
-                                        <b>{userName}</b> 
-                                        <button
-                                            className="btn btn-danger"
-                                            onClick={handleLogout}>Cerrar Sesion</button>
+                                <div className={styles.userLogin}>
+                                    <div className={styles.user}>
+                                        <b >{userName}</b>
+                                        <ul className={styles.userDropdown}>
+                                            <li>Mi cuenta</li>
+                                            <li>Mis pedidos</li>
+                                            <button
+                                                className="btn btn-danger"
+                                                onClick={handleLogout}>Cerrar Sesion
+                                            </button>
+                                        </ul>
                                     </div>
                                     <NavLink
                                         className={styles.carritoContainer}

@@ -138,6 +138,7 @@ namespace Aritz.Server.Controllers
                 return Ok(new
                 {
                     Token = tokenString,
+                    UserId = user.USR_ID,
                     UserName = user.USR_NAME,
                     Message = "Login exitoso."
                 });

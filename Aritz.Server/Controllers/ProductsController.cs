@@ -23,6 +23,7 @@ namespace Aritz.Server.Controllers
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
             var products = await _context.Products.ToListAsync(); // Consulta la tabla "Products"
+            Console.WriteLine(products);
             return Ok(products); // Retorna los productos
         }
 

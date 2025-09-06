@@ -83,10 +83,32 @@ li {
 }
 
 .logueo{
+    display: flex;
     cursor: pointer;
+    width: 150px;
 }
 
-.carritoContainer{
+.userDropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 10px; /* Espaciado interno */
+    z-index: 10;
+    box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.2);
+}
+
+.userLogin {
+    display: flex;
+    gap: 50px;
+}
+
+.user:hover .userDropdown{
+    display: block;
+}
+
+.carritoContainer {
     position: relative;
 }
 
