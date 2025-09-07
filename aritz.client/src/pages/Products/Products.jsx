@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import { useSession } from "../../context/SessionContext";
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 function Products() {
     
     const navigate = useNavigate();
@@ -45,7 +46,11 @@ function Products() {
             });
 
             console.log(response.data); // Muestra el mensaje del backend
-            alert("Producto agregado al carrito.");
+            Swal.fire({
+                title: 'Producto agregado correctamente!',
+                icon: 'success',
+                confirmButtonText: 'Seguir comprando'
+            })
             fetchCountCart();
         } catch (error) {
             console.error("Error al agregar al carrito:", error);

@@ -7,6 +7,7 @@ import TimeLapseCheckout from "../CheckoutSteps/Timelapse/TimelapseCheckout";
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import { useSession } from "../../context/SessionContext";
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 
 function Carrito() {
     const navigate = useNavigate();
@@ -53,7 +54,11 @@ function Carrito() {
             const response = await axiosInstance.delete(`Cart/user/${userId}/product/${productId}`);
 
             await fetchCart();
-            alert("Producto eliminado del carrito.");
+            Swal.fire({
+                title: 'Se elimino el producto',
+                icon: 'error',
+                confirmButtonText: 'Volver al carrito'
+            })
             fetchCountCart();
             fetchSumTotalCart();
         } catch (error) {
@@ -67,7 +72,11 @@ function Carrito() {
             const response = await axiosInstance.delete(`Cart/user/${userId}`);
 
             await fetchCart();
-            alert("Se vacio el carrito");
+            Swal.fire({
+                title: 'Se vacio el carrito',
+                icon: 'error',
+                confirmButtonText: 'Volver al carrito'
+            })
             fetchCountCart();
             fetchSumTotalCart();
         } catch (error) {
