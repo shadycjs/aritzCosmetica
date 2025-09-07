@@ -36,7 +36,7 @@ function ProductDetail() {
         <div className={styles.centeredContainer}>
             <div className={styles.container}>
                 <div className={styles.imgContainer}>
-                    <img className={styles.imgMain} src={`/src/assets/images/${product.prD_IMAGE}`} />
+                    <img className={styles.imgMain} src={`/src/assets/images/${product.PRD_IMAGE}`} />
                     <div className={styles.subImgContainer}>
                         <img src={sinImg} />
                         <img src={sinImg} />
@@ -45,9 +45,9 @@ function ProductDetail() {
                     </div>
                 </div>
                 <div className={styles.infoContainer}>
-                    <h3 className={styles.titleInfo}>{product.prD_NAME}</h3>
-                    <b className={styles.priceInfo}>${product.prD_PRICE}</b>
-                    <p className={styles.descInfo}>{product.prD_DESCRIPTION}</p>
+                    <h3 className={styles.titleInfo}>{product.PRD_NAME}</h3>
+                    <b className={styles.priceInfo}>${product.PRD_PRICE}</b>
+                    <p className={styles.descInfo}>{product.PRD_DESCRIPTION}</p>
                     <button className={styles.addCartInfo}>Agregar al carrito</button>
                 </div>
                 

@@ -15,7 +15,7 @@ export const CartProvider = ({ children }) => {
 
     const fetchCountCart = async () => {
         try {
-            if (userId != null && totalQuantity != 0) {
+            if (userId != null) {
                 const response = await axiosInstance.get(`Cart/user/${userId}/total-quantity`);
                 setTotalQuantity(response.data); // Actualiza la cantidad total en el estado
             }

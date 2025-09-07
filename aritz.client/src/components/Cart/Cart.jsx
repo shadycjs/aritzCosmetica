@@ -22,24 +22,25 @@ function Carrito() {
     const [cart, setCart] = useState([]);
 
     useEffect(() => {
-        const fetchCart = async () => {
-            try {
-                const response = await axiosInstance.get(`Cart/user/${userId}`);
-                setCart(response.data); // 
-                console.log(response.data);
-                setLoading(false); // 
-                // Actualiza la cantidad del carrito dinámicamente desde el backend
-                fetchCountCart();
-                fetchSumTotalCart();
-            } catch (err) {
-                console.error("Error al obtener los productos", err);
-                setError(err.message);
-                setLoading(false);
-            }
-        };
-
         fetchCart();
-    }, []); 
+    }, [userId]);
+
+    const fetchCart = async () => {
+        try {
+            const response = await axiosInstance.get(`Cart/user/${userId}`);
+            setCart(response.data); // 
+            console.log(response.data);
+            setLoading(false); // 
+            // Actualiza la cantidad del carrito dinámicamente desde el backend
+            fetchCountCart();
+            fetchSumTotalCart();
+        } catch (err) {
+            console.error("Error al obtener los productos", err);
+            setError(err.message);
+            setLoading(false);
+        }
+    };
+
 
     if (loading) return <div>Cargando carrito...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -51,9 +52,7 @@ function Carrito() {
             // Realiza la solicitud DELETE al backend
             const response = await axiosInstance.delete(`Cart/user/${userId}/product/${productId}`);
 
-            // Remueve el producto del carrito en el estado del frontend
-            setCart(cart.filter((item) => item.prD_ID !== productId));
-
+            await fetchCart();
             alert("Producto eliminado del carrito.");
             fetchCountCart();
             fetchSumTotalCart();
@@ -62,6 +61,20 @@ function Carrito() {
             alert("No se pudo eliminar el producto del carrito.");
         }
     };
+
+    const handleCleanCart = async (userId) => {
+        try {
+            const response = await axiosInstance.delete(`Cart/user/${userId}`);
+
+            await fetchCart();
+            alert("Se vacio el carrito");
+            fetchCountCart();
+            fetchSumTotalCart();
+        } catch (error) {
+            console.error("Error al vaciar el carrito:", error);
+            alert("No se pudo vaciar el carrito.");
+        }
+    }
 
     return (
         <CenteredContainer>
@@ -97,7 +110,10 @@ function Carrito() {
                         </div>
 
                         <div className={styles.actions}>
-                            <button className={styles.clearButton}>
+                                <button
+                                    className={styles.clearButton}
+                                    onClick={() => { handleCleanCart(userId) }}
+                                >
                                 Vaciar Carrito
                             </button>
                                 <button onClick={handleProceedToCheckout} className={styles.checkoutButton}>Proceder al Pago</button>

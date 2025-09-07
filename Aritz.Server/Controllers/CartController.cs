@@ -209,5 +209,38 @@ namespace Aritz.Server.Controllers
                 return StatusCode(500, "Ocurrió un error al intentar eliminar el producto del carrito.");
             }
         }
+
+        //DEL: api/cart/user/
+        [HttpDelete("user/{userId}")]
+        public async Task<IActionResult> DelAllCartItem(int userId)
+        {
+            try
+            {
+                Console.WriteLine($"Intentando eliminar todos los productos del carrito para el usuario: {userId}");
+
+                // Busca el carrito del usuario
+                var cart = await _context.Carts
+                    .Include(c => c.Items) // Incluye los ítems en el carrito
+                    .FirstOrDefaultAsync(c => c.CAR_USR_ID == userId);
+
+                if (cart == null)
+                {
+                    Console.WriteLine("Carrito no encontrado.");
+                    return NotFound("El carrito no existe.");
+                }
+
+                // Elimina el ítem del carrito
+                _context.CartItems.RemoveRange(cart.Items);
+                await _context.SaveChangesAsync(); // Guarda los cambios en la base de datos
+                Console.WriteLine("Se vacio el carrito correctamente");
+
+                return Ok("Se vacio el carrito correctamente");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al intentar vaciar el carrito: {ex.Message}");
+                return StatusCode(500, "Ocurrió un error al intentar vaciar el carrito");
+            }
+        }
     }
 }
