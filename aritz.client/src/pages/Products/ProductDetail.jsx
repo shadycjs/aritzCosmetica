@@ -1,16 +1,20 @@
 import { useParams } from 'react-router-dom';
 import CenteredContainer from '../../components/CenteredContainer/CenteredContainer';
 import styles from "./ProductDetail.module.css";
-import img1 from "../../assets/images/product1.png"
 import sinImg from "../../assets/images/sinImagen.png"
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
+import Swal from 'sweetalert2'; // Importar SweetAlert2
+import { useSession } from "../../context/SessionContext";
+import { useCart } from '../../context/CartContext';
 
 function ProductDetail() {
     const { id } = useParams();
     const [product, setProduct] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { userId } = useSession();
+    const { fetchCountCart } = useCart();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -27,7 +31,29 @@ function ProductDetail() {
         };
 
         fetchProduct();
-    }, []); // El uso de un array vacío asegura que solo se ejecute al montar el componente
+    }, [id]); // El uso de un array vacío asegura que solo se ejecute al montar el componente
+
+    const handleAddToCart = async (productId, quantity = 1) => {
+        try {
+            console.log("Datos enviados al backend:", { userId, productId, quantity });
+            const response = await axiosInstance.post("Cart/add-to-cart", {
+                userId,
+                productId,
+                quantity,
+            });
+
+            console.log(response.data); // Muestra el mensaje del backend
+            Swal.fire({
+                title: 'Producto agregado correctamente!',
+                icon: 'success',
+                confirmButtonText: 'Seguir comprando'
+            })
+            fetchCountCart();
+        } catch (error) {
+            console.error("Error al agregar al carrito:", error);
+            alert("No se pudo agregar el producto al carrito.");
+        }
+    };
 
     if (loading) return <div>Cargando producto...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -48,7 +74,12 @@ function ProductDetail() {
                     <h3 className={styles.titleInfo}>{product.PRD_NAME}</h3>
                     <b className={styles.priceInfo}>${product.PRD_PRICE}</b>
                     <p className={styles.descInfo}>{product.PRD_DESCRIPTION}</p>
-                    <button className={styles.addCartInfo}>Agregar al carrito</button>
+                    <button
+                        className={styles.addCartInfo}
+                        onClick={() => { handleAddToCart(product.PRD_ID) }}
+                    >
+                        Agregar al carrito
+                    </button>
                 </div>
                 
             </div>

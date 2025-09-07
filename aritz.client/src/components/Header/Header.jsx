@@ -9,6 +9,7 @@ import { useCart } from '../../context/CartContext';
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 
 
 const Header = () => {
@@ -21,7 +22,7 @@ const Header = () => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('userName');
         setIsLoggedIn(false);
-        setUserName('');
+        Swal.fire("Sesion cerrada");
         navigate('/'); // Redirige al inicio
     };
 

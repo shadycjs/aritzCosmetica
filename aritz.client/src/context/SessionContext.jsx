@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axiosInstance from "../api/axiosConfig";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 
 // Crea el contexto inicial
 const SessionContext = createContext();
@@ -68,7 +69,23 @@ export const SessionProvider = ({ children }) => {
             });
             setEmail(formData.email);
             setIsVerifying(true);
-            alert('Revisa tu email para el código.');
+            Swal.fire({
+              title: "Se envio el codigo de verificacion, por favor, revisa tu casilla de mail",
+              showClass: {
+                popup: `
+                  animate__animated
+                  animate__fadeInUp
+                  animate__faster
+                `
+              },
+              hideClass: {
+                popup: `
+                  animate__animated
+                  animate__fadeOutDown
+                  animate__faster
+                `
+              }
+            });
         } catch (error) {
             alert(error.response?.data?.Message || 'Error en registro');
         }
@@ -81,7 +98,11 @@ export const SessionProvider = ({ children }) => {
             setIsVerifying(false);
             setIsRegister(false);
             screenIn();
-            alert('Cuenta verificada. Ahora puedes loguearte.');
+            Swal.fire({
+                title: "Cuenta verificada. Ahora puedes loguearte.",
+                icon: "success",
+                draggable: true
+            });
         } catch (error) {
             alert(error.response?.data?.Message || 'Código inválido');
         }
@@ -102,11 +123,21 @@ export const SessionProvider = ({ children }) => {
             setUserName(response.data.UserName);
             console.log(response.data.UserId);
             setUserId(parseInt(response.data.UserId));
-            alert(response.data.Message || 'Login exitoso');
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Iniciaste sesion",
+                showConfirmButton: false,
+                timer: 1500
+            });
             navigate('/');
         } catch (error) {
             console.error('Error en login:', error.response);
-            alert(error.response?.data || 'Error en login. Revisa tus credenciales.');
+            Swal.fire({
+                icon: "error",
+                title: "Error al iniciar sesion",
+                text: "Credenciales invalidas",
+            });
         }
     };
 
