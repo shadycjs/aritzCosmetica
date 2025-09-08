@@ -9,13 +9,15 @@ namespace Aritz.Server.Data
         {
         }
 
-        // Declara la tabla Products
+        // Declaracion de tablas
         public DbSet<Product> Products { get; set; }
-        // Declara la tabla Categories
         public DbSet<Category> Categories { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItems> CartItems { get; set; }
         public DbSet<Users> Users { get; set; }
+        public DbSet<Orders> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
