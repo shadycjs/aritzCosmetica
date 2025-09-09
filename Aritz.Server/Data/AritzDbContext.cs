@@ -74,6 +74,61 @@ namespace Aritz.Server.Data
                       .WithOne(i => i.Cart)
                       .HasForeignKey(i => i.CAI_CAR_ID);
             });
+
+            // Configura la tabla "Orders"
+            modelBuilder.Entity<Orders>(entity =>
+            {
+                entity.ToTable("Orders");
+                entity.HasKey(o => o.ORD_ID);
+                entity.Property(o => o.ORD_USR_ID).HasColumnName("ORD_USR_ID").IsRequired();
+                entity.Property(o => o.ORD_ORDER_DATE).HasColumnName("ORD_ORDER_DATE").IsRequired();
+                entity.Property(o => o.ORD_TOTAL_AMOUNT).HasColumnName("ORD_TOTAL_AMOUNT").HasColumnType("decimal(18,2)").IsRequired();
+                entity.Property(o => o.ORD_STATUS).HasColumnName("ORD_STATUS").HasMaxLength(50).IsRequired();
+                entity.Property(o => o.ORD_PAYMENT_METHOD).HasColumnName("ORD_PAYMENT_METHOD").HasMaxLength(50).IsRequired();
+                entity.HasOne(o => o.Users)
+                      .WithMany()
+                      .HasForeignKey(o => o.ORD_USR_ID)
+                      .OnDelete(DeleteBehavior.Restrict);
+                entity.HasMany(o => o.OrderDetails)
+                      .WithOne(d => d.Orders)
+                      .HasForeignKey(d => d.ODD_ORD_ID)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Configura la tabla "OrderDetails"
+            modelBuilder.Entity<OrderDetails>(entity =>
+            {
+                entity.ToTable("OrderDetails");
+                entity.HasKey(d => d.ODD_ID);
+                entity.Property(d => d.ODD_ORD_ID).HasColumnName("ODD_ORD_ID").IsRequired();
+                entity.Property(d => d.ODD_PRD_ID).HasColumnName("ODD_PRD_ID").IsRequired();
+                entity.Property(d => d.ODD_QUANTITY).HasColumnName("ODD_QUANTITY").IsRequired();
+                entity.Property(d => d.ODD_TOTAL_PRICE).HasColumnName("ODD_TOTAL_PRICE").HasColumnType("decimal(18,2)").IsRequired();
+                entity.HasOne(d => d.Products)
+                      .WithMany()
+                      .HasForeignKey(d => d.ODD_PRD_ID)
+                      .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.Orders)
+                      .WithMany(o => o.OrderDetails)
+                      .HasForeignKey(d => d.ODD_ORD_ID)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Configura la tabla "Payments"
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.ToTable("Payments");
+                entity.HasKey(p => p.PAY_ID);
+                entity.Property(p => p.PAY_ORD_ID).HasColumnName("PAY_ORD_ID").IsRequired();
+                entity.Property(p => p.PAY_PAYMENT_DATE).HasColumnName("PAY_PAYMENT_DATE").IsRequired();
+                entity.Property(p => p.PAY_AMOUNT).HasColumnName("PAY_AMOUNT").HasColumnType("decimal(18,2)").IsRequired();
+                entity.Property(p => p.PAY_STATUS).HasColumnName("PAY_STATUS").HasMaxLength(50).IsRequired();
+                entity.Property(p => p.PAY_PAYMENT_REFERENCE).HasColumnName("PAY_PAYMENT_REFERENCE").HasMaxLength(100);
+                entity.HasOne(p => p.Orders)
+                      .WithMany()
+                      .HasForeignKey(p => p.PAY_ORD_ID)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

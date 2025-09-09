@@ -14,5 +14,6 @@ namespace Aritz.Server.Models
         public decimal? ORD_TOTAL_AMOUNT { get; set; }
         public string? ORD_STATUS { get; set; }
         public string? ORD_PAYMENT_METHOD { get; set; }
+        public List<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
     }
 }

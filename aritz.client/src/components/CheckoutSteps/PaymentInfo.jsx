@@ -9,7 +9,9 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 //import { BrickBuilder } from "@mercadopago/sdk-react";
 import { initMercadoPago, Payment } from '@mercadopago/sdk-react'
+import { useSession } from "../../context/SessionContext";
 initMercadoPago('TEST-aa2427a9-e156-4f55-b4c0-d9c5e9b5774c');
+import Swal from 'sweetalert2';
 
 function PaymentInfo() {
     const { paymentMethod, setPaymentMethod } = useCheckout();
@@ -21,28 +23,49 @@ function PaymentInfo() {
     const [error, setError] = useState(null);
     const [cart, setCart] = useState([]);
 
-    useEffect(() => {
-        const fetchCart = async () => {
-            try {
-                const response = await axiosInstance.get(`Cart/user/2`);
-                setCart(response.data); // 
-                console.log(response.data);
-                setLoading(false); // 
-                // Actualiza la cantidad del carrito dinámicamente desde el backend
-                fetchCountCart();
-                fetchSumTotalCart();
-            } catch (err) {
-                console.error("Error al obtener los productos", err);
-                setError(err.message);
-                setLoading(false);
-            }
-        };
+    const { userId } = useSession();
+    console.log(userId);
 
+    useEffect(() => {
         fetchCart();
-    }, []);
+    }, [userId]);
+
+    const fetchCart = async () => {
+        try {
+            const response = await axiosInstance.get(`Cart/user/${userId}`);
+            setCart(response.data); // 
+            console.log(response.data);
+            setLoading(false); // 
+            // Actualiza la cantidad del carrito dinámicamente desde el backend
+            fetchCountCart();
+            fetchSumTotalCart();
+        } catch (err) {
+            console.error("Error al obtener los productos", err);
+            setError(err.message);
+            setLoading(false);
+        }
+    };
 
     if (loading) return <div>Cargando carrito...</div>;
     if (error) return <div>Error: {error}</div>;
+
+    const handleOrderConfirm = async (totalSumCart) => {
+        try {
+            const response = await axiosInstance.post("Order/confirmOrder", {
+                userId,
+                totalSumCart
+            });
+            Swal.fire({
+                title: '¡Exito!',
+                text: response.data.Message || 'Pedido confirmado correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+            });
+        } catch (error) {
+            console.error("Error al confirmar el pedido:", error);
+            alert("No se pudo confirmar el pedido.");
+        }
+    }
 
 
     const handleSelectMethod = (method) => {
@@ -122,11 +145,11 @@ function PaymentInfo() {
                     </thead>
                     <tbody>
                         {cart.map((item) => (
-                        <tr key={item.caI_id}>
-                            <td>{item.prD_NAME}</td>
-                            <td>${item.caI_TOTAL_PRICE}</td>
-                            <td>{item.caI_QUANTITY}</td>
-                            <td>${item.caI_QUANTITY*item.caI_TOTAL_PRICE}</td>
+                        <tr key={item.CAI_ID}>
+                            <td>{item.PRD_NAME}</td>
+                            <td>${item.CAI_TOTAL_PRICE}</td>
+                            <td>{item.CAI_QUANTITY}</td>
+                            <td>${item.CAI_QUANTITY*item.CAI_TOTAL_PRICE}</td>
                         </tr>
                         ))}
                         <tr>
@@ -161,7 +184,7 @@ function PaymentInfo() {
                 <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                     <button onClick={back} className={styles.btnShippingBack}>Volver</button>
                     {paymentMethod === 'Tarjeta' ?
-                        <button className={styles.btnShippingNext} onClick={next} type="submit">Confirmar pedido</button>
+                        <button className={styles.btnShippingNext} onClick={() => { handleOrderConfirm(totalSumCart) }} type="submit">Confirmar pedido</button>
                 : ''}
                 </label>
 
