@@ -32,7 +32,43 @@ namespace Aritz.Server.Controllers
             _context.Add(Orders);
             await _context.SaveChangesAsync();
 
-            return Ok("Se confirmo la orden");
+            Console.WriteLine($"El order id es: {Orders.ORD_ID}");
+            return Ok(new { Message = "Pedido creado correctamente.", OrderId = Orders.ORD_ID });
+        }
+
+        [HttpPost("confirmOrderDetail")]
+        public async Task<IActionResult> OrderDetail([FromBody] OrderDetailDto dto)
+        {
+            var order = await _context.Orders.FindAsync(dto.OrderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // Obtener el carrito del usuario
+            var cart = await _context.Carts
+                .Include(c => c.Items)
+                .ThenInclude(i => i.Product)
+                .FirstOrDefaultAsync(c => c.CAR_USR_ID == dto.userId);
+            if (cart == null || !cart.Items.Any())
+            {
+                Console.WriteLine($"Carrito vacío para el usuario {dto.userId}.");
+                return NotFound(new { Message = "El carrito está vacío." });
+            }
+
+            var orderDetails = cart.Items.Select(i => new OrderDetails
+            {
+                ODD_ORD_ID = dto.OrderId,
+                ODD_PRD_ID = i.CAI_PRD_ID,
+                ODD_QUANTITY = i.CAI_QUANTITY,
+                ODD_TOTAL_PRICE = i.CAI_TOTAL_PRICE
+            }).ToList();
+
+            _context.OrderDetails.AddRange(orderDetails);
+            _context.CartItems.RemoveRange(cart.Items); // Limpiar el carrito
+            await _context.SaveChangesAsync();
+
+            return Ok("Se inserto en la Order Details correctamente");
         }
 
         public class OrderDto
@@ -41,6 +77,12 @@ namespace Aritz.Server.Controllers
             public decimal totalSumCart { get; set; }
             public string? Status { get; set; }
             public string? Method { get; set; }
+        }
+
+        public class OrderDetailDto
+        {
+            public int userId { get; set; }
+            public int OrderId { get; set; }
         }
     }
 }

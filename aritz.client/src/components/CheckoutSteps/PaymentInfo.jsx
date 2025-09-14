@@ -51,16 +51,31 @@ function PaymentInfo() {
 
     const handleOrderConfirm = async (totalSumCart) => {
         try {
-            const response = await axiosInstance.post("Order/confirmOrder", {
+            const orderResponse = await axiosInstance.post("Order/confirmOrder", {
                 userId,
                 totalSumCart
             });
+
+            const orderId = orderResponse.data.OrderId;
+            if (!orderId) {
+                throw new Error('No se recibió el OrderId del backend.');
+            }
+
+            const detailResponse = await axiosInstance.post('order/confirmOrderDetail', {
+                userId,
+                orderId,
+            });
+
+
             Swal.fire({
                 title: '¡Exito!',
-                text: response.data.Message || 'Pedido confirmado correctamente.',
+                text: detailResponse.data.Message || 'Pedido confirmado correctamente.',
                 icon: 'success',
                 confirmButtonText: 'Aceptar',
             });
+            fetchCountCart();
+            fetchSumTotalCart();
+            navigate('/checkout/pay-success');
         } catch (error) {
             console.error("Error al confirmar el pedido:", error);
             alert("No se pudo confirmar el pedido.");
