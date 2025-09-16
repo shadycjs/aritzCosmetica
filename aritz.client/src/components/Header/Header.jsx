@@ -147,8 +147,13 @@ const Header = () => {
                                     <div className={styles.user}>
                                         <b >{userName}</b>
                                         <ul className={styles.userDropdown}>
-                                            <li>Mi cuenta</li>
-                                            <li>Mis pedidos</li>
+                                            <NavLink
+                                                className={styles.userNavlink}
+                                            >Mi cuenta</NavLink>
+                                            <NavLink
+                                                to="/user/my-requests"
+                                                className={styles.userNavlink}
+                                            >Mis pedidos</NavLink>
                                             <button
                                                 className="btn btn-danger"
                                                 onClick={handleLogout}>Cerrar Sesion

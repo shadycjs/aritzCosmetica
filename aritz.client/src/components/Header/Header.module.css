@@ -62,7 +62,6 @@ a.nav-link {
 .dropdownItem:hover {
     background-color: #f8f9fa; /* Fondo al pasar el mouse */
     color: #007bff; /* Cambia el color del texto */
-
 }
 
 .dropdown ul li h5 b {
@@ -105,8 +104,22 @@ li {
 }
 
 .user:hover .userDropdown{
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
+
+.userNavlink {
+    font-family: "Montserrat", sans-serif;
+    text-decoration: none;
+    color: #000;
+    font-weight: 500;  
+}
+
+    .userNavlink:hover {
+        background-color: #f8f9fa; /* Fondo al pasar el mouse */
+        color: #007bff; /* Cambia el color del texto */
+    }
 
 .carritoContainer {
     position: relative;

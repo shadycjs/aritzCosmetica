@@ -23,6 +23,7 @@
     <Folder Include="src\layouts\" />
     <Folder Include="src\hooks\" />
     <Folder Include="src\pages\Checkout\" />
+    <Folder Include="src\pages\Requests\" />
     <Folder Include="src\utils\" />
     <Folder Include="src\services\" />
   </ItemGroup>
