@@ -14,7 +14,7 @@ export const CheckoutProvider = ({ children }) => {
         cellphone: "",
     });
 
-    const [paymentMethod, setPaymentMethod] = useState("");   // Ejemplo: "Tarjeta" o "PayPal"
+    const [paymentMethod, setPaymentMethod] = useState(1);   // Ejemplo: "Tarjeta" o "PayPal"
 
     return (
         <CheckoutContext.Provider

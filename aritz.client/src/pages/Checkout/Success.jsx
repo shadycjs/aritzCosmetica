@@ -4,6 +4,7 @@ import styles from "../../components/CheckoutSteps/CheckoutSteps.module.css";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineUpload } from "react-icons/ai";
 import { useCart } from "../../context/CartContext";
+import Swal from 'sweetalert2';
 
 function Success() {
     const [loading, setLoading] = useState(false);
@@ -14,11 +15,20 @@ function Success() {
 
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
-        if (!file) return;
+        if (!file) {
+            Swal.fire({
+                title: 'Error al subir el comprobante de pago',
+                text: 'Subi un comprobante valido',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+            });
+            return;
+        }
 
         // Simular inicio del proceso de carga
         setLoading(true);
         setSuccess(false);
+        navigate('/');
     };
 
     // useEffect para observar los cambios en el estado `loading`
@@ -38,9 +48,10 @@ function Success() {
         navigate("/checkout/pay");
     };
     const next = () => {
-        clearCart();
         navigate('/');
-    }
+    };
+
+
 
     return (
         <CenteredContainer>
@@ -55,7 +66,7 @@ function Success() {
                         <input type="file" onChange={handleFileUpload} />
                         {!loading && !success && <span className="d-flex justify-content-center align-items-center gap-2"><AiOutlineUpload />Cargar comprobante</span>}
                         {loading && <span className={styles.loading}>
-                            <div class="spinner-border" role="status">
+                            <div className="spinner-border" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div>
                         </span>}
@@ -67,7 +78,7 @@ function Success() {
                     </label>
                     <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                         <button onClick={back} className={styles.btnShippingBack}>Volver</button>
-                        <button onClick={next} className={styles.btnShippingNext} type="submit">Ir a mi pedido</button>
+                        <button onClick={next, clearCart} className={styles.btnShippingNext} type="submit">Ir a mi pedido</button>
                     </label>
                 </div>
             </div>

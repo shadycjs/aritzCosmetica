@@ -20,13 +20,21 @@ namespace Aritz.Server.Controllers
         [HttpPost("confirmOrder")]
         public async Task<IActionResult> Order([FromBody] OrderDto dto)
         {
+            // Verificar si el método de pago existe
+            var paymentMethod = await _context.PaymentMethods.FindAsync(dto.paymentMethod);
+            if (paymentMethod == null)
+            {
+                Console.WriteLine($"Método de pago con ID {dto.paymentMethod} no encontrado.");
+                return NotFound(new { Message = "El método de pago no existe." });
+            }
+
             var Orders = new Orders
             {
                 ORD_USR_ID = dto.userId,
                 ORD_ORDER_DATE = DateTime.UtcNow,
                 ORD_TOTAL_AMOUNT = dto.totalSumCart,
                 ORD_STATUS = "Pendiente",
-                ORD_PAYMENT_METHOD = "Efectivo"
+                ORD_PMT_ID = dto.paymentMethod
             };
 
             _context.Add(Orders);
@@ -76,7 +84,7 @@ namespace Aritz.Server.Controllers
             public int userId { get; set; }
             public decimal totalSumCart { get; set; }
             public string? Status { get; set; }
-            public string? Method { get; set; }
+            public int paymentMethod { get; set; }
         }
 
         public class OrderDetailDto

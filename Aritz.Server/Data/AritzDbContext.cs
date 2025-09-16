@@ -9,7 +9,7 @@ namespace Aritz.Server.Data
         {
         }
 
-        // Declaracion de tablas
+        // Declaración de tablas
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Cart> Carts { get; set; }
@@ -18,64 +18,75 @@ namespace Aritz.Server.Data
         public DbSet<Orders> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Mapea la tabla "Users"
+            // Configuración de Users, Products, Categories, Cart, CartItems (mantenidas como en mensajes anteriores)
             modelBuilder.Entity<Users>(entity =>
             {
-                entity.ToTable("Users"); // Nombre exacto de la tabla
-
-                entity.HasKey(u => u.USR_ID); // Clave primaria
-
-                entity.Property(u => u.USR_NAME).HasColumnName("USR_NAME");
-                entity.Property(u => u.USR_SURNAME).HasColumnName("USR_SURNAME");
-                entity.Property(u => u.USR_EMAIL).HasColumnName("USR_EMAIL");
-                entity.Property(u => u.USR_PHONE_NUMBER).HasColumnName("USR_PHONE_NUMBER");
-                entity.Property(u => u.USR_ADDRESS).HasColumnName("USR_ADDRESS");
-                entity.Property(u => u.USR_CREATED_DATE).HasColumnName("USR_CREATED_DATE");
-                entity.Property(u => u.USR_IS_ADMIN).HasColumnName("USR_IS_ADMIN");
+                entity.ToTable("Users");
+                entity.HasKey(u => u.USR_ID);
+                entity.Property(u => u.USR_NAME).HasColumnName("USR_NAME").HasMaxLength(100).IsRequired();
+                entity.Property(u => u.USR_SURNAME).HasColumnName("USR_SURNAME").HasMaxLength(100).IsRequired();
+                entity.Property(u => u.USR_EMAIL).HasColumnName("USR_EMAIL").HasMaxLength(255).IsRequired();
+                entity.Property(u => u.USR_PHONE_NUMBER).HasColumnName("USR_PHONE_NUMBER").HasMaxLength(20);
+                entity.Property(u => u.USR_ADDRESS).HasColumnName("USR_ADDRESS").HasMaxLength(255);
+                entity.Property(u => u.USR_CREATED_DATE).HasColumnName("USR_CREATED_DATE").IsRequired();
+                entity.Property(u => u.USR_IS_ADMIN).HasColumnName("USR_IS_ADMIN").IsRequired();
             });
 
-            // Configura la tabla "Products"
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.ToTable("Products"); // Asegúrate de que el nombre sea correcto
-                entity.HasKey(e => e.PRD_ID); // Clave primaria
-
-                entity.Property(e => e.PRD_NAME)
-                      .HasColumnName("PRD_NAME")
-                      .HasMaxLength(100)
-                      .IsRequired();
-
+                entity.ToTable("Products");
+                entity.HasKey(e => e.PRD_ID);
+                entity.Property(e => e.PRD_NAME).HasColumnName("PRD_NAME").HasMaxLength(100).IsRequired();
+                entity.Property(e => e.PRD_PRICE).HasColumnName("PRD_PRICE").HasColumnType("decimal(18,2)").IsRequired();
+                entity.Property(e => e.PRD_IMAGE).HasColumnName("PRD_IMAGE").HasMaxLength(255);
+                entity.Property(e => e.PRD_DESCRIPTION).HasColumnName("PRD_DESCRIPTION").HasMaxLength(1000);
                 entity.HasOne(e => e.Category)
                       .WithMany(c => c.Products)
                       .HasForeignKey(e => e.PRD_CAT_ID)
                       .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // Configura la tabla "Categories"
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.ToTable("Categories");
                 entity.HasKey(e => e.CAT_ID);
+                entity.Property(e => e.CAT_NAME).HasColumnName("CAT_NAME").HasMaxLength(100).IsRequired();
             });
 
-            // Configura la tabla "Cart"
             modelBuilder.Entity<Cart>(entity =>
             {
-                entity.ToTable("Cart"); // Cambia "Cart" por el nombre correcto en tu base de datos
+                entity.ToTable("Cart");
                 entity.HasKey(c => c.CAR_ID);
+                entity.Property(c => c.CAR_USR_ID).HasColumnName("CAR_USR_ID").IsRequired();
                 entity.HasOne(c => c.Users)
                       .WithMany()
                       .HasForeignKey(c => c.CAR_USR_ID)
                       .OnDelete(DeleteBehavior.Restrict);
                 entity.HasMany(c => c.Items)
                       .WithOne(i => i.Cart)
-                      .HasForeignKey(i => i.CAI_CAR_ID);
+                      .HasForeignKey(i => i.CAI_CAR_ID)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Configura la tabla "Orders"
+            modelBuilder.Entity<CartItems>(entity =>
+            {
+                entity.ToTable("CartItems");
+                entity.HasKey(i => i.CAI_ID);
+                entity.Property(i => i.CAI_CAR_ID).HasColumnName("CAI_CAR_ID").IsRequired();
+                entity.Property(i => i.CAI_PRD_ID).HasColumnName("CAI_PRD_ID").IsRequired();
+                entity.Property(i => i.CAI_QUANTITY).HasColumnName("CAI_QUANTITY").IsRequired();
+                entity.Property(i => i.CAI_TOTAL_PRICE).HasColumnName("CAI_TOTAL_PRICE").HasColumnType("decimal(18,2)").IsRequired();
+                entity.HasOne(i => i.Product)
+                      .WithMany()
+                      .HasForeignKey(i => i.CAI_PRD_ID)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configura la tabla Orders
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.ToTable("Orders");
@@ -84,10 +95,14 @@ namespace Aritz.Server.Data
                 entity.Property(o => o.ORD_ORDER_DATE).HasColumnName("ORD_ORDER_DATE").IsRequired();
                 entity.Property(o => o.ORD_TOTAL_AMOUNT).HasColumnName("ORD_TOTAL_AMOUNT").HasColumnType("decimal(18,2)").IsRequired();
                 entity.Property(o => o.ORD_STATUS).HasColumnName("ORD_STATUS").HasMaxLength(50).IsRequired();
-                entity.Property(o => o.ORD_PAYMENT_METHOD).HasColumnName("ORD_PAYMENT_METHOD").HasMaxLength(50).IsRequired();
+                entity.Property(o => o.ORD_PMT_ID).HasColumnName("ORD_PMT_ID").IsRequired();
                 entity.HasOne(o => o.Users)
                       .WithMany()
                       .HasForeignKey(o => o.ORD_USR_ID)
+                      .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(o => o.PaymentMethod)
+                      .WithMany(p => p.Orders)
+                      .HasForeignKey(o => o.ORD_PMT_ID)
                       .OnDelete(DeleteBehavior.Restrict);
                 entity.HasMany(o => o.OrderDetails)
                       .WithOne(d => d.Orders)
@@ -95,7 +110,7 @@ namespace Aritz.Server.Data
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Configura la tabla "OrderDetails"
+            // Configura la tabla OrderDetails
             modelBuilder.Entity<OrderDetails>(entity =>
             {
                 entity.ToTable("OrderDetails");
@@ -114,7 +129,7 @@ namespace Aritz.Server.Data
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Configura la tabla "Payments"
+            // Configura la tabla Payments
             modelBuilder.Entity<Payment>(entity =>
             {
                 entity.ToTable("Payments");
@@ -129,6 +144,15 @@ namespace Aritz.Server.Data
                       .HasForeignKey(p => p.PAY_ORD_ID)
                       .OnDelete(DeleteBehavior.Restrict);
             });
+
+            // Configura la tabla PaymentMethods
+            modelBuilder.Entity<PaymentMethod>(entity =>
+            {
+                entity.ToTable("PaymentMethod");
+                entity.HasKey(p => p.PMT_ID);
+                entity.Property(p => p.PMT_NAME).HasColumnName("PMT_NAME").HasMaxLength(100).IsRequired();
+            });
+
         }
     }
 }

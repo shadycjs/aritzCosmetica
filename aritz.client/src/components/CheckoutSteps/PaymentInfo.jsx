@@ -50,9 +50,11 @@ function PaymentInfo() {
     if (error) return <div>Error: {error}</div>;
 
     const handleOrderConfirm = async (totalSumCart) => {
+        console.log(paymentMethod);
         try {
             const orderResponse = await axiosInstance.post("Order/confirmOrder", {
                 userId,
+                paymentMethod,
                 totalSumCart
             });
 
@@ -73,6 +75,7 @@ function PaymentInfo() {
                 icon: 'success',
                 confirmButtonText: 'Aceptar',
             });
+
             fetchCountCart();
             fetchSumTotalCart();
             navigate('/checkout/pay-success');
@@ -176,7 +179,7 @@ function PaymentInfo() {
                     </tbody>
                 </table>
                 <h1>Total: <b className={styles.total}>${totalSumCart+3000}</b></h1>
-                {paymentMethod === 'Tarjeta' ?
+                {paymentMethod === 2 ?
                     <div>
                         <h2>Cuenta a transferir</h2>
                         <div className={styles.bankContainer}>
@@ -198,7 +201,7 @@ function PaymentInfo() {
                 }
                 <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                     <button onClick={back} className={styles.btnShippingBack}>Volver</button>
-                    {paymentMethod === 'Tarjeta' ?
+                    {paymentMethod === 2 ?
                         <button className={styles.btnShippingNext} onClick={() => { handleOrderConfirm(totalSumCart) }} type="submit">Confirmar pedido</button>
                 : ''}
                 </label>

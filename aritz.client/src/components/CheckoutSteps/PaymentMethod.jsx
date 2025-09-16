@@ -39,10 +39,10 @@ function PaymentInfo() {
                 <div className={styles.containerPayments}>
                     <button className={`
                                 ${styles.buttonsPayments}
-                                ${paymentMethod === 'Tarjeta' ? styles.selected : ''}`} style={{ backgroundColor: "#F5F5DC", color: "#000" }} onClick={() => { handleSelectMethod("Tarjeta") }}><AiFillBank size="6rem"/>Transferencia bancaria</button>
+                                ${paymentMethod === 2 ? styles.selected : ''}`} style={{ backgroundColor: "#F5F5DC", color: "#000" }} onClick={() => { handleSelectMethod(2) }}><AiFillBank size="6rem"/>Transferencia bancaria</button>
                     <button className={`
                                 ${styles.buttonsPayments}
-                                ${paymentMethod === 'MercadoPago' ? styles.selected : ''}`} style={{ backgroundColor: "#00B1EA", color: "#fff" }} onClick={() => handleSelectMethod("MercadoPago")}><img src={MercadoPagoIcon} className={styles.imgMp} /></button>
+                                ${paymentMethod === 1 ? styles.selected : ''}`} style={{ backgroundColor: "#00B1EA", color: "#fff" }} onClick={() => handleSelectMethod(1)}><img src={MercadoPagoIcon} className={styles.imgMp} /></button>
                 </div>
                 <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                     <button onClick={back} className={styles.btnShippingBack}>Volver</button>

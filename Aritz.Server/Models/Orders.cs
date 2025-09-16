@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace Aritz.Server.Models
 {
@@ -13,7 +14,9 @@ namespace Aritz.Server.Models
         public DateTime? ORD_ORDER_DATE { get; set; }
         public decimal? ORD_TOTAL_AMOUNT { get; set; }
         public string? ORD_STATUS { get; set; }
-        public string? ORD_PAYMENT_METHOD { get; set; }
+        public int ORD_PMT_ID { get; set; } // Nueva clave foránea
+        [ForeignKey("ORD_PMT_ID")]
+        public PaymentMethod? PaymentMethod { get; set; } // Relación con PaymentMethod
         public List<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
     }
 }
