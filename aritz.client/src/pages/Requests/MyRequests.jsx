@@ -25,8 +25,9 @@ function MyRequests() {
 
     return (
         <CenteredContainer>
-            <h1 className={styles.requestsTitle}>Mis pedidos</h1>
+            <h1 className={styles.requestsTitle}>{orders.length === 0 ? 'No tiene ningun pedido' : 'Mis pedidos'}</h1>
             <div className={styles.requestsContainer}>
+                {orders.length === 0 ? '' : 
                 <table className={styles.requestsTable}>
                     <thead>
                         <tr>
@@ -50,6 +51,7 @@ function MyRequests() {
                         ))}
                     </tbody>
                 </table>
+                }
             </div>
         </CenteredContainer>
   );
