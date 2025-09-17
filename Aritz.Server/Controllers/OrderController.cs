@@ -79,6 +79,36 @@ namespace Aritz.Server.Controllers
             return Ok("Se inserto en la Order Details correctamente");
         }
 
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetOrders(int userId)
+        {
+
+            // Verificar si el usuario existe
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                Console.WriteLine($"Usuario con ID {userId} no encontrado.");
+                return NotFound(new { Message = "El usuario no existe." });
+            }
+
+            var orders = await _context.Orders
+                .Where(o => o.ORD_USR_ID == userId)
+                .Include(o => o.PaymentMethod)
+                .Include(o => o.OrderDetails)
+                .ThenInclude(d => d.Products)
+                .Select(o => new
+                {
+                    o.ORD_ID,
+                    o.ORD_ORDER_DATE,
+                    o.ORD_TOTAL_AMOUNT,
+                    o.ORD_STATUS,
+                    PaymentMethod = o.PaymentMethod.PMT_NAME,
+                })
+                .ToListAsync();
+
+            return Ok(orders);
+        }
+
         public class OrderDto
         {
             public int userId { get; set; }
