@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Aritz.Server.Data;
+﻿using Aritz.Server.Data;
 using Aritz.Server.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Org.BouncyCastle.Asn1.X500;
 
 namespace Aritz.Server.Controllers
 {
@@ -92,21 +93,123 @@ namespace Aritz.Server.Controllers
             }
 
             var orders = await _context.Orders
-                .Where(o => o.ORD_USR_ID == userId)
-                .Include(o => o.PaymentMethod)
-                .Include(o => o.OrderDetails)
-                .ThenInclude(d => d.Products)
-                .Select(o => new
-                {
-                    o.ORD_ID,
-                    o.ORD_ORDER_DATE,
-                    o.ORD_TOTAL_AMOUNT,
-                    o.ORD_STATUS,
-                    PaymentMethod = o.PaymentMethod.PMT_NAME,
-                })
-                .ToListAsync();
+                    .Where(o => o.ORD_USR_ID == userId)
+                    .Include(o => o.PaymentMethod)
+                    .Include(o => o.OrderDetails)
+                    .ThenInclude(d => d.Products)
+                    .GroupJoin(_context.Receipts,
+                        o => o.ORD_ID,
+                        r => r.RCP_ORD_ID,
+                        (o, receipts) => new
+                        {
+                            o.ORD_ID,
+                            o.ORD_ORDER_DATE,
+                            o.ORD_TOTAL_AMOUNT,
+                            o.ORD_STATUS,
+                            PaymentMethod = o.PaymentMethod.PMT_NAME,
+                            ReceiptPath = receipts.FirstOrDefault() != null ? receipts.FirstOrDefault().RCP_PATH : null
+                        })
+                    .ToListAsync();
 
-            return Ok(orders);
+                return Ok(orders);
+        }
+
+        [HttpPost("{orderId}/upload-receipt")]
+        public async Task<IActionResult> UploadReceipt(int orderId, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest(new { Message = "No se proporcionó un archivo válido." });
+            }
+
+            // Verificar si la orden existe
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null)
+            {
+                return NotFound(new
+                {
+                    Message = "La orden no existe." });
+                }
+        
+            // Validar tipo de archivo
+            var allowedExtensions = new[] { ".pdf", ".jpg", ".jpeg", ".png" };
+                var extension = Path.GetExtension(file.FileName).ToLower();
+                if (!allowedExtensions.Contains(extension))
+                {
+                    return BadRequest(new { Message = "Formato de archivo no permitido. Usa PDF, JPG o PNG." });
+                }
+
+                // Definir la ruta donde se guardará el archivo
+                var fileName = $"receipt_{orderId}_{Guid.NewGuid()}{extension}";
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/receipts", fileName);
+
+                // Crear directorio si no existe
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+                // Guardar el archivo
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Verificar si ya existe un comprobante para esta orden
+                var existingReceipt = await _context.Receipts.FirstOrDefaultAsync(r => r.RCP_ORD_ID == orderId);
+                if (existingReceipt != null)
+                {
+                    // Actualizar el comprobante existente
+                    existingReceipt.RCP_PATH = $"/uploads/receipts/{fileName}";
+                    existingReceipt.RCP_UPLOAD_DATE = DateTime.Now;
+                }
+                else
+                {
+                    // Crear un nuevo registro en Receipts
+                    var receipt = new Receipts
+                    {
+                        RCP_ORD_ID = orderId,
+                        RCP_PATH = $"/uploads/receipts/{fileName}",
+                        RCP_UPLOAD_DATE = DateTime.Now
+                    };
+                    _context.Receipts.Add(receipt);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Message = "Comprobante subido exitosamente.", ReceiptPath = $"/uploads/receipts/{fileName}" });
+            }
+
+        [HttpGet("{orderId}/download-receipt")]
+        public async Task<IActionResult> DownloadReceipt(int orderId)
+        {
+            // Buscar el comprobante en la tabla Receipts
+            var receipt = await _context.Receipts.FirstOrDefaultAsync(r => r.RCP_ORD_ID == orderId);
+            if (receipt == null || string.IsNullOrEmpty(receipt.RCP_PATH))
+            {
+                return NotFound(new { Message = "No se encontró un comprobante para esta orden." });
+            }
+
+            // Obtener la ruta física del archivo
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", receipt.RCP_PATH.TrimStart('/'));
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound(new { Message = "El archivo no existe en el servidor." });
+            }
+
+            // Leer el archivo
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            var fileName = Path.GetFileName(filePath);
+
+            // Determinar el tipo MIME del archivo
+            var mimeType = Path.GetExtension(fileName).ToLower() switch
+            {
+                ".pdf" => "application/pdf",
+                ".jpg" => "image/jpeg",
+                ".jpeg" => "image/jpeg",
+                ".png" => "image/png",
+                _ => "application/octet-stream"
+            };
+
+            // Enviar el archivo con Content-Disposition: attachment
+            return File(fileBytes, mimeType, fileName);
         }
 
         public class OrderDto

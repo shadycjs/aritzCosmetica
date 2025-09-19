@@ -19,6 +19,7 @@ namespace Aritz.Server.Data
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<Receipts> Receipts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -151,6 +152,20 @@ namespace Aritz.Server.Data
                 entity.ToTable("PaymentMethod");
                 entity.HasKey(p => p.PMT_ID);
                 entity.Property(p => p.PMT_NAME).HasColumnName("PMT_NAME").HasMaxLength(100).IsRequired();
+            });
+
+            // Configura la tabla Recepits
+            modelBuilder.Entity<Receipts>(entity =>
+            {
+                entity.ToTable("Receipts");
+                entity.HasKey(r => r.RCP_ID);
+                entity.Property(r => r.RCP_ORD_ID).HasColumnName("RCP_ORD_ID").IsRequired();
+                entity.Property(r => r.RCP_PATH).HasColumnName("RCP_PATH").IsRequired();
+                entity.Property(r => r.RCP_UPLOAD_DATE).HasColumnName("RCP_UPLOAD_DATE");
+                entity.HasOne(r => r.Orders)
+                      .WithMany()
+                      .HasForeignKey(r => r.RCP_ORD_ID)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
         }

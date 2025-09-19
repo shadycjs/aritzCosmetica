@@ -25,3 +25,22 @@
     font-size: .9rem;
     padding: 20px;
 }
+
+.downloadLink {
+    color: #007bff;
+    text-decoration: none;
+}
+
+    .downloadLink:hover {
+        text-decoration: underline;
+    }
+
+.fileInput {
+    cursor: pointer;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

@@ -3,10 +3,13 @@ import CenteredContainer from "../../components/CenteredContainer/CenteredContai
 import styles from './MyRequests.module.css';
 import axiosInstance from "../../api/axiosConfig";
 import { useSession } from "../../context/SessionContext";
+import Swal from 'sweetalert2';
+import { AiOutlineUpload } from "react-icons/ai";
 function MyRequests() {
 
     const [orders, setOrders] = useState([]);
     const { userId } = useSession();
+    const [uploading, setUploading] = useState({}); // Estado de carga por orden
 
     useEffect(() => {
         getOrders();
@@ -16,12 +19,72 @@ function MyRequests() {
         try {
             const response = await axiosInstance.get(`Order/${userId}`);
             console.log(response.data);
-            setOrders(response.data.Orders);
+            setOrders(response.data);
             console.log('Ordenes obtenidas:', response.data);
         } catch (error) {
             console.error("Error al mostrar las ordenes de compra:", error);
         }
     }
+
+    const handleFileUpload = async (orderId, event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            Swal.fire({
+                title: 'Error al subir el comprobante de pago',
+                text: 'Subí un comprobante válido',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+            });
+            return;
+        }
+
+        // Validar tipo de archivo
+        const allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
+        const extension = `.${file.name.split('.').pop().toLowerCase()}`;
+        if (!allowedExtensions.includes(extension)) {
+            Swal.fire({
+                title: 'Error al subir el comprobante',
+                text: 'Solo se permiten archivos PDF, JPG o PNG',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+            });
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            setUploading((prev) => ({ ...prev, [orderId]: true }));
+            const response = await axiosInstance.post(`Order/${orderId}/upload-receipt`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+
+            // Actualizar la orden en el estado
+            setOrders((prevOrders) =>
+                prevOrders.map((order) =>
+                    order.ORD_ID === orderId ? { ...order, ReceiptPath: response.data.ReceiptPath } : order
+                )
+            );
+
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Comprobante subido exitosamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+            });
+        } catch (error) {
+            console.error('Error al subir el comprobante:', error);
+            Swal.fire({
+                title: 'Error al subir el comprobante',
+                text: 'Ocurrió un error al subir el archivo',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+            });
+        } finally {
+            setUploading((prev) => ({ ...prev, [orderId]: false }));
+        }
+    };
 
     return (
         <CenteredContainer>
@@ -47,6 +110,36 @@ function MyRequests() {
                                 <td>{order.ORD_TOTAL_AMOUNT}</td>
                                 <td>{order.ORD_STATUS}</td>
                                 <td>{order.PaymentMethod}</td>
+                                <td>
+                                    {order.ReceiptPath ? (
+                                        <a
+                                            href={`${axiosInstance.defaults.baseURL}Order/${order.ORD_ID}/download-receipt`}
+                                            rel="noopener noreferrer"
+                                            className={styles.downloadLink}
+                                        >
+                                            Descargar comprobante
+                                        </a>
+                                    ) : (
+                                        <label className={styles.fileInput}>
+                                            <input
+                                                type="file"
+                                                onChange={(e) => handleFileUpload(order.ORD_ID, e)}
+                                                disabled={uploading[order.ORD_ID]}
+                                            />
+                                            {uploading[order.ORD_ID] ? (
+                                                <span className={styles.loading}>
+                                                    <div className="spinner-border" role="status">
+                                                        <span className="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </span>
+                                            ) : (
+                                                <span className="d-flex justify-content-center align-items-center gap-2">
+                                                    <AiOutlineUpload /> Cargar comprobante
+                                                </span>
+                                            )}
+                                        </label>
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
