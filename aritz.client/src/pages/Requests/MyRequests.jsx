@@ -5,6 +5,7 @@ import axiosInstance from "../../api/axiosConfig";
 import { useSession } from "../../context/SessionContext";
 import Swal from 'sweetalert2';
 import { AiOutlineUpload } from "react-icons/ai";
+import { format } from 'date-fns'; // Importa la función format
 function MyRequests() {
 
     const [orders, setOrders] = useState([]);
@@ -86,6 +87,17 @@ function MyRequests() {
         }
     };
 
+    //Funcion para dar formato a la fecha
+    const formatDate = (dateString) => {
+        try {
+            const date = new Date(dateString); // Convierte la cadena a objeto Date
+            return format(date, 'dd/MM/yyyy'); // Formato: 22/09/2025
+        } catch (error) {
+            console.error('Error al formatear la fecha:', error);
+            return dateString; // Devuelve la fecha original si hay error
+        }
+    };
+
     return (
         <CenteredContainer>
             <h1 className={styles.requestsTitle}>{orders.length === 0 ? 'No tiene ningun pedido' : 'Mis pedidos'}</h1>
@@ -106,7 +118,7 @@ function MyRequests() {
                         {orders.map((order) => (
                             <tr key={order.ORD_ID}>
                                 <td>{order.ORD_ID}</td>
-                                <td>{order.ORD_ORDER_DATE}</td>
+                                <td>{formatDate(order.ORD_ORDER_DATE)}</td>
                                 <td>{order.ORD_TOTAL_AMOUNT}</td>
                                 <td>{order.ORD_STATUS}</td>
                                 <td>{order.PaymentMethod}</td>
