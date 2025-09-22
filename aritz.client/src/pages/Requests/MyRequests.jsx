@@ -5,6 +5,7 @@ import axiosInstance from "../../api/axiosConfig";
 import { useSession } from "../../context/SessionContext";
 import Swal from 'sweetalert2';
 import { AiOutlineUpload } from "react-icons/ai";
+import { BiRefresh } from "react-icons/bi";
 import { format } from 'date-fns'; // Importa la función format
 function MyRequests() {
 
@@ -124,13 +125,23 @@ function MyRequests() {
                                 <td>{order.PaymentMethod}</td>
                                 <td>
                                     {order.ReceiptPath ? (
-                                        <a
-                                            href={`${axiosInstance.defaults.baseURL}Order/${order.ORD_ID}/download-receipt`}
-                                            rel="noopener noreferrer"
-                                            className={styles.downloadLink}
-                                        >
-                                            Descargar comprobante
-                                        </a>
+                                        <div className={styles.fileRefreshDownload}>
+                                            <a
+                                                href={`${axiosInstance.defaults.baseURL}Order/${order.ORD_ID}/download-receipt`}
+                                                rel="noopener noreferrer"
+                                                className={styles.downloadLink}
+                                            >
+                                                Descargar comprobante
+                                            </a>
+                                            <label className={styles.fileInput}>
+                                                <BiRefresh className={styles.refreshIcon} size={30} />
+                                                <input
+                                                    type="file"
+                                                    onChange={(e) => handleFileUpload(order.ORD_ID, e)}
+                                                    disabled={uploading[order.ORD_ID]}
+                                                    />
+                                            </label>
+                                        </div>
                                     ) : (
                                         <label className={styles.fileInput}>
                                             <input

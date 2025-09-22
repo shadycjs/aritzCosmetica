@@ -26,6 +26,17 @@
     padding: 20px;
 }
 
+.fileRefreshDownload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.refreshIcon{
+    cursor: pointer;
+}
+
 .downloadLink {
     color: #007bff;
     text-decoration: none;
