@@ -7,11 +7,15 @@ import Swal from 'sweetalert2';
 import { AiOutlineUpload } from "react-icons/ai";
 import { BiRefresh } from "react-icons/bi";
 import { format } from 'date-fns'; // Importa la función format
+import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 function MyRequests() {
 
     const [orders, setOrders] = useState([]);
     const { userId } = useSession();
     const [uploading, setUploading] = useState({}); // Estado de carga por orden
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         getOrders();
@@ -99,6 +103,10 @@ function MyRequests() {
         }
     };
 
+    const next = (id) => {
+        navigate(`/user/my-requests/my-order/${id}`);
+    }
+
     return (
         <CenteredContainer>
             <h1 className={styles.requestsTitle}>{orders.length === 0 ? 'No tiene ningun pedido' : 'Mis pedidos'}</h1>
@@ -118,7 +126,14 @@ function MyRequests() {
                     <tbody>
                         {orders.map((order) => (
                             <tr key={order.ORD_ID}>
-                                <td>{order.ORD_ID}</td>
+                                <td>
+                                    <NavLink
+                                        to={`/user/my-requests/my-order/${order.ORD_ID}`}
+                                        className={styles.orderNavlink}
+                                    >
+                                        {order.ORD_ID}
+                                    </NavLink> 
+                                </td>
                                 <td>{formatDate(order.ORD_ORDER_DATE)}</td>
                                 <td>{order.ORD_TOTAL_AMOUNT}</td>
                                 <td>{order.ORD_STATUS}</td>
