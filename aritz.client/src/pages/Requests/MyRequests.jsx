@@ -103,9 +103,6 @@ function MyRequests() {
         }
     };
 
-    const next = (id) => {
-        navigate(`/user/my-requests/my-order/${id}`);
-    }
 
     return (
         <CenteredContainer>

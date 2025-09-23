@@ -1,0 +1,52 @@
+* {
+    font-family: "Montserrat", sans-serif;
+}
+
+.shiippingData {
+    background-color: rgb(179, 222, 167);
+    padding: 20px;
+    text-align: start;
+    border-radius: 5px;
+}
+
+.itemsContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    background-color: rgb(179, 222, 167);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+    .itemsContainer b{
+        text-align: start;
+    }
+
+.itemsDetail{
+    display: flex;
+    gap: 20px;
+}
+
+    .itemsDetail p{
+        text-align: start;
+    }
+
+.itemsDetailSub{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.TotalPrice {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto; /* Empuja el div hacia la derecha */
+}
+
+    .TotalPrice p {
+        text-align: right;
+    }
+
+.imageContainer {
+    width: 100px;
+}

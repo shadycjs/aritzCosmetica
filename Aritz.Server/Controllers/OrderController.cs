@@ -114,6 +114,34 @@ namespace Aritz.Server.Controllers
                 return Ok(orders);
         }
 
+        [HttpGet("requestDetail/{orderId}")]
+        public async Task<IActionResult> GetOrderById(int orderId)
+        {
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null)
+            {
+                Console.WriteLine($"No existe la orden nro {orderId}");
+                return NotFound(new { Message = "La orden no existe." });
+            }
+
+            var orderDetail = await _context.OrderDetails
+                .Where(o => o.ODD_ORD_ID == orderId)
+                .Include(o => o.Products)
+                .Select(od => new
+                {
+                    IdOrder = od.ODD_ORD_ID,
+                    IdOrderDetail = od.ODD_ID,
+                    Quantity = od.ODD_QUANTITY,
+                    TotalPrice = od.ODD_TOTAL_PRICE,
+                    ProductName = od.Products.PRD_NAME,
+                    ProductImage = od.Products.PRD_IMAGE
+                })
+                .ToListAsync();
+
+            Console.WriteLine(orderDetail);
+            return Ok(orderDetail);
+        }
+
         [HttpPost("{orderId}/upload-receipt")]
         public async Task<IActionResult> UploadReceipt(int orderId, IFormFile file)
         {
