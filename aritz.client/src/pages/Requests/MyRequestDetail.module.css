@@ -2,6 +2,31 @@
     font-family: "Montserrat", sans-serif;
 }
 
+.centeredContainer {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px; /* Ancho máximo */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    padding: 20px; /* Espaciado interno */
+    text-align: left; /* Centra el contenido si es texto */
+    gap: 10px;
+}
+
+.items{
+    width: 75%;
+}
+
+.aside {
+    width: 25%;
+    text-align: left;
+}
+
+.resumen {
+    background-color: rgb(179, 222, 167);
+    padding: 20px;
+    border-radius: 5px;
+}
+
 .shiippingData {
     background-color: rgb(179, 222, 167);
     padding: 20px;
@@ -16,6 +41,7 @@
     background-color: rgb(179, 222, 167);
     padding: 20px;
     border-radius: 5px;
+
 }
 
     .itemsContainer b{
