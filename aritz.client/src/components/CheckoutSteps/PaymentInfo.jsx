@@ -78,7 +78,7 @@ function PaymentInfo() {
 
             fetchCountCart();
             fetchSumTotalCart();
-            navigate('/checkout/pay-success');
+            navigate(`/checkout/pay-success?orderId=${orderId}`);
         } catch (error) {
             console.error("Error al confirmar el pedido:", error);
             alert("No se pudo confirmar el pedido.");
@@ -178,11 +178,11 @@ function PaymentInfo() {
                         </tr>
                     </tbody>
                 </table>
-                <h1>Total: <b className={styles.total}>${totalSumCart+3000}</b></h1>
+                <h2>Total a pagar: <b className={styles.total}>${totalSumCart+3000}</b></h2>
                 {paymentMethod === 2 ?
-                    <div>
-                        <h2>Cuenta a transferir</h2>
-                        <div className={styles.bankContainer}>
+                    <div className={styles.bankContainer}>
+                        <h2>Datos bancarios</h2>
+                        <div className={styles.bankContainerSub}>
                             <b>CBU: 0000003100048344628186</b>
                             <b>Alias: ramiro.unrein </b>
                         </div>

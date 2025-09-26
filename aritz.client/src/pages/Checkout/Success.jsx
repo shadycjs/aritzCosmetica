@@ -1,84 +1,36 @@
 ﻿import { useState, useEffect } from "react";
 import CenteredContainer from "../../components/CenteredContainer/CenteredContainer";
-import styles from "../../components/CheckoutSteps/CheckoutSteps.module.css";
+import styles from "./Success.module.css";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineUpload } from "react-icons/ai";
 import { useCart } from "../../context/CartContext";
 import Swal from 'sweetalert2';
+import { NavLink } from "react-router-dom";
+import { useSearchParams } from 'react-router-dom';
 
 function Success() {
-    const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const navigate = useNavigate();
 
-    const { clearCart } = useCart();
+    const [searchParams] = useSearchParams();
 
-    const handleFileUpload = (event) => {
-        const file = event.target.files[0];
-        if (!file) {
-            Swal.fire({
-                title: 'Error al subir el comprobante de pago',
-                text: 'Subi un comprobante valido',
-                icon: 'error',
-                confirmButtonText: 'Aceptar',
-            });
-            return;
-        }
-
-        // Simular inicio del proceso de carga
-        setLoading(true);
-        setSuccess(false);
-        navigate('/');
-    };
-
-    // useEffect para observar los cambios en el estado `loading`
-    useEffect(() => {
-        if (loading) {
-            const timer = setTimeout(() => {
-                setLoading(false);
-                setSuccess(true);
-            }, 2000); // Simulación de 2 segundos
-
-            // Limpieza para cancelar el timeout si el componente se desmonta
-            return () => clearTimeout(timer);
-        }
-    }, [loading]); // El efecto se ejecutará solo cuando `loading` cambie
-
-    const back = () => {
-        navigate("/checkout/pay");
-    };
-    const next = () => {
-        navigate('/');
-    };
-
-
+    const orderId = searchParams.get('orderId');
 
     return (
         <CenteredContainer>
             <div className={`d-flex flex-column ${styles.container}`}>
-                <h2>Compra reservada con éxito!</h2>
-                {success ? '' : <p>Recorda cargar el comprobante de pago</p>}
+                <h1>Muchas gracias por tu compra!</h1>
+                <p>El pedido se encuentra reservado, recorda cargar el comprobante de pago dentro de las proximas 48hs,
+                    sino el mismo se cancelara</p>
 
                 <div className={styles.containerComprobante}>
-                    {success ? '' : <h4>El mismo lo puedes cargar acá o en la sección pedidos en el detalle de tu pedido</h4>}
+                    <b>Carga tu comprobante en la sección pedidos en el detalle de tu pedido :D</b>
 
-                    <label className={styles.fileInput}>
-                        <input type="file" onChange={handleFileUpload} />
-                        {!loading && !success && <span className="d-flex justify-content-center align-items-center gap-2"><AiOutlineUpload />Cargar comprobante</span>}
-                        {loading && <span className={styles.loading}>
-                            <div className="spinner-border" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        </span>}
-                        {success && (
-                            <span className={styles.success}>
-                                ¡Comprobante cargado! ✅
-                            </span>
-                        )}
-                    </label>
                     <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
-                        <button onClick={back} className={styles.btnShippingBack}>Volver</button>
-                        <button onClick={next, clearCart} className={styles.btnShippingNext} type="submit">Ir a mi pedido</button>
+                        <NavLink
+                            to={`/user/my-requests/my-order/${orderId}`}
+                            className={styles.btnShippingNext}
+                        >
+                            Ir a mi pedido
+                        </NavLink>
                     </label>
                 </div>
             </div>

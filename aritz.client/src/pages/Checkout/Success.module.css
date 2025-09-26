@@ -1,0 +1,31 @@
+* {
+    font-family: "Montserrat", sans-serif;
+}
+
+.container{
+    display: flex;
+    gap: 20px;
+    padding: 100px;
+}
+
+.containerComprobante{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btnShippingNext {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+    .btnShippingNext:hover {
+        background-color: #0056b3;
+    }
+
