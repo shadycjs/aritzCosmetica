@@ -127,6 +127,8 @@ namespace Aritz.Server.Controllers
             var orderDetail = await _context.OrderDetails
                 .Where(o => o.ODD_ORD_ID == orderId)
                 .Include(o => o.Products)
+                .Include(o => o.Orders)
+                .ThenInclude(o => o.Receipt)
                 .Select(od => new
                 {
                     IdOrder = od.ODD_ORD_ID,
@@ -134,7 +136,8 @@ namespace Aritz.Server.Controllers
                     Quantity = od.ODD_QUANTITY,
                     TotalPrice = od.ODD_TOTAL_PRICE,
                     ProductName = od.Products.PRD_NAME,
-                    ProductImage = od.Products.PRD_IMAGE
+                    ProductImage = od.Products.PRD_IMAGE,
+                    ReceiptPath = od.Orders.Receipt.RCP_PATH
                 })
                 .ToListAsync();
 

@@ -9,6 +9,7 @@ import { BiRefresh } from "react-icons/bi";
 import { format } from 'date-fns'; // Importa la función format
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { BiConfused } from "react-icons/bi";
 function MyRequests() {
 
     const [orders, setOrders] = useState([]);
@@ -108,7 +109,9 @@ function MyRequests() {
         <CenteredContainer>
             <h1 className={styles.requestsTitle}>{orders.length === 0 ? 'No tiene ningun pedido' : 'Mis pedidos'}</h1>
             <div className={styles.requestsContainer}>
-                {orders.length === 0 ? '' : 
+                {orders.length === 0 ? (
+                    <BiConfused size={250} />
+                ): ( 
                 <table className={styles.requestsTable}>
                     <thead>
                         <tr>
@@ -132,7 +135,7 @@ function MyRequests() {
                                     </NavLink> 
                                 </td>
                                 <td>{formatDate(order.ORD_ORDER_DATE)}</td>
-                                <td>{order.ORD_TOTAL_AMOUNT}</td>
+                                <td>${order.ORD_TOTAL_AMOUNT}</td>
                                 <td>{order.ORD_STATUS}</td>
                                 <td>{order.PaymentMethod}</td>
                                 <td>
@@ -179,7 +182,7 @@ function MyRequests() {
                         ))}
                     </tbody>
                 </table>
-                }
+                )}
             </div>
         </CenteredContainer>
   );

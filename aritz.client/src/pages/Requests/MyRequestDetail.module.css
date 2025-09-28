@@ -17,11 +17,40 @@
 }
 
 .aside {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 25%;
     text-align: left;
 }
 
 .resumen {
+    background-color: rgb(179, 222, 167);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.fileRefreshDownload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.fileInput{
+    display: flex;
+}
+
+    .fileInput:hover{
+        cursor: pointer;
+        color: cadetblue;
+    }
+
+    .fileInput input {
+        display: none;
+    }
+
+.Comprobante {
     background-color: rgb(179, 222, 167);
     padding: 20px;
     border-radius: 5px;
@@ -37,7 +66,7 @@
 .itemsContainer {
     display: flex;
     flex-direction: column;
-    margin-top: 30px;
+    margin-top: 10px;
     background-color: rgb(179, 222, 167);
     padding: 20px;
     border-radius: 5px;

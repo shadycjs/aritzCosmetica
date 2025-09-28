@@ -18,5 +18,6 @@ namespace Aritz.Server.Models
         [ForeignKey("ORD_PMT_ID")]
         public PaymentMethod? PaymentMethod { get; set; } // Relación con PaymentMethod
         public List<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
+        public Receipts Receipt { get; set; }
     }
 }

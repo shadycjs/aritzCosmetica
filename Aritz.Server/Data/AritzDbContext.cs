@@ -163,8 +163,8 @@ namespace Aritz.Server.Data
                 entity.Property(r => r.RCP_PATH).HasColumnName("RCP_PATH").IsRequired();
                 entity.Property(r => r.RCP_UPLOAD_DATE).HasColumnName("RCP_UPLOAD_DATE");
                 entity.HasOne(r => r.Orders)
-                      .WithMany()
-                      .HasForeignKey(r => r.RCP_ORD_ID)
+                      .WithOne(o => o.Receipt)
+                      .HasForeignKey<Receipts>(r => r.RCP_ORD_ID)
                       .OnDelete(DeleteBehavior.Restrict);
             });
 

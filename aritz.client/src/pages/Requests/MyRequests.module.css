@@ -2,11 +2,10 @@
     font-family: "Montserrat", sans-serif;
 }
 
-.requestsContainer{
+.requestsContainer {
     display: flex;
     justify-content: center;
     padding: 10px;
-
 }
 
 .requestsTable thead{
@@ -48,9 +47,14 @@
     cursor: pointer;
 }
 
-.fileInput input{
-    display: none;
-}
+    .fileInput:hover {
+        cursor: pointer;
+        color: cadetblue;
+    }
+
+    .fileInput input{
+        display: none;
+    }
 
 .loading {
     display: flex;

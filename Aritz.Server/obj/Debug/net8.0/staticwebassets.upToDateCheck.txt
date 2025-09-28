@@ -4,3 +4,6 @@ wwwroot\uploads\receipts\receipt_39_75ec33bf-616f-4be1-bbc2-3cd2d7d75c9b.jpg
 wwwroot\uploads\receipts\receipt_39_2a72b9ed-1747-4175-9c2c-c11519c3e215.jpg
 wwwroot\uploads\receipts\receipt_40_ae791d6a-d497-49ce-a972-a0f15ca725af.jpg
 wwwroot\uploads\receipts\receipt_40_287faec9-b5ad-4361-b840-9e4d21d85269.png
+wwwroot\uploads\receipts\receipt_50_50d98903-20c4-4532-99c7-7cac0e2baca1.jpg
+wwwroot\uploads\receipts\receipt_50_48929a15-4fec-4443-90d8-14fd97a36718.jpg
+wwwroot\uploads\receipts\receipt_51_91d64267-d855-423d-9ed1-e3cf379ed522.jpg
