@@ -116,89 +116,92 @@ function MyRequestDetail() {
     };
 
     return (
-        <div className={styles.centeredContainer}>
-           
-            <div className={styles.items}>
-                <BreadCrum id={id} />
-                <div className={styles.shiippingData}>
-                    Llega entre el * y el *
-                </div>
-                {requestDet.map((request) => (
-                    <div
-                        className={styles.itemsContainer}
-                        key={request.IdOrderDetail}>
-                        <b>Compra #{request.IdOrderDetail}</b>
-                        <hr></hr>
-                        <div className={styles.itemsDetail}>
-                            <div className={styles.imageContainer}>
-                                <img src={`/../src/assets/images/${request.ProductImage}`} />
-                            </div>
-                            <div className={styles.itemsDetailSub}>
-                                <h4>{request.ProductName}</h4>
-                                <p>Cantidad: {request.Quantity}</p>
-                                <p>c/u ${request.TotalPrice}</p>
-                            </div>
-                            <div className={styles.TotalPrice}>
-                                <b>Subtotal:</b>
-                                <p>${request.TotalPrice*request.Quantity}</p>
-                            </div>
-                        </div>
+        <div>
+            <BreadCrum id={id}/>
+        
+            <div className={styles.centeredContainer}>
+
+                <div className={styles.items}>
+                    <div className={styles.shiippingData}>
+                        Llega entre el * y el *
                     </div>
-                ))}
-            </div>
-
-            <div className={styles.aside}>
-                <div className={styles.resumen}>
-                    <b>Resumen de compra</b>
-                    <p>Nro orden: <b>#{id}</b></p>
-                    <p>Cantidad de items: {totalQuantity}</p>
-                    <p>Costo de envio: </p>
-                    <hr></hr>
-                    <p>Total a pagar: ${totalAmount}</p>
-                </div>
-                <div className={styles.Comprobante}>
-                    <b>{path ? 'Este es el comprobante que subiste' : 'Subi tu comprobante aca'}</b>
-                    {path ? (
-                        <div className={styles.fileRefreshDownload}>
-                            <a
-                                href={`${axiosInstance.defaults.baseURL}Order/${id}/download-receipt`}
-                                rel="noopener noreferrer"
-                                className={styles.downloadLink}
-                            >
-                                Descargar comprobante
-                            </a>
-                            <label className={styles.fileInput}>
-                                <BiRefresh className={styles.refreshIcon} size={30} />
-                                <input
-                                    type="file"
-                                    onChange={(e) => handleFileUpload(id, e)}
-                                    disabled={uploading[id]}
-                                />
-                            </label>
+                    {requestDet.map((request) => (
+                        <div
+                            className={styles.itemsContainer}
+                            key={request.IdOrderDetail}>
+                            <b>Compra #{request.IdOrderDetail}</b>
+                            <hr></hr>
+                            <div className={styles.itemsDetail}>
+                                <div className={styles.imageContainer}>
+                                    <img src={`/../src/assets/images/${request.ProductImage}`} />
+                                </div>
+                                <div className={styles.itemsDetailSub}>
+                                    <h4>{request.ProductName}</h4>
+                                    <p>Cantidad: {request.Quantity}</p>
+                                    <p>c/u ${request.TotalPrice}</p>
+                                </div>
+                                <div className={styles.TotalPrice}>
+                                    <b>Subtotal:</b>
+                                    <p>${request.TotalPrice*request.Quantity}</p>
+                                </div>
+                            </div>
                         </div>
-                    ) : (
-                            <label className={styles.fileInput}>
-                                <input
-                                    type="file"
-                                    onChange={(e) => handleFileUpload(id, e)}
-                                    disabled={uploading[id]}
-                                />
-                                {uploading[id] ? (
-                                    <span className={styles.loading}>
-                                        <div className="spinner-border" role="status">
-                                            <span className="visually-hidden">Loading...</span>
-                                        </div>
-                                    </span>
-                                ) : (
-                                    <span className="d-flex justify-content-center align-items-center gap-2">
-                                        <AiOutlineUpload /> Cargar comprobante
-                                    </span>
-                                )}
-                            </label>
-                    )}
+                    ))}
                 </div>
-                <div className={styles.factura}>
 
+                <div className={styles.aside}>
+                    <div className={styles.resumen}>
+                        <b>Resumen de compra</b>
+                        <p>Nro orden: <b>#{id}</b></p>
+                        <p>Cantidad de items: {totalQuantity}</p>
+                        <p>Costo de envio: </p>
+                        <hr></hr>
+                        <p>Total a pagar: ${totalAmount}</p>
+                    </div>
+                    <div className={styles.Comprobante}>
+                        <b>{path ? 'Este es el comprobante que subiste' : 'Subi tu comprobante aca'}</b>
+                        {path ? (
+                            <div className={styles.fileRefreshDownload}>
+                                <a
+                                    href={`${axiosInstance.defaults.baseURL}Order/${id}/download-receipt`}
+                                    rel="noopener noreferrer"
+                                    className={styles.downloadLink}
+                                >
+                                    Descargar comprobante
+                                </a>
+                                <label className={styles.fileInput}>
+                                    <BiRefresh className={styles.refreshIcon} size={30} />
+                                    <input
+                                        type="file"
+                                        onChange={(e) => handleFileUpload(id, e)}
+                                        disabled={uploading[id]}
+                                    />
+                                </label>
+                            </div>
+                        ) : (
+                                <label className={styles.fileInput}>
+                                    <input
+                                        type="file"
+                                        onChange={(e) => handleFileUpload(id, e)}
+                                        disabled={uploading[id]}
+                                    />
+                                    {uploading[id] ? (
+                                        <span className={styles.loading}>
+                                            <div className="spinner-border" role="status">
+                                                <span className="visually-hidden">Loading...</span>
+                                            </div>
+                                        </span>
+                                    ) : (
+                                        <span className="d-flex justify-content-center align-items-center gap-2">
+                                            <AiOutlineUpload /> Cargar comprobante
+                                        </span>
+                                    )}
+                                </label>
+                        )}
+                    </div>
+                    <div className={styles.factura}>
+
+                    </div>
                 </div>
             </div>
         </div>

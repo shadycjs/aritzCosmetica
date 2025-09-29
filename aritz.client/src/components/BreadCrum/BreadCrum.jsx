@@ -1,10 +1,10 @@
 import { useLocation, Link } from "react-router-dom";
-function BreadCrum({id}) {
+import styles from "./BreadCrum.module.css"
+function BreadCrum({ id, name }) {
     const location = useLocation();
 
-    const getBreadcrumbItems = () => { 
+    const getBreadcrumbItems = () => {
         const pathnames = location.pathname.split('/').filter(x => x); // Divide la URL en partes
-        console.log(pathnames[0])
 
         switch (pathnames[0]) {
             case 'user':
@@ -15,10 +15,23 @@ function BreadCrum({id}) {
                             { name: 'Mis Ordenes', path: '/user/my-requests' },
                             { name: `Orden #${id}`, path: `my-order/${id}` },
                         ]
-                } 
+                }
                 return [
                     { name: 'Inicio', path: '/' },
                     { name: 'Mis Ordenes', path: '/user/my-requests' },
+                ];
+            case 'product':
+                switch (pathnames[1]) {
+                    case 'product-detail':
+                        return [
+                            { name: 'Inicio', path: '/' },
+                            { name: 'Productos', path: '/product' },
+                            { name: `${name}`, path: `product/product-detail/${id}` },
+                        ]
+                }
+                return [
+                    { name: 'Inicio', path: '/' },
+                    { name: 'Productos', path: '/product' }
                 ];
             default:
                 return [];
@@ -27,15 +40,11 @@ function BreadCrum({id}) {
 
     const breadcrumbItems = getBreadcrumbItems();
 
-    //pathnames.map((pathn, index) => (
-    //   pathn == 'user' ? '' : ''
-    //));
-
-
-  return (
-      <nav style={{ marginBottom: '20px' }}>
+    return (
+        <nav className={styles.breadCrumContainer}>
           {breadcrumbItems.map((item, index) => (
-              <span key={item.path}>
+              <span
+                  key={item.path}>
                   {index > 0 && ' > '}
                   {index === breadcrumbItems.length - 1 ? (
                       <span>{item.name}</span> // Último elemento no es un enlace

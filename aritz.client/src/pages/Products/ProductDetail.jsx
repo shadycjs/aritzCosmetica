@@ -7,6 +7,7 @@ import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import { useSession } from "../../context/SessionContext";
 import { useCart } from '../../context/CartContext';
+import BreadCrum from '../../components/BreadCrum/BreadCrum';
 
 function ProductDetail() {
     const { id } = useParams();
@@ -59,7 +60,9 @@ function ProductDetail() {
     if (error) return <div>Error: {error}</div>;
 
     return (
+        
         <div className={styles.centeredContainer}>
+            <BreadCrum name={product.PRD_NAME} />
             <div className={styles.container}>
                 <div className={styles.imgContainer}>
                     <img className={styles.imgMain} src={`/src/assets/images/${product.PRD_IMAGE}`} />
@@ -83,7 +86,7 @@ function ProductDetail() {
                 </div>
                 
             </div>
-        </div>
+            </div>
   );
 }
 

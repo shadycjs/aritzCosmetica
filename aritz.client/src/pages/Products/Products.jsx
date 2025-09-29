@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import { useSession } from "../../context/SessionContext";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
+import BreadCrum from "../../components/BreadCrum/BreadCrum";
 function Products() {
     
     const navigate = useNavigate();
@@ -65,6 +66,7 @@ function Products() {
     return (
         <>
             <CenteredContainer>
+                <BreadCrum />
                 {   products.length == 0 ? <h2>No se encontraron productos</h2> :
                     <div>
                         <h1 className={styles.title}>Nuestros productos</h1>
