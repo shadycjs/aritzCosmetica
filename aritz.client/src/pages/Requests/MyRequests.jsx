@@ -7,20 +7,23 @@ import Swal from 'sweetalert2';
 import { AiOutlineUpload } from "react-icons/ai";
 import { BiRefresh } from "react-icons/bi";
 import { format } from 'date-fns'; // Importa la función format
-import { useNavigate } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { BiConfused } from "react-icons/bi";
+import BreadCrum from "../../components/BreadCrum/BreadCrum";
 function MyRequests() {
 
     const [orders, setOrders] = useState([]);
     const { userId } = useSession();
     const [uploading, setUploading] = useState({}); // Estado de carga por orden
 
-    const navigate = useNavigate();
+    const location = useLocation();
+
 
     useEffect(() => {
         getOrders();
     }, [userId]);
+
 
     const getOrders = async () => {
         try {
@@ -107,6 +110,7 @@ function MyRequests() {
 
     return (
         <CenteredContainer>
+            <BreadCrum />
             <h1 className={styles.requestsTitle}>{orders.length === 0 ? 'No tiene ningun pedido' : 'Mis pedidos'}</h1>
             <div className={styles.requestsContainer}>
                 {orders.length === 0 ? (

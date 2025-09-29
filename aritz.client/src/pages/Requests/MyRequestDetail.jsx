@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { useSession } from "../../context/SessionContext";
 import { BiRefresh } from "react-icons/bi";
 import { AiOutlineUpload } from "react-icons/ai";
+import BreadCrum from "../../components/BreadCrum/BreadCrum";
 
 function MyRequestDetail() {
 
@@ -116,7 +117,9 @@ function MyRequestDetail() {
 
     return (
         <div className={styles.centeredContainer}>
+           
             <div className={styles.items}>
+                <BreadCrum id={id} />
                 <div className={styles.shiippingData}>
                     Llega entre el * y el *
                 </div>
