@@ -148,6 +148,7 @@ const Header = () => {
                                         <b >{userName}</b>
                                         <ul className={styles.userDropdown}>
                                             <NavLink
+                                                to="/user/my-account"
                                                 className={styles.userNavlink}
                                             >Mi cuenta</NavLink>
                                             <NavLink

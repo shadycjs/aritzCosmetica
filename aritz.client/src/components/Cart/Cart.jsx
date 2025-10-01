@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import { useSession } from "../../context/SessionContext";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
+import BreadCrum from "../BreadCrum/BreadCrum";
 
 function Carrito() {
     const navigate = useNavigate();
@@ -87,6 +88,7 @@ function Carrito() {
 
     return (
         <CenteredContainer>
+            <BreadCrum />
             {cart.length === 0 ? '' : <TimeLapseCheckout />}
             <div className={styles.container}>
                 <h1 className={styles.title}>Tu Carrito</h1>

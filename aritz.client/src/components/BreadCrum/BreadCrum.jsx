@@ -14,7 +14,14 @@ function BreadCrum({ id, name }) {
                             { name: 'Inicio', path: '/' },
                             { name: 'Mis Ordenes', path: '/user/my-requests' },
                             { name: `Orden #${id}`, path: `my-order/${id}` },
-                        ]
+                        ];
+                }
+                switch (pathnames[1]) {
+                    case 'my-account': //Si estoy en my-account
+                        return [
+                            { name: 'Inicio', path: '/' },
+                            { name: 'Mi cuenta', path: '/user/my-account' },
+                        ];
                 }
                 return [
                     { name: 'Inicio', path: '/' },
@@ -33,6 +40,11 @@ function BreadCrum({ id, name }) {
                     { name: 'Inicio', path: '/' },
                     { name: 'Productos', path: '/product' }
                 ];
+            case 'cart':
+                return [
+                    { name: 'Inicio', path: '/' },
+                    { name: 'Carrito', path: '/cart' } 
+                ];
             default:
                 return [];
         }
@@ -49,7 +61,11 @@ function BreadCrum({ id, name }) {
                   {index === breadcrumbItems.length - 1 ? (
                       <span>{item.name}</span> // Último elemento no es un enlace
                   ) : (
-                          <Link to={item.path} replace>{item.name}</Link> // Elementos clicables
+                          <Link
+                              className={styles.link}
+                              to={item.path}
+                              replace>{item.name}
+                          </Link> // Elementos clicables
                   )}
               </span>
           ))}

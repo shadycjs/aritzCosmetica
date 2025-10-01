@@ -1,0 +1,65 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.datosCuentaContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 50%;
+    padding: 10px;
+}
+
+.titleAndIcon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #000;
+}
+
+    .titleAndIcon h4{
+        margin: 0;
+    }
+
+.editIcon{
+    cursor: pointer;
+}
+
+    .editIcon:hover{
+        opacity: 60%;
+    }
+
+.datosCuenta{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.labelEmailPassword {
+    display: flex;
+    justify-content: start;
+}
+
+.labelEmailUpd {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 2px;
+    width: 100%;
+}
+
+.labelEmailUpd input{
+    width: 100%;
+}
+
+.datosPersonalesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 50%;
+    padding: 10px;
+}

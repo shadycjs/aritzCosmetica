@@ -12,6 +12,7 @@ import Success from '../pages/Checkout/Success';
 import ProductDetail from '../pages/Products/ProductDetail';
 import MyRequests from '../pages/Requests/MyRequests';
 import MyRequestDetail from '../pages/Requests/MyRequestDetail';
+import MyAccount from '../pages/Account/MyAccount';
 
 const AppRoutes = () => {
     return (
@@ -28,6 +29,7 @@ const AppRoutes = () => {
             <Route path="/product/product-detail/:id" element={<ProductDetail />} />
             <Route path="/user/my-requests" element={<MyRequests />} />
             <Route path="/user/my-requests/my-order/:id" element={<MyRequestDetail />} />
+            <Route path="/user/my-account" element={<MyAccount />} />
         </Routes>
     );
 };
