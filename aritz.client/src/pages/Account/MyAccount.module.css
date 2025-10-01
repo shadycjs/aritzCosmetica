@@ -63,3 +63,22 @@
     width: 50%;
     padding: 10px;
 }
+
+.containerBtns{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.noEditContainer{
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+}
+
+.domicilioContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 50%;
+    padding: 10px;
+}
