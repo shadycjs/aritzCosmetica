@@ -13,11 +13,19 @@ namespace Aritz.Server.Models
         public required string USR_EMAIL { get; set; }
         public required string USR_PASSWORD_HASH { get; set; }
         public string? USR_PHONE_NUMBER { get; set; }
-        public string? USR_ADDRESS { get; set; }
         public DateTime? USR_CREATED_DATE { get; set; }
         public bool? USR_IS_ADMIN { get; set; }
         public bool USR_IS_VERIFIED { get; set; } = false;
         public string? USR_VERIFICATION_CODE { get; set; }
         public DateTime? USR_VERIFICATION_EXPIRATION { get; set; }
+        public string? USR_DOCUMENT_TYPE { get; set; }
+        public string? USR_DOCUMENT_NUMBER { get; set; }
+        public string? USR_PROVINCE { get; set; }
+        public string? USR_CITY { get; set; }
+        public string? USR_POSTAL_CODE { get; set; }
+        public string? USR_STREET { get; set; }
+        public string? USR_STREET_NUMBER { get; set; }
+        public string? USR_FLOOR { get; set; }
+        public string? USR_APARTMENT { get; set; }
     }
 }

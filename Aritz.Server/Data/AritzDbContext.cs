@@ -31,10 +31,19 @@ namespace Aritz.Server.Data
                 entity.Property(u => u.USR_NAME).HasColumnName("USR_NAME").HasMaxLength(100).IsRequired();
                 entity.Property(u => u.USR_SURNAME).HasColumnName("USR_SURNAME").HasMaxLength(100).IsRequired();
                 entity.Property(u => u.USR_EMAIL).HasColumnName("USR_EMAIL").HasMaxLength(255).IsRequired();
+                entity.Property(u => u.USR_PASSWORD_HASH).HasColumnName("USR_PASSWORD_HASH").IsRequired();
                 entity.Property(u => u.USR_PHONE_NUMBER).HasColumnName("USR_PHONE_NUMBER").HasMaxLength(20);
-                entity.Property(u => u.USR_ADDRESS).HasColumnName("USR_ADDRESS").HasMaxLength(255);
-                entity.Property(u => u.USR_CREATED_DATE).HasColumnName("USR_CREATED_DATE").IsRequired();
-                entity.Property(u => u.USR_IS_ADMIN).HasColumnName("USR_IS_ADMIN").IsRequired();
+                entity.Property(u => u.USR_CREATED_DATE).HasColumnName("USR_CREATED_DATE");
+                entity.Property(u => u.USR_IS_ADMIN).HasColumnName("USR_IS_ADMIN");
+                entity.Property(u => u.USR_DOCUMENT_TYPE).HasColumnName("USR_DOCUMENT_TYPE");
+                entity.Property(u => u.USR_DOCUMENT_NUMBER).HasColumnName("USR_DOCUMENT_NUMBER");
+                entity.Property(u => u.USR_PROVINCE).HasColumnName("USR_PROVINCE");
+                entity.Property(u => u.USR_CITY).HasColumnName("USR_CITY");
+                entity.Property(u => u.USR_POSTAL_CODE).HasColumnName("USR_POSTAL_CODE");
+                entity.Property(u => u.USR_STREET).HasColumnName("USR_STREET");
+                entity.Property(u => u.USR_STREET_NUMBER).HasColumnName("USR_STREET_NUMBER");
+                entity.Property(u => u.USR_FLOOR).HasColumnName("USR_FLOOR");
+                entity.Property(u => u.USR_APARTMENT).HasColumnName("USR_APARTMENT");
             });
 
             modelBuilder.Entity<Product>(entity =>

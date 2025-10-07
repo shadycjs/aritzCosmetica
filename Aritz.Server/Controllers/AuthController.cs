@@ -44,7 +44,6 @@ namespace Aritz.Server.Controllers
                 USR_EMAIL = dto.Email,
                 USR_PASSWORD_HASH = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 USR_PHONE_NUMBER = dto.PhoneNumber ?? string.Empty,
-                USR_ADDRESS = dto.Address ?? string.Empty,
                 USR_CREATED_DATE = DateTime.UtcNow,
                 USR_IS_ADMIN = false,
                 USR_IS_VERIFIED = false,
