@@ -15,6 +15,11 @@ function MyAccount() {
     const [account, setAccount] = useState([]);
     const [error, setError] = useState(null); // Estado para gestionar errores
     const { userId } = useSession();
+    const [formPersonalData, setPersonalData] = useState({
+        nombre: '',
+        apellido: '',
+        documento: ''
+    });
 
     const toggleEditMode = (section) => {
         setEditMode(prev => ({
@@ -23,20 +28,55 @@ function MyAccount() {
         }));
     }
 
-    useEffect(() => {
-        const fetchAccount = async () => {
-            try {
-                const response = await axiosInstance.get(`Account/${userId}`); // Realiza una solicitud GET a /api/products
-                setAccount(response.data); // Actualiza el estado con los datos obtenidos
-                console.log('Cuenta:', response.data);
-            } catch (err) {
-                console.error("Error al obtener la cuenta", err); // Muestra el error en consola
-                setError(err.message); // Guarda el mensaje de error en el estado
-            }
-        };
+    console.log(formPersonalData.nombre);
 
+    const fetchAccount = async () => {
+        try {
+            const response = await axiosInstance.get(`Account/${userId}`);
+            setAccount(response.data); // Actualiza el estado con los datos obtenidos
+            console.log('Cuenta:', response.data);
+        } catch (err) {
+            console.error("Error al obtener la cuenta", err);
+            setError(err.message);
+        }
+    };
+
+    useEffect(() => {
         fetchAccount();
     }, [userId]); 
+
+    const handleUpdPersonalData = async () => {
+        try {
+            console.log("Datos enviados al backend: ", formPersonalData, userId);
+            const response = await axiosInstance.post(`Account/updPersonalData/${userId}`, formPersonalData);
+            fetchAccount();
+        } catch (e) {
+            console.log("Error al actualizar los datos: ", e);
+        }
+    }
+
+    useEffect(() => {
+        setPersonalData({
+            nombre: account.USR_NAME || '',
+            apellido: account.USR_SURNAME || '',
+            documento: account.USR_DOCUMENT_NUMBER || ''
+        });
+    }, [account]);
+
+
+
+    const handlePersonalData = async (e) => {
+        e.preventDefault();
+        try {
+            const { name, value } = e.target;
+            setPersonalData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        } catch (error) {
+            alert(error.response?.data?.Message || 'Error en formulario');
+        }
+    }
 
   return (
       <CenteredContainer>
@@ -111,7 +151,7 @@ function MyAccount() {
                       />
                   </div>
                   <div className={styles.datosCuenta}>
-                      <label className={styles.labelEmailPassword}>
+                      <form className={styles.labelEmailPassword}>
                           {editMode.personal ?
                               <div className={styles.labelEmailUpd}>
                                   <label to="nombre">Nombre:</label>
@@ -119,21 +159,24 @@ function MyAccount() {
                                       type="text"
                                       placeholder="Nombre"
                                       name="nombre"
-                                      value={ account.USR_NAME ? account.USR_NAME : 'SIN CARGAR' }
+                                      value={formPersonalData.nombre}
+                                      onChange={handlePersonalData}
                                   />
                                   <label to="apellido">Apellido:</label>
                                   <input
                                         type="text"
                                         placeholder="Apellido"
                                         name="apellido"
-                                        value={account.USR_SURNAME ? account.USR_SURNAME : 'SIN CARGAR'}
+                                        value={formPersonalData.apellido}
+                                        onChange={handlePersonalData}
                                   />
                                   <label to="documento">Documento:</label>
                                   <input
                                       type='number'
                                       placeholder="Documento"
                                       name="documento"
-                                      value={account.USR_DOCUMENT_NUMBER ? account.USR_DOCUMENT_NUMBER : 0}
+                                      value={formPersonalData.documento}
+                                      onChange={handlePersonalData}
                                   />
                               </div>
                               :
@@ -143,7 +186,7 @@ function MyAccount() {
                                   <p>Documento: {account.USR_DOCUMENT_NUMBER ? account.USR_DOCUMENT_NUMBER : 'SIN CARGAR'}</p>
                               </div>
                           }
-                      </label>
+                      </form>
 
                       {editMode.personal ?
                           <div className={styles.containerBtns}>
@@ -157,6 +200,7 @@ function MyAccount() {
                                   type="submit"
                                   value="Actualizar"
                                   className="btn btn-primary"
+                                  onClick={handleUpdPersonalData}
                               />
                           </div>
                           :
