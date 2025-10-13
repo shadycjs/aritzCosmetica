@@ -6,6 +6,7 @@ import { MdModeEdit } from "react-icons/md";
 import Provinces from "../../data/Provinces.json";
 import axiosInstance from "../../api/axiosConfig";
 import { useSession } from "../../context/SessionContext";
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 function MyAccount() {
     const [editMode, setEditMode] = useState({
         account: false,
@@ -19,6 +20,15 @@ function MyAccount() {
         nombre: '',
         apellido: '',
         documento: ''
+    });
+    const [formDomData, setDomData] = useState({
+        provincia: '',
+        ciudad: '',
+        codpostal: '',
+        calle: '',
+        altura: '',
+        piso: '',
+        casadepto: ''
     });
 
     const toggleEditMode = (section) => {
@@ -49,6 +59,28 @@ function MyAccount() {
         try {
             console.log("Datos enviados al backend: ", formPersonalData, userId);
             const response = await axiosInstance.post(`Account/updPersonalData/${userId}`, formPersonalData);
+            Swal.fire({
+                title: 'Informacion actualizada correctamente!',
+                icon: 'success',
+                confirmButtonText: 'Continuar'
+            })
+            toggleEditMode('personal'); //Cierro el menu de actualizar de datos personales
+            fetchAccount();
+        } catch (e) {
+            console.log("Error al actualizar los datos: ", e);
+        }
+    }
+
+    const handleUpdDom = async () => {
+        try {
+            console.log("Datos enviados al backend: ", formDomData, userId);
+            const response = await axiosInstance.post(`Account/updDom/${userId}`, formDomData);
+            Swal.fire({
+                title: 'Informacion actualizada correctamente!',
+                icon: 'success',
+                confirmButtonText: 'Continuar'
+            })
+            toggleEditMode('domicilio'); //Cierro el menu de actualizar de datos personales
             fetchAccount();
         } catch (e) {
             console.log("Error al actualizar los datos: ", e);
@@ -61,6 +93,16 @@ function MyAccount() {
             apellido: account.USR_SURNAME || '',
             documento: account.USR_DOCUMENT_NUMBER || ''
         });
+
+        setDomData({
+            provincia: account.USR_PROVINCE || '',
+            ciudad: account.USR_CITY || '',
+            codpostal: account.USR_POSTAL_CODE || '',
+            calle: account.USR_STREET || '',
+            altura: account.USR_STREET_NUMBER || '',
+            piso: account.USR_FLOOR || '',
+            casadepto: account.USR_APARTMENT || ''
+        })
     }, [account]);
 
 
@@ -70,6 +112,19 @@ function MyAccount() {
         try {
             const { name, value } = e.target;
             setPersonalData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        } catch (error) {
+            alert(error.response?.data?.Message || 'Error en formulario');
+        }
+    }
+
+    const handleDomData = async (e) => {
+        e.preventDefault();
+        try {
+            const { name, value } = e.target;
+            setDomData(prev => ({
                 ...prev,
                 [name]: value
             }));
@@ -226,10 +281,15 @@ function MyAccount() {
                                       className={styles.shippingInputs}
                                       name="provincia"
                                       id="provincia"
+                                      value={formDomData.provincia || Provinces[0]}
+                                      onChange={handleDomData}
                                   >
                                       <option value="">Selecciona una provincia</option>
                                       {Provinces.map((provincia) => (
-                                          <option key={provincia} value={provincia}>
+                                          <option
+                                              key={provincia}
+                                              value={provincia}
+                                          >
                                               {provincia}
                                           </option>
                                       ))}
@@ -239,36 +299,48 @@ function MyAccount() {
                                       type="text"
                                       placeholder="Ciudad"
                                       name="ciudad"
+                                      value={formDomData.ciudad === '' ? '' : formDomData.ciudad}
+                                      onChange={handleDomData}
                                   />
                                   <label to="codpostal">Codigo Postal:</label>
                                   <input
                                       type="number"
                                       placeholder="Codigo Postal"
                                       name="codpostal"
+                                      value={formDomData.codpostal === '' ? '' : formDomData.codpostal}
+                                      onChange={handleDomData}
                                   />
                                   <label to="calle">Calle:</label>
                                   <input
                                       type="text"
                                       placeholder="Calle"
                                       name="calle"
+                                      value={formDomData.calle === '' ? '' : formDomData.calle}
+                                      onChange={handleDomData}
                                   />
                                   <label to="altura">Altura:</label>
                                   <input
                                       type="number"
                                       placeholder="Altura"
                                       name="altura"
+                                      value={formDomData.altura === '' ? '' : formDomData.altura}
+                                      onChange={handleDomData}
                                   />
                                   <label to="piso">Piso:</label>
                                   <input
                                       type="number"
                                       placeholder="Piso"
                                       name="piso"
+                                      value={formDomData.piso === '' ? '' : formDomData.piso}
+                                      onChange={handleDomData}
                                   />
                                   <label to="casa">Casa/Dpto:</label>
                                   <input
                                       type="number"
                                       placeholder="Casa/Dpto"
                                       name="casa"
+                                      value={formDomData.casadepto === '' ? '' : formDomData.casadepto}
+                                      onChange={handleDomData}
                                   />
                               </div>
                               :
@@ -296,6 +368,7 @@ function MyAccount() {
                                   type="submit"
                                   value="Actualizar"
                                   className="btn btn-primary"
+                                  onClick={handleUpdDom}
                               />
                           </div>
                           :
