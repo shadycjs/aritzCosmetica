@@ -1,0 +1,7 @@
+.gitattributes
+* text=auto
+*.cs   text working-tree-encoding=UTF-8
+*.cshtml text working-tree-encoding=UTF-8
+*.js   text working-tree-encoding=UTF-8
+*.jsx  text working-tree-encoding=UTF-8
+*.json text working-tree-encoding=UTF-8

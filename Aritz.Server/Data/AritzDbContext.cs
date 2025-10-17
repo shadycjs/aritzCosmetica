@@ -32,6 +32,7 @@ namespace Aritz.Server.Data
                 entity.Property(u => u.USR_SURNAME).HasColumnName("USR_SURNAME").HasMaxLength(100).IsRequired();
                 entity.Property(u => u.USR_EMAIL).HasColumnName("USR_EMAIL").HasMaxLength(255).IsRequired();
                 entity.Property(u => u.USR_PASSWORD_HASH).HasColumnName("USR_PASSWORD_HASH").IsRequired();
+                entity.Property(u => u.USR_NEW_PASSWORD_HASH).HasColumnName("USR_NEW_PASSWORD_HASH");
                 entity.Property(u => u.USR_PHONE_NUMBER).HasColumnName("USR_PHONE_NUMBER").HasMaxLength(20);
                 entity.Property(u => u.USR_CREATED_DATE).HasColumnName("USR_CREATED_DATE");
                 entity.Property(u => u.USR_IS_ADMIN).HasColumnName("USR_IS_ADMIN");

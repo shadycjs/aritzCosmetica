@@ -30,6 +30,19 @@ function MyAccount() {
         piso: '',
         casadepto: ''
     });
+    const [passwordData, setPasswordData] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmNewPassword: ''
+    });
+
+    const handlePasswordChange = (e) => {
+        const { name, value } = e.target;
+        setPasswordData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
     const toggleEditMode = (section) => {
         setEditMode(prev => ({
@@ -54,6 +67,62 @@ function MyAccount() {
     useEffect(() => {
         fetchAccount();
     }, [userId]); 
+
+    const handlePasswordSubmit = async (e) => {
+        e.preventDefault();
+        if (passwordData.newPassword !== passwordData.confirmNewPassword) {
+            Swal.fire({ icon: 'error', title: 'Las contraseñas no coinciden' });
+            return;
+        }
+        try {
+            // Enviar datos al backend
+            const response = await axiosInstance.post(`Account/changePassword`, {
+                userId,
+                currentPassword: passwordData.currentPassword,
+                newPassword: passwordData.newPassword
+            });
+            Swal.fire({
+                title: 'Código enviado al mail',
+                text: 'Revisa tu correo para confirmar el cambio de clave.',
+                icon: 'info'
+            });
+            if (response) {
+                const { value: code } = await Swal.fire({
+                    title: "Ingresa el código de confirmación",
+                    input: "text",
+                    inputPlaceholder: "Código de 6 dígitos",
+                    inputAttributes: {
+                        maxlength: 10,
+                        autocapitalize: "off",
+                        autocorrect: "off"
+                    },
+                    showCancelButton: true
+                });
+
+                if (!code) {
+                    Swal.fire({ icon: "info", title: "Operación cancelada" });
+                    return;
+                }
+
+                // Enviar código (y la nueva contraseña si tu backend no la guardó temporalmente)
+                try {
+                    const confirmResponse = await axiosInstance.post("Account/confirmPasswordChange", {
+                        userId,
+                        code
+                    });
+                    Swal.fire({ icon: "success", title: "Clave cambiada correctamente" });
+                    // limpia los campos y cierra la UI si corresponde
+                    setPasswordData({ currentPassword: "", newPassword: "", confirmNewPassword: "" });
+                    toggleEditMode("account");
+                } catch (err) {
+                    Swal.fire({ icon: "error", title: "Error", text: err.response?.data?.Message || "Código inválido o expirado" });
+                }
+            }
+            // Aquí podrías mostrar un input para ingresar el código de verificación
+        } catch (err) {
+            Swal.fire({ icon: 'error', title: 'Error', text: err.response?.data?.Message || 'Error al cambiar la clave' });
+        }
+    };
 
     const handleUpdPersonalData = async () => {
         try {
@@ -156,18 +225,28 @@ function MyAccount() {
                                       placeholder="Email"
                                       name="email"
                                       value={account.USR_EMAIL}
+                                      readOnly
                                   />
-                                  <label to="password">Password:</label>
+                                  <label to="currentPassword">Clave actual:</label>
                                   <input
                                       type="password"
-                                      placeholder="Password"
-                                      name="password"
+                                      placeholder="currentPassword"
+                                      name="currentPassword"
+                                      onChange={handlePasswordChange}
                                   />
-                                  <label to="confirmPassword">Confirm Password:</label>
+                                  <label to="newPassword">Clave nueva:</label>
+                                  <input
+                                      type="password"
+                                      placeholder="newPassword"
+                                      name="newPassword"
+                                      onChange={handlePasswordChange}
+                                  />
+                                  <label to="confirmNewPassword">Repetir Clave nueva:</label>
                                   <input
                                       type="password"
                                       placeholder="Confirm password"
-                                      name="confirmPassword"
+                                      name="confirmNewPassword"
+                                      onChange={ handlePasswordChange}
                                   />
                               </div>
                               :
@@ -189,6 +268,7 @@ function MyAccount() {
                                   type="submit"
                                   value="Actualizar"
                                   className="btn btn-primary"
+                                  onClick={handlePasswordSubmit}
                                   />
                           </div>
                           :
