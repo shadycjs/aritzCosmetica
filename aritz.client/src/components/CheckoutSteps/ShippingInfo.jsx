@@ -1,30 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../../context/CheckoutContext";
 import CenteredContainer from "../CenteredContainer/CenteredContainer";
 import styles from "./CheckoutSteps.module.css";
 import Provinces from "../../data/Provinces.json";
 import TimeLapseCheckout from "../CheckoutSteps/Timelapse/TimelapseCheckout";
+import { useSession } from "../../context/SessionContext";
+import axiosInstance from "../../api/axiosConfig";
 
 function ShippingInfo() {
     const navigate = useNavigate();
-    const { customerInfo, setCustomerInfo } = useCheckout();
 
-    const [formData, setFormData] = useState(customerInfo);
     const [selectedProvincia, setSelectedProvincia] = useState(""); // Estado para la provincia seleccionada
+    const [account, setAccount] = useState([]);
+    const [error, setError] = useState(null);
+    const { userId } = useSession();
+    const [formShipData, setShipData] = useState({
+        nombre: '',
+        apellido: '',
+        email: '',
+        telefono: '',
+        provincia: '',
+        ciudad: '',
+        codpostal: '',
+        calle: '',
+        altura: '',
+        piso: '',
+        casadepto: ''
+    });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+    useEffect(() => {
+        setShipData({
+            nombre: account.USR_NAME || '',
+            apellido: account.USR_SURNAME || '',
+            email: account.USR_EMAIL || '',
+            telefono: account.USR_PHONE_NUMBER || '',
+            provincia: account.USR_PROVINCE || '',
+            ciudad: account.USR_CITY || '',
+            codpostal: account.USR_POSTAL_CODE || '',
+            calle: account.USR_STREET || '',
+            altura: account.USR_STREET_NUMBER || '',
+            piso: account.USR_FLOOR || '',
+            casadepto: account.USR_APARTMENT || ''
+        })
+    }, [account]);
 
-    console.log(customerInfo);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setCustomerInfo(formData); // Actualiza el contexto con los datos ingresados
-        navigate("/checkout/payment-method"); // Ir al siguiente paso
-    };
+    //navigate("/checkout/payment-method"); // Ir al siguiente paso
 
     const back = () => {
         navigate("/cart");
@@ -34,30 +55,70 @@ function ShippingInfo() {
         setSelectedProvincia(event.target.value);
     };
 
+    const fetchAccount = async () => {
+        try {
+            const response = await axiosInstance.get(`Account/${userId}`);
+            setAccount(response.data); // Actualiza el estado con los datos obtenidos
+            console.log('Cuenta:', response.data);
+        } catch (err) {
+            console.error("Error al obtener la cuenta", err);
+            setError(err.message);
+        }
+    };
+
+    const handleShipData = async (e) => {
+        e.preventDefault();
+        try {
+            const { name, value } = e.target;
+            setShipData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        } catch (error) {
+            alert(error.response?.data?.Message || 'Error en formulario');
+        }
+    }
+
+    useEffect(() => {
+        fetchAccount();
+    }, [userId]); 
+
     return (
         <CenteredContainer>
             <TimeLapseCheckout />
             <div className={styles.container}>
-                <form className="d-flex flex-column">
+                <div className="d-flex flex-column gap-2">
                     <h6>CONTACTO</h6>
                     <label className={styles.shippingLabels}>
                         <input
                             className={styles.shippingInputs}
                             type="email"
                             name="email"
-                            placeholder="Email"/>
+                            value={formShipData.email}
+                            placeholder="Email"
+                        />
                     </label>
-                </form>
+                    <label className={styles.shippingLabels}>
+                        <input
+                            className={styles.shippingInputs}
+                            type="telphone"
+                            name="cellphone"
+                            value={formShipData.telefono}
+                            onChange={handleShipData}
+                            placeholder="Telefono"
+                        />
+                    </label>
+                </div>
                 <hr className={styles.shippingSeparate} ></hr>
-                <form className={`d-flex ${styles.formShippingInfo}`} onSubmit={handleSubmit}>
+                <div className={`d-flex ${styles.formShippingInfo}`}>
                     <h6>INFORMACION DE ENVIO</h6>
                     <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                         <input
                             className={styles.shippingInputs}
                             type="text"
                             name="name"
-                            value={formData.name}
-                            onChange={handleChange}
+                            value={formShipData.nombre}
+                            onChange={handleShipData}
                             
                             placeholder="Nombre"
                         />
@@ -65,8 +126,8 @@ function ShippingInfo() {
                             className={styles.shippingInputs}
                             type="text"
                             name="surname"
-                            value={formData.name}
-                            onChange={handleChange}
+                            value={formShipData.apellido}
+                            onChange={handleShipData}
                             
                             placeholder="Apellido"
                         />
@@ -76,7 +137,7 @@ function ShippingInfo() {
                             className={styles.shippingInputs}
                             name="provincias"
                             id="provincias"
-                            value={selectedProvincia}
+                            value={formShipData.provincia || Provinces[0]}
                             onChange={handleChangeProvince}
                         >
                             <option value="">Selecciona una provincia</option>
@@ -92,8 +153,8 @@ function ShippingInfo() {
                             className={styles.shippingInputs}
                             type="text"
                             name="city"
-                            value={formData.city}
-                            onChange={handleChange}
+                            value={formShipData.ciudad}
+                            onChange={handleShipData}
                             
                             placeholder="Ciudad"
                         />
@@ -102,38 +163,57 @@ function ShippingInfo() {
                         <input
                             className={styles.shippingInputs}
                             type="text"
-                            name="address"
-                            value={formData.address}
-                            onChange={handleChange}
+                            name="calle"
+                            value={formShipData.calle}
+                            onChange={handleShipData}
                             
-                            placeholder="Direccion"
+                            placeholder="Calle"
                         />
                         <input
                             className={styles.shippingInputs}
                             type="number"
                             name="postal"
-                            value={formData.postalCode}
-                            onChange={handleChange}
+                            value={formShipData.codpostal}
+                            onChange={handleShipData}
                             
                             placeholder="Codigo Postal"
                         />
                     </label>
-                    <label className={styles.shippingLabels}>
+                    <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                         <input
                             className={styles.shippingInputs}
-                            type="telphone"
-                            name="cellphone"
-                            value={formData.cellphone}
-                            onChange={handleChange}
-                            
-                            placeholder="Telefono"
+                            type="number"
+                            name="postal"
+                            value={formShipData.altura}
+                            onChange={handleShipData}
+
+                            placeholder="Altura"
+                        />
+                        <input
+                            className={styles.shippingInputs}
+                            type="number"
+                            name="postal"
+                            value={formShipData.piso}
+                            onChange={handleShipData}
+
+                            placeholder="Piso"
+                        />
+                        <input
+                            className={styles.shippingInputs}
+                            type="number"
+                            name="postal"
+                            value={formShipData.casadepto}
+                            onChange={handleShipData}
+
+                            placeholder="Casa"
                         />
                     </label>
+
                     <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                         <button type="button" onClick={back} className={styles.btnShippingBack}>Volver</button>
-                        <button onClick={handleSubmit} className={styles.btnShippingNext} type="submit">Siguiente</button>
+                        <button className={styles.btnShippingNext} type="submit">Siguiente</button>
                     </label>
-                </form>
+                </div>
             </div>
         </CenteredContainer>
     );
