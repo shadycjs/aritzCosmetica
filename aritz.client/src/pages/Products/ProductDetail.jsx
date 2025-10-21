@@ -74,7 +74,7 @@ function ProductDetail() {
                     </div>
                 </div>
                 <div className={styles.infoContainer}>
-                    <h3 className={styles.titleInfo}>{product.PRD_NAME}</h3>
+                    <h3 className={styles.titleInfo}>{product.Category.CAT_NAME} {product.PRD_NAME}</h3>
                     <b className={styles.priceInfo}>${product.PRD_PRICE}</b>
                     <p className={styles.descInfo}>{product.PRD_DESCRIPTION}</p>
                     <button

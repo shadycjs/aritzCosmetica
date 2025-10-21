@@ -19,7 +19,8 @@ function MyAccount() {
     const [formPersonalData, setPersonalData] = useState({
         nombre: '',
         apellido: '',
-        documento: ''
+        documento: '',
+        telefono: ''
     });
     const [formDomData, setDomData] = useState({
         provincia: '',
@@ -160,7 +161,8 @@ function MyAccount() {
         setPersonalData({
             nombre: account.USR_NAME || '',
             apellido: account.USR_SURNAME || '',
-            documento: account.USR_DOCUMENT_NUMBER || ''
+            documento: account.USR_DOCUMENT_NUMBER || '',
+            telefono: account.USR_PHONE_NUMBER || ''
         });
 
         setDomData({
@@ -313,12 +315,21 @@ function MyAccount() {
                                       value={formPersonalData.documento}
                                       onChange={handlePersonalData}
                                   />
+                                  <label to="documento">Telefono:</label>
+                                  <input
+                                      type='number'
+                                      placeholder="Telefono"
+                                      name="telefono"
+                                      value={formPersonalData.telefono}
+                                      onChange={handlePersonalData}
+                                  />
                               </div>
                               :
                               <div className={styles.noEditContainer}>
                                   <p>Nombre: {account.USR_NAME ? account.USR_NAME : 'SIN CARGAR'}</p>
                                   <p>Apellido: {account.USR_SURNAME ? account.USR_SURNAME : 'SIN CARGAR'}</p>
                                   <p>Documento: {account.USR_DOCUMENT_NUMBER ? account.USR_DOCUMENT_NUMBER : 'SIN CARGAR'}</p>
+                                  <p>Telefono: {account.USR_PHONE_NUMBER ? account.USR_PHONE_NUMBER : 'SIN CARGAR'}</p>
                               </div>
                           }
                       </form>

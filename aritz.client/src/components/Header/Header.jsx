@@ -17,6 +17,8 @@ const Header = () => {
     const { isLoggedIn, setIsLoggedIn, userName, setUserName, userId } = useSession();
     const { totalQuantity, fetchCountCart } = useCart();
     const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
+    const [error, setError] = useState(null);
 
     const handleLogout = () => {
         localStorage.removeItem('authToken');
@@ -28,8 +30,19 @@ const Header = () => {
 
     useEffect(() => {
         fetchCountCart(); // Vuelve a cargar los datos si es necesario
+        fetchCategories();
     }, []);
 
+    const fetchCategories = async () => {
+        try {
+            const response = await axiosInstance.get('Products/by-category'); // Realiza una solicitud GET a /api/products
+            setCategories(response.data); // Actualiza el estado con los datos obtenidos
+            console.log('Categorias obtenidas:', response.data);
+        } catch (err) {
+            console.error("Error al obtener los productos", err); // Muestra el error en consola
+            setError(err.message); // Guarda el mensaje de error en el estado
+        }
+    }
 
     return (
         <nav className={`navbar navbar-expand-lg ${styles.navbar}`}>
@@ -78,50 +91,25 @@ const Header = () => {
                             </NavLink>
                             <div className={styles.dropdown}>
                                 <ul>
-                                    <li>
-                                        <h5><b> Cremas faciales </b></h5>
-                                        <NavLink to="/products/cremas-faciales/product-1" className={styles.dropdownItem}>
-                                            Producto 1
-                                        </NavLink>
-                                        <NavLink to="/products/cremas-faciales/product-1" className={styles.dropdownItem}>
-                                            Producto 1
-                                        </NavLink>
-                                    </li>
-                                    <li>
-                                        <h5><b> Pastas dentales </b></h5>
-                                        <NavLink to="/products/pastas-dentales/product-2" className={styles.dropdownItem}>
-                                            Producto 2
-                                        </NavLink>
-                                    </li>
-                                    <li>
-                                        <h5><b> Sprays </b></h5>
-                                        <NavLink to="/products/product-3" className={styles.dropdownItem}>
-                                            Producto 3
-                                        </NavLink>
-                                    </li>
-                                </ul>
-                                                                <ul>
-                                    <li>
-                                        <h5><b> Desodorantes </b></h5>
-                                        <NavLink to="/products/cremas-faciales/product-1" className={styles.dropdownItem}>
-                                            Producto 1
-                                        </NavLink>
-                                        <NavLink to="/products/cremas-faciales/product-1" className={styles.dropdownItem}>
-                                            Producto 1
-                                        </NavLink>
-                                    </li>
-                                    <li>
-                                        <h5><b> Shampoos </b></h5>
-                                        <NavLink to="/products/pastas-dentales/product-2" className={styles.dropdownItem}>
-                                            Producto 2
-                                        </NavLink>
-                                    </li>
-                                    <li>
-                                        <h5><b> Jabones </b></h5>
-                                        <NavLink to="/products/product-3" className={styles.dropdownItem}>
-                                            Producto 3
-                                        </NavLink>
-                                    </li>
+                                    {categories.map((category) => (
+                                        <li key={category.CAT_ID}>
+                                            <h5>
+                                                <b>{category.CAT_NAME}</b>
+                                            </h5>
+                                            <ul>
+                                                {category.Products.map((product) => (
+                                                    <li key={product.PRD_ID}>
+                                                        <NavLink
+                                                            to={`/product/product-detail/${product.PRD_ID}`}
+                                                            className={styles.dropdownItem}
+                                                        >
+                                                            {product.PRD_NAME}
+                                                        </NavLink>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         </li>

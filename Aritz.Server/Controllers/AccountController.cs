@@ -70,6 +70,13 @@ namespace Aritz.Server.Controllers
                 updated = true;
             }
 
+            string telefonoStr = dtoPd.telefono.ToString();
+            if (user.USR_PHONE_NUMBER != telefonoStr)
+            {
+                user.USR_PHONE_NUMBER = telefonoStr;
+                updated = true;
+            }
+
             if (updated)
             {
                 await _context.SaveChangesAsync();
@@ -204,6 +211,7 @@ namespace Aritz.Server.Controllers
             public string nombre { get; set; }
             public string apellido { get; set; }
             public int documento { get; set; }
+            public int telefono { get; set; }
         }
 
         public class DomicilioData

@@ -113,7 +113,7 @@ function Products() {
                                     <div className={`card ${styles.carta}`}>
                                             <img src={`src/assets/images/${producto.PRD_IMAGE}`} className="card-img-top" alt="Producto 1" />
                                         <div className={`card-body ${styles.cuerpoCarta}`}>
-                                                <h5 onClick={() => next(producto.PRD_ID)} className={`card-title ${styles.productTitle}`}>{producto.PRD_NAME}</h5>
+                                                <h5 onClick={() => next(producto.PRD_ID)} className={`card-title ${styles.productTitle}`}>{producto.Category.CAT_NAME} {producto.PRD_NAME}</h5>
                                             <p className="card-text">${producto.PRD_PRICE}</p>
                                         </div>
                                             <button onClick={() => { handleAddToCart(producto.PRD_ID) }} className={styles.cartaAddCart}>Agregar al carrito</button>
