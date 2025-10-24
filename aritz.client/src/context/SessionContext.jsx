@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import axiosInstance from "../api/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
+import { FaBoxOpen } from 'react-icons/fa';
 
 // Crea el contexto inicial
 const SessionContext = createContext();
@@ -39,6 +40,23 @@ export const SessionProvider = ({ children }) => {
         }
     }, []);
 
+    // Exp regular para el mail
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+
+    // Exp regular para la clave
+    const hasUppercase = /[A-Z]/;
+    const hasLowercase = /[a-z]/;
+    const hasNumber = /[0-9]/;
+    const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    const minLength = 8;
+
+    // Estado para la barra de fuerza
+    const [passwordStrength, setPasswordStrength] = useState(0); // Width de la barra
+    const [strengthColor, setStrengthColor] = useState(''); // Color de la barra
+    const [strengthMessage, setStrengthMessage] = useState(''); // Mensaje
+
+
+
     // Funcion para cambiar pantalla de logueo
     const screenIn = () => {
         setScreenLogIn(true);
@@ -49,14 +67,73 @@ export const SessionProvider = ({ children }) => {
         setScreenLogIn(false);
     };
 
+    const updateStrengthMeter = (level) => {
+        let colorClass;
+        let message;
+
+        switch (level) {
+            case 0:
+                colorClass = '';
+                message = ''
+                break;
+            case 1:
+                colorClass = 'red';
+                message = 'Muy debil'
+                break;
+            case 2: 
+                colorClass = 'orange';
+                message = 'Debil'
+                break;
+            case 3: 
+                colorClass = 'yellow';
+                message = 'Aceptable'
+                break;
+            case 4: 
+                colorClass = 'lime';
+                message = 'Fuerte'
+                break;
+            case 5: 
+                colorClass = 'green';
+                message = '¡Muy fuerte!'
+                break;
+        }
+        setPasswordStrength(`${(level / 5) * 100}%`); // porcentaje
+        setStrengthColor(colorClass);
+        setStrengthMessage(message);
+    }
+
     const handleChange = (e) => {
+        const { name, value } = e.target;
         setFormData({ ...formData, [e.target.name]: e.target.value });
+
+        if(name === 'password') {
+            let strength = 0;
+            const password = value;
+
+            if (password.length >= minLength) strength++;
+            if (hasUppercase.test(password)) strength++;
+            if (hasLowercase.test(password)) strength++;
+            if (hasNumber.test(password)) strength++;
+            if (hasSymbol.test(password)) strength++;
+
+            updateStrengthMeter(strength);
+        }
     };
 
     const handleRegister = async (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            alert("Las contraseñas no coinciden");
+            Swal.fire({
+                icon: "error",
+                title: "Las contrasenias no coinciden"
+            });
+            return;
+        }
+        if (!emailRegex.test(formData.email)) {
+            Swal.fire({
+                icon: "error",
+                title: "Ingrese un mail valido"
+            });
             return;
         }
         try {
@@ -71,7 +148,8 @@ export const SessionProvider = ({ children }) => {
             setEmail(formData.email);
             setIsVerifying(true);
             Swal.fire({
-              title: "Se envio el codigo de verificacion, por favor, revisa tu casilla de mail",
+                title: "Se envio el codigo de verificacion, por favor, revisa tu casilla de mail",
+                icon: "info",
               showClass: {
                 popup: `
                   animate__animated
@@ -91,6 +169,8 @@ export const SessionProvider = ({ children }) => {
             alert(error.response?.data?.Message || 'Error en registro');
         }
     };
+
+
 
     const handleVerify = async (e) => {
         e.preventDefault();
@@ -164,7 +244,10 @@ export const SessionProvider = ({ children }) => {
         userId,
         setUserId,
         pageCheckout,
-        setPageCheckout
+        setPageCheckout,
+        strengthColor,
+        passwordStrength,
+        strengthMessage
     };
 
     return (

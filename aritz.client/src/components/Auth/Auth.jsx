@@ -5,7 +5,7 @@ import CenteredContainer from "../CenteredContainer/CenteredContainer";
 function Auth() {
     const { screenLogIn, screenIn, screenOut, handleChange, handleRegister,
         handleVerify, handleLogin, isRegister, isVerifying, code, setCode, formData,
-        setIsRegister } = useSession();
+        setIsRegister, passwordStrength, strengthColor, strengthMessage } = useSession();
 
     return (
         <CenteredContainer>
@@ -96,17 +96,39 @@ function Auth() {
                                 required
                             />
                         </div>
-                        {isRegister && (
-                            <div className={styles.formGroup}>
-                                <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
-                                <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    name="confirmPassword"
-                                    value={formData.confirmPassword}
-                                    onChange={handleChange}
-                                    required
-                                />
+                            {isRegister && (
+                                <div className='d-flex flex-column gap-3'>
+                                <div className={styles.formGroup}>
+                                    <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
+                                    <input
+                                        type="password"
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        value={formData.confirmPassword}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                                    <div>
+                                        <div
+                                            style={{
+                                                height: "5px",
+                                                width: passwordStrength,
+                                                backgroundColor: `${strengthColor}`,
+                                                borderRadius: "5px"
+                                            }}>
+                                            <p
+                                                style={{
+                                                    textAlign: "center",
+                                                    color: `${strengthColor}`,
+                                                    height: "15px",
+                                                    padding: "10px"
+                                                }}
+                                            >
+                                                {strengthMessage}
+                                            </p>
+                                        </div>
+                                </div>
                             </div>
                         )}
                         <button type="submit" className={styles.submitButton}>
