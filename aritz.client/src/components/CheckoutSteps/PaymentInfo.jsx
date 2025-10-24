@@ -23,7 +23,7 @@ function PaymentInfo() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [cart, setCart] = useState([]);
-    const location = useLocation(); 
+    const location = useLocation();
 
     const { userId, setPageCheckout } = useSession();
     setPageCheckout(location);

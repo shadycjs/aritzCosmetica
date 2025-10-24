@@ -14,6 +14,7 @@
 .shippingInputs{
     height: 40px;
     width: 100%;
+    position: relative;
 }
 
 .btnShippingNext {
@@ -198,4 +199,27 @@
 
 .total {
     color: #24e41c;
+}
+
+.calcSend {
+    border: none;
+    padding: 5px;
+    height: 40px;
+    width: 100%;
+}
+
+    .calcSend:hover{
+        background-color: rgb(194, 194, 194);
+    }
+
+/* Ocultar las flechitas en los input type number */
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
 }

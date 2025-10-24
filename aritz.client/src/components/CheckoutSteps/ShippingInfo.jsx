@@ -194,6 +194,7 @@ function ShippingInfo() {
                             onChange={handleShipData}
                             placeholder="Calle"
                         />
+                        <label>
                         <input
                             className={styles.shippingInputs}
                             type="number"
@@ -201,7 +202,9 @@ function ShippingInfo() {
                             value={formShipData.codpostal}
                             onChange={handleShipData}
                             placeholder="Codigo Postal"
-                        />
+                            />
+                        </label>
+                        <button className={styles.calcSend}>Calcular Envio</button>
                     </label>
                     <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                         <input
