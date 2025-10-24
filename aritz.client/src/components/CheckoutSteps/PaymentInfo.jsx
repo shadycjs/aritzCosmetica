@@ -12,6 +12,7 @@ import { initMercadoPago, Payment } from '@mercadopago/sdk-react'
 import { useSession } from "../../context/SessionContext";
 initMercadoPago('TEST-aa2427a9-e156-4f55-b4c0-d9c5e9b5774c');
 import Swal from 'sweetalert2';
+import { useLocation } from 'react-router'
 
 function PaymentInfo() {
     const { paymentMethod, setPaymentMethod } = useCheckout();
@@ -22,9 +23,10 @@ function PaymentInfo() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [cart, setCart] = useState([]);
+    const location = useLocation(); 
 
-    const { userId } = useSession();
-    console.log(userId);
+    const { userId, setPageCheckout } = useSession();
+    setPageCheckout(location);
 
     useEffect(() => {
         fetchCart();

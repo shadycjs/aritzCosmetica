@@ -14,7 +14,7 @@ import Swal from 'sweetalert2'; // Importar SweetAlert2
 
 const Header = () => {
 
-    const { isLoggedIn, setIsLoggedIn, userName, setUserName, userId } = useSession();
+    const { isLoggedIn, setIsLoggedIn, userName, setUserName, userId, pageCheckout } = useSession();
     const { totalQuantity, fetchCountCart } = useCart();
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
@@ -43,6 +43,8 @@ const Header = () => {
             setError(err.message); // Guarda el mensaje de error en el estado
         }
     }
+
+
 
     return (
         <nav className={`navbar navbar-expand-lg ${styles.navbar}`}>
@@ -151,7 +153,7 @@ const Header = () => {
                                     </div>
                                     <NavLink
                                         className={styles.carritoContainer}
-                                        to="/cart"
+                                        to={pageCheckout}
                                         style={ {color: "#fff"} }
                                     >
                                         <FaShoppingCart className={styles.carrito} />

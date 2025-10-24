@@ -7,6 +7,8 @@ import Provinces from "../../data/Provinces.json";
 import TimeLapseCheckout from "../CheckoutSteps/Timelapse/TimelapseCheckout";
 import { useSession } from "../../context/SessionContext";
 import axiosInstance from "../../api/axiosConfig";
+import Swal from 'sweetalert2'; // Importar SweetAlert2
+import { useLocation } from 'react-router'
 
 function ShippingInfo() {
     const navigate = useNavigate();
@@ -14,7 +16,7 @@ function ShippingInfo() {
     const [selectedProvincia, setSelectedProvincia] = useState(""); // Estado para la provincia seleccionada
     const [account, setAccount] = useState([]);
     const [error, setError] = useState(null);
-    const { userId } = useSession();
+    const { userId, setPageCheckout } = useSession();
     const [formShipData, setShipData] = useState({
         nombre: '',
         apellido: '',
@@ -28,6 +30,10 @@ function ShippingInfo() {
         piso: '',
         casadepto: ''
     });
+    const postalRegex = /^\d{4}$/;
+    const location = useLocation();
+
+    setPageCheckout(location);
 
     useEffect(() => {
         setShipData({
@@ -81,7 +87,28 @@ function ShippingInfo() {
 
     useEffect(() => {
         fetchAccount();
-    }, [userId]); 
+    }, [userId]);
+
+    const handleUpdDom = async () => {
+        try {
+            console.log("Datos enviados al backend: ", formShipData, userId);
+
+            //Validacion para el codigo postal
+            if (!postalRegex.test(String(formShipData.codpostal || '').trim())) {
+                // user feedback
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "El codigo postal debe tener al menos y como maximo 4 digitos"
+                });
+                return;
+            }
+            const response = await axiosInstance.post(`Account/updDom/${userId}`, formShipData);
+            navigate('/checkout/payment-method');
+        } catch (e) {
+            console.log("Error al actualizar los datos: ", e);
+        }
+    }
 
     return (
         <CenteredContainer>
@@ -96,6 +123,7 @@ function ShippingInfo() {
                             name="email"
                             value={formShipData.email}
                             placeholder="Email"
+                            readOnly
                         />
                     </label>
                     <label className={styles.shippingLabels}>
@@ -116,29 +144,27 @@ function ShippingInfo() {
                         <input
                             className={styles.shippingInputs}
                             type="text"
-                            name="name"
+                            name="nombre"
                             value={formShipData.nombre}
                             onChange={handleShipData}
-                            
                             placeholder="Nombre"
                         />
                         <input
                             className={styles.shippingInputs}
                             type="text"
-                            name="surname"
+                            name="apellido"
                             value={formShipData.apellido}
                             onChange={handleShipData}
-                            
                             placeholder="Apellido"
                         />
                     </label>
                     <label className={styles.shippingLabels} htmlFor="provincias">
                         <select
                             className={styles.shippingInputs}
-                            name="provincias"
+                            name="provincia"
                             id="provincias"
                             value={formShipData.provincia || Provinces[0]}
-                            onChange={handleChangeProvince}
+                            onChange={handleShipData}
                         >
                             <option value="">Selecciona una provincia</option>
                             {Provinces.map((provincia) => (
@@ -152,7 +178,7 @@ function ShippingInfo() {
                         <input
                             className={styles.shippingInputs}
                             type="text"
-                            name="city"
+                            name="ciudad"
                             value={formShipData.ciudad}
                             onChange={handleShipData}
                             
@@ -166,16 +192,14 @@ function ShippingInfo() {
                             name="calle"
                             value={formShipData.calle}
                             onChange={handleShipData}
-                            
                             placeholder="Calle"
                         />
                         <input
                             className={styles.shippingInputs}
                             type="number"
-                            name="postal"
+                            name="codpostal"
                             value={formShipData.codpostal}
                             onChange={handleShipData}
-                            
                             placeholder="Codigo Postal"
                         />
                     </label>
@@ -183,35 +207,41 @@ function ShippingInfo() {
                         <input
                             className={styles.shippingInputs}
                             type="number"
-                            name="postal"
+                            name="altura"
                             value={formShipData.altura}
                             onChange={handleShipData}
-
                             placeholder="Altura"
                         />
                         <input
                             className={styles.shippingInputs}
                             type="number"
-                            name="postal"
+                            name="piso"
                             value={formShipData.piso}
                             onChange={handleShipData}
-
                             placeholder="Piso"
                         />
                         <input
                             className={styles.shippingInputs}
                             type="number"
-                            name="postal"
+                            name="casadepto"
                             value={formShipData.casadepto}
                             onChange={handleShipData}
-
                             placeholder="Casa"
                         />
                     </label>
 
                     <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
-                        <button type="button" onClick={back} className={styles.btnShippingBack}>Volver</button>
-                        <button className={styles.btnShippingNext} type="submit">Siguiente</button>
+                        <button
+                            type="submit"
+                            onClick={back}
+                            className={styles.btnShippingBack}>Volver</button>
+                        <button
+                            className={styles.btnShippingNext}
+                            type="submit"
+                            onClick={handleUpdDom}
+                        >
+                            Siguiente
+                        </button>
                     </label>
                 </div>
             </div>

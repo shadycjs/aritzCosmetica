@@ -7,10 +7,16 @@ import { useNavigate } from "react-router-dom";
 import MercadoPagoIcon from "../../assets/icons/mercadopago.svg"
 import CreditCardIcon from "../../assets/icons/creditcard.svg"
 import { AiFillBank } from "react-icons/ai";
+import { useLocation } from 'react-router'
+import { useSession } from "../../context/SessionContext";
 
 function PaymentInfo() {
     const { paymentMethod, setPaymentMethod } = useCheckout();
+    const { setPageCheckout } = useSession();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    setPageCheckout(location);
 
     const handleSelectMethod = (method) => {
         setPaymentMethod(method);

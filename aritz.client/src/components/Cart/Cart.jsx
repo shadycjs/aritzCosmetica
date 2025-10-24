@@ -9,23 +9,26 @@ import axiosInstance from "../../api/axiosConfig";
 import { useSession } from "../../context/SessionContext";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import BreadCrum from "../BreadCrum/BreadCrum";
+import { useLocation } from 'react-router'
 
 function Carrito() {
     const navigate = useNavigate();
     const { fetchCountCart, fetchSumTotalCart, totalSumCart } = useCart();
-    const { userId } = useSession();
-
-    const handleProceedToCheckout = () => {
-        navigate("/checkout/shipping-info"); // Redirige al paso 1 del checkout
-    };
-
+    const { userId, setPageCheckout } = useSession();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [cart, setCart] = useState([]);
+    const location = useLocation();
 
     useEffect(() => {
         fetchCart();
     }, [userId]);
+
+    setPageCheckout(location);
+
+    const handleProceedToCheckout = () => {
+        navigate("/checkout/shipping-info"); // Redirige al paso 1 del checkout
+    };
 
     const fetchCart = async () => {
         try {

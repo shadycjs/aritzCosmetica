@@ -26,6 +26,7 @@ export const SessionProvider = ({ children }) => {
     const [userName, setUserName] = useState('');
     const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
+    const [pageCheckout, setPageCheckout] = useState('/cart');
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -141,6 +142,7 @@ export const SessionProvider = ({ children }) => {
         }
     };
 
+
     // Valor que proporciona el contexto
     const value = {
         isLoggedIn,
@@ -160,7 +162,9 @@ export const SessionProvider = ({ children }) => {
         setIsRegister,
         userName,
         userId,
-        setUserId
+        setUserId,
+        pageCheckout,
+        setPageCheckout
     };
 
     return (
