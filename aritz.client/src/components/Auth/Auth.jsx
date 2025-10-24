@@ -117,6 +117,7 @@ function Auth() {
                                                 backgroundColor: `${strengthColor}`,
                                                 borderRadius: "5px"
                                             }}>
+                                        </div>
                                             <p
                                                 style={{
                                                     textAlign: "center",
@@ -127,7 +128,7 @@ function Auth() {
                                             >
                                                 {strengthMessage}
                                             </p>
-                                        </div>
+                                        
                                 </div>
                             </div>
                         )}
