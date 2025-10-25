@@ -110,12 +110,13 @@ function Auth() {
                                     />
                                 </div>
                                     <div>
-                                        <div
+                                        <div 
                                             style={{
                                                 height: "5px",
                                                 width: passwordStrength,
                                                 backgroundColor: `${strengthColor}`,
-                                                borderRadius: "5px"
+                                                borderRadius: "5px",
+                                                transition: 'ease-in-out'
                                             }}>
                                         </div>
                                             <p

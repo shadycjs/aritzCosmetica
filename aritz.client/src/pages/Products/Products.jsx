@@ -39,7 +39,15 @@ function Products() {
 
     const handleAddToCart = async (productId, quantity = 1) => {
         try {
-            console.log("Datos enviados al backend:", { userId, productId, quantity });
+            if (userId == null) {
+                Swal.fire({
+                    title: 'Debe iniciar sesion para agregar productos al carrito',
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
+                return;
+            }
+
             const response = await axiosInstance.post("Cart/add-to-cart", {
                 userId,
                 productId,
