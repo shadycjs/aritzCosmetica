@@ -9,12 +9,18 @@ import CreditCardIcon from "../../assets/icons/creditcard.svg"
 import { AiFillBank } from "react-icons/ai";
 import { useLocation } from 'react-router'
 import { useSession } from "../../context/SessionContext";
+import { useCart } from "../../context/CartContext";
 
 function PaymentInfo() {
     const { paymentMethod, setPaymentMethod } = useCheckout();
     const { setPageCheckout } = useSession();
     const navigate = useNavigate();
     const location = useLocation();
+    const { totalSumCart } = useCart();
+
+    if (totalSumCart < 20000) {
+        navigate('/cart');
+    }
 
     setPageCheckout(location);
 

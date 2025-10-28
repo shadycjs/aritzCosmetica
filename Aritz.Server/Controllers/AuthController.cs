@@ -139,6 +139,7 @@ namespace Aritz.Server.Controllers
                     Token = tokenString,
                     UserId = user.USR_ID,
                     UserName = user.USR_NAME,
+                    UserIsAdmin = user.USR_IS_ADMIN,
                     Message = "Login exitoso."
                 });
             }

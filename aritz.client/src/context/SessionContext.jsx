@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+ï»¿import React, { createContext, useState, useContext, useEffect } from "react";
 import axiosInstance from "../api/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
@@ -7,9 +7,9 @@ import { FaBoxOpen } from 'react-icons/fa';
 // Crea el contexto inicial
 const SessionContext = createContext();
 
-// Este será tu componente proveedor para envolver toda la app
+// Este serÃ¡ tu componente proveedor para envolver toda la app
 export const SessionProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado de autenticación
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado de autenticaciÃ³n
     const [screenLogIn, setScreenLogIn] = useState(true);
     const [isRegister, setIsRegister] = useState(false);
     const [isVerifying, setIsVerifying] = useState(false);
@@ -19,7 +19,7 @@ export const SessionProvider = ({ children }) => {
         surname: '',
         email: '',
         password: '',
-        confirmPassword: '', // Nuevo campo para confirmación
+        confirmPassword: '', // Nuevo campo para confirmaciÃ³n
         phoneNumber: '',
         address: ''
     });
@@ -28,6 +28,10 @@ export const SessionProvider = ({ children }) => {
     const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
     const [pageCheckout, setPageCheckout] = useState('/cart');
+    const [isAdmin, setIsAdmin] = useState(() => {
+        const saved = localStorage.getItem('isAdmin');
+        return saved === 'true'; // Convierte string â†’ boolean
+    });
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -39,6 +43,11 @@ export const SessionProvider = ({ children }) => {
             setUserId(parseInt(storedUserId));
         }
     }, []);
+
+    useEffect(() => {
+        // Cada vez que isAdmin cambie, actualiza localStorage
+        localStorage.setItem('isAdmin', isAdmin.toString());
+    }, [isAdmin]);
 
     // Exp regular para el mail
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
@@ -94,7 +103,7 @@ export const SessionProvider = ({ children }) => {
                 break;
             case 5: 
                 colorClass = 'green';
-                message = '¡Muy fuerte!'
+                message = 'Â¡Muy fuerte!'
                 break;
         }
         setPasswordStrength(`${(level / 5) * 100}%`); // porcentaje
@@ -185,7 +194,7 @@ export const SessionProvider = ({ children }) => {
                 draggable: true
             });
         } catch (error) {
-            alert(error.response?.data?.Message || 'Código inválido');
+            alert(error.response?.data?.Message || 'CÃ³digo invÃ¡lido');
         }
     };
 
@@ -200,10 +209,13 @@ export const SessionProvider = ({ children }) => {
             localStorage.setItem('authToken', response.data.Token);
             localStorage.setItem('userName', response.data.UserName);
             localStorage.setItem('userId', response.data.UserId.toString());
+            localStorage.setItem('isAdmin', response.data.UserIsAdmin.toString());
+
             setIsLoggedIn(true);
             setUserName(response.data.UserName);
-            console.log(response.data.UserId);
             setUserId(parseInt(response.data.UserId));
+            setIsAdmin(response.data.UserIsAdmin);
+
             Swal.fire({
                 position: "top-end",
                 icon: "success",
@@ -247,7 +259,8 @@ export const SessionProvider = ({ children }) => {
         setPageCheckout,
         strengthColor,
         passwordStrength,
-        strengthMessage
+        strengthMessage,
+        isAdmin
     };
 
     return (
@@ -257,7 +270,7 @@ export const SessionProvider = ({ children }) => {
     );
 };
 
-// Custom Hook para usar el contexto más fácilmente
+// Custom Hook para usar el contexto mÃ¡s fÃ¡cilmente
 export const useSession = () => {
     return useContext(SessionContext);
 };

@@ -28,6 +28,10 @@ function PaymentInfo() {
     const { userId, setPageCheckout } = useSession();
     setPageCheckout(location);
 
+    if (totalSumCart < 20000) {
+        navigate('/cart');
+    }
+
     useEffect(() => {
         fetchCart();
     }, [userId]);

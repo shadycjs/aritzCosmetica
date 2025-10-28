@@ -3,6 +3,7 @@ import React from 'react';
 import { NavLink } from "react-router-dom";
 import styles from './Header.module.css';
 import { FaHome, FaBoxOpen, FaEnvelope, FaShoppingCart } from 'react-icons/fa';
+import { CiEdit } from "react-icons/ci";
 import Auth from '../Auth/Auth';
 import { useSession } from '../../context/SessionContext';
 import { useCart } from '../../context/CartContext';
@@ -14,7 +15,7 @@ import Swal from 'sweetalert2'; // Importar SweetAlert2
 
 const Header = () => {
 
-    const { isLoggedIn, setIsLoggedIn, userName, setUserName, userId, pageCheckout } = useSession();
+    const { isLoggedIn, setIsLoggedIn, userName, setUserName, userId, pageCheckout, isAdmin } = useSession();
     const { totalQuantity, fetchCountCart } = useCart();
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
@@ -137,14 +138,32 @@ const Header = () => {
                                     <div className={styles.user}>
                                         <b >{userName}</b>
                                         <ul className={styles.userDropdown}>
-                                            <NavLink
-                                                to="/user/my-account"
-                                                className={styles.userNavlink}
-                                            >Mi cuenta</NavLink>
-                                            <NavLink
-                                                to="/user/my-requests"
-                                                className={styles.userNavlink}
-                                            >Mis pedidos</NavLink>
+                                            {
+                                                isAdmin
+                                                    ?
+                                                <NavLink
+                                                    to="/user/my-account"
+                                                    className={styles.userNavlink}
+                                                    >
+                                                    <CiEdit />
+                                                    Administrar
+                                                </NavLink>
+                                                    :
+                                                <>
+                                                    <NavLink
+                                                        to="/user/my-account"
+                                                        className={styles.userNavlink}
+                                                    >
+                                                        Mi cuenta
+                                                    </NavLink>
+                                                    <NavLink
+                                                        to="/user/my-requests"
+                                                        className={styles.userNavlink}
+                                                    >
+                                                        Mis pedidos
+                                                    </NavLink>
+                                                </>
+                                            }
                                             <button
                                                 className="btn btn-danger"
                                                 onClick={handleLogout}>Cerrar Sesion

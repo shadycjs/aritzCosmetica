@@ -9,6 +9,7 @@ import { useSession } from "../../context/SessionContext";
 import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import { useLocation } from 'react-router'
+import { useCart } from "../../context/CartContext";
 
 function ShippingInfo() {
     const navigate = useNavigate();
@@ -32,6 +33,11 @@ function ShippingInfo() {
     });
     const postalRegex = /^\d{4}$/;
     const location = useLocation();
+    const { totalSumCart } = useCart();
+
+    if (totalSumCart < 20000) {
+        navigate('/cart');
+    }
 
     setPageCheckout(location);
 
