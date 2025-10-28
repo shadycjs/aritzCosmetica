@@ -14,6 +14,9 @@ import ProductDetail from '../pages/Products/ProductDetail';
 import MyRequests from '../pages/Requests/MyRequests';
 import MyRequestDetail from '../pages/Requests/MyRequestDetail';
 import MyAccount from '../pages/Account/MyAccount';
+import AdminManage from '../components/Admin/AdminManage';
+import AdminProducts from '../components/Admin/AdminProducts';
+import AdminUsers from '../components/Admin/AdminUsers';
 
 const AppRoutes = () => {
     return (
@@ -31,6 +34,9 @@ const AppRoutes = () => {
             <Route path="/user/my-requests" element={<MyRequests />} />
             <Route path="/user/my-requests/my-order/:id" element={<MyRequestDetail />} />
             <Route path="/user/my-account" element={<MyAccount />} />
+            <Route path="/admin/management" element={<AdminManage />} />
+            <Route path="/admin/management/products" element={<AdminProducts />} />
+            <Route path="/admin/management/users" element={<AdminUsers />} />
         </Routes>
     );
 };

@@ -142,10 +142,10 @@ const Header = () => {
                                                 isAdmin
                                                     ?
                                                 <NavLink
-                                                    to="/user/my-account"
+                                                    to="/admin/management"
                                                     className={styles.userNavlink}
                                                     >
-                                                    <CiEdit />
+                                                        <CiEdit size={20} />
                                                     Administrar
                                                 </NavLink>
                                                     :

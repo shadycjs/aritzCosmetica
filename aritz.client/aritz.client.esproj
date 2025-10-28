@@ -21,6 +21,7 @@
     <Folder Include="src\components\Auth\" />
     <Folder Include="src\components\Cart\" />
     <Folder Include="src\components\BreadCrum\" />
+    <Folder Include="src\components\Admin\" />
     <Folder Include="src\layouts\" />
     <Folder Include="src\hooks\" />
     <Folder Include="src\pages\Checkout\" />
