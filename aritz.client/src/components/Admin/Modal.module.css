@@ -1,0 +1,8 @@
+.imageProductDiv {
+    width: 50%;
+}
+
+.labelsDiv{
+    display: flex;
+    gap: 2px;
+}
