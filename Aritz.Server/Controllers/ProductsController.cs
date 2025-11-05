@@ -32,6 +32,7 @@ namespace Aritz.Server.Controllers
                                     PRD_IMAGE = p.PRD_IMAGE,
                                     PRD_PRICE = p.PRD_PRICE,
                                     PRD_QUANTITY = p.PRD_QUANTITY,
+                                    PRD_IS_ACTIVE = p.PRD_IS_ACTIVE,
                                     Category = new CategoryDto
                                     {
                                         CAT_ID = p.Category.CAT_ID,
@@ -104,6 +105,7 @@ namespace Aritz.Server.Controllers
             public string? PRD_DESCRIPTION { get; set; }
             public decimal PRD_PRICE { get; set; } // Mapea con Price
             public int PRD_QUANTITY { get; set; }     // Mapea con Stock
+            public bool? PRD_IS_ACTIVE { get; set; }
             public string? PRD_IMAGE { get; set; } // Mapea con ImageUrl (puede ser nulo)
             public CategoryDto Category { get; set; }
         }

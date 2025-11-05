@@ -14,7 +14,6 @@ function AdminProducts() {
             try {
                 const response = await axiosInstance.get('products'); // Realiza una solicitud GET a /api/products
                 setProducts(response.data); // Actualiza el estado con los datos obtenidos
-                console.log('Productos obtenidos:', response.data);
                 setLoading(false); // Indica que ya terminó la carga
             } catch (err) {
                 console.error("Error al obtener los productos", err); // Muestra el error en consola
@@ -35,7 +34,7 @@ function AdminProducts() {
                         <th>Nombre</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
-                        <th>Estado</th>
+                        <th>Activo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,6 +77,9 @@ function AdminProducts() {
                 productName={selectedProduct?.PRD_NAME}
                 productImg={selectedProduct?.PRD_IMAGE}
                 productPrice={selectedProduct?.PRD_PRICE}
+                productQuantity={selectedProduct?.PRD_QUANTITY}
+                productDescription={selectedProduct?.PRD_DESCRIPTION}
+                productStatus={selectedProduct?.PRD_IS_ACTIVE}
             />
         </>
     )

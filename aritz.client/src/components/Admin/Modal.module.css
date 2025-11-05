@@ -2,7 +2,19 @@
     width: 50%;
 }
 
+    .imageProductDiv img {
+        object-fit: cover;
+        border-radius: 5%;
+    }
+
 .labelsDiv{
     display: flex;
     gap: 2px;
+}
+
+.infoProductoDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
 }
