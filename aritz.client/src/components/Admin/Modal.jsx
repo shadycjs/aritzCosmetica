@@ -1,25 +1,30 @@
-import styles from '../Admin/Modal.module.css'
+﻿import styles from '../Admin/Modal.module.css'
 import { useState, useEffect } from "react";
-function Modal({ productName, productCategory, productImg, productPrice, productQuantity, productDescription, productStatus }) {
+import axiosInstance from "../../api/axiosConfig";
+import Swal from 'sweetalert2'; // Importar SweetAlert2
+function Modal({ productName, productCategory, productImg, productPrice, productQuantity, productDescription, productStatus, productId }) {
 
     const [prdData, setPrdData] = useState({
-        prdName: productName ?? '',
-        prdPrice: productPrice ?? '',
-        prdQuantity: productQuantity ?? '',
-        prdDescription: productDescription ?? '',
-        prdStatus: productStatus != null ? String(productStatus) : ''
+        PRD_ID: productId ?? '',
+        PRD_NAME: productName ?? '',
+        PRD_PRICE: productPrice ?? '',
+        PRD_QUANTITY: productQuantity ?? '',
+        PRD_DESCRIPTION: productDescription ?? '',
+        PRD_IS_ACTIVE: productStatus != null ? String(productStatus) : ''
     });
 
     // Sincroniza el estado cuando cambien las props
     useEffect(() => {
         setPrdData({
-            prdName: productName ?? '',
-            prdPrice: productPrice ?? '',
-            prdQuantity: productQuantity ?? '',
-            prdDescription: productDescription ?? '',
-            prdStatus: productStatus != null ? String(productStatus) : ''
+            PRD_ID: productId ?? '',
+            PRD_NAME: productName ?? '',
+            PRD_PRICE: productPrice ?? '',
+            PRD_QUANTITY: productQuantity ?? '',
+            PRD_DESCRIPTION: productDescription ?? '',
+            PRD_IS_ACTIVE: productStatus != null ? String(productStatus) : ''
         });
     }, [
+        productId,
         productName,
         productCategory,
         productImg,
@@ -37,7 +42,27 @@ function Modal({ productName, productCategory, productImg, productPrice, product
         }));
     };
 
-    console.log(prdData.prdStatus);
+    const handleUpdPrd = async ()  => {
+        try {
+            const dataToSend = {
+                PRD_ID: Number(prdData.PRD_ID),                    // int
+                PRD_NAME: prdData.PRD_NAME?.trim() || null,        // string
+                PRD_PRICE: parseFloat(prdData.PRD_PRICE) || 0,     // decimal
+                PRD_QUANTITY: parseInt(prdData.PRD_QUANTITY, 10) || 0, // int
+                PRD_DESCRIPTION: prdData.PRD_DESCRIPTION?.trim() || null, // string
+                PRD_IS_ACTIVE: prdData.PRD_IS_ACTIVE === 'true'    // bool
+            };
+            console.log("Datos enviados al backend: ", dataToSend);
+            const response = await axiosInstance.post('Products/updPrd', dataToSend);
+            Swal.fire({
+                title: 'Informacion actualizada correctamente!',
+                icon: 'success',
+                confirmButtonText: 'Continuar'
+            })
+        } catch (e) {
+            console.log("Error al actualizar los datos: ", e);
+        }
+    }
 
     return (
         <div
@@ -77,8 +102,8 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                         placeholder="Titulo"
                                         aria-label="Username"
                                         aria-describedby="addon-wrapping"
-                                        value={prdData.prdName}
-                                        name="prdName"
+                                        value={prdData.PRD_NAME}
+                                        name="PRD_NAME"
                                         onChange={handlePrdData}
                                     />
                                 </div>
@@ -93,8 +118,8 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                             placeholder="Price"
                                             aria-label="Username"
                                             aria-describedby="addon-wrapping"
-                                            value={prdData.prdPrice}
-                                            name="prdPrice"
+                                            value={prdData.PRD_PRICE}
+                                            name="PRD_PRICE"
                                             onChange={handlePrdData}
                                             />
                                 </div>
@@ -105,11 +130,11 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                     <input
                                         type="number"
                                         className="form-control"
-                                        placeholder="Price"
+                                        placeholder="Quantity"
                                         aria-label="Username"
                                         aria-describedby="addon-wrapping"
-                                        value={prdData.prdQuantity}
-                                        name="prdQuantity"
+                                        value={prdData.PRD_QUANTITY}
+                                        name="PRD_QUANTITY"
                                         onChange={handlePrdData}
                                     />
                                 </div>
@@ -120,8 +145,8 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                     <textarea
                                         className="form-control"
                                         aria-label="With textarea"
-                                        value={prdData.prdDescription}
-                                        name="prdDescription"
+                                        value={prdData.PRD_DESCRIPTION}
+                                        name="PRD_DESCRIPTION"
                                         onChange={handlePrdData}
                                     />
                                 </div>
@@ -132,8 +157,8 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                     <select
                                         className="form-select"
                                         aria-label="Default select example"
-                                        value={prdData.prdStatus}
-                                        name="prdStatus"
+                                        value={prdData.PRD_IS_ACTIVE}
+                                        name="PRD_IS_ACTIVE"
                                         onChange={handlePrdData}
                                     >
                                         <option value="">Open this select menu</option>
@@ -152,7 +177,11 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                         >
                             Close
                         </button>
-                        <button type="button" className="btn btn-primary">
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={handleUpdPrd}
+                        >
                             Actualizar
                         </button>
                     </div>

@@ -98,6 +98,60 @@ namespace Aritz.Server.Controllers
             return Ok(categories);
         }
 
+        [HttpPost("updPrd")]
+        public async Task<IActionResult> UpdProduct([FromBody] UpdateProductDto prdDto)
+        {
+            var products = await _context.Products.FirstOrDefaultAsync(p => p.PRD_ID == prdDto.PRD_ID);
+
+            bool updated = false;
+
+            if(products.PRD_NAME != prdDto.PRD_NAME)
+            {
+                products.PRD_NAME = prdDto.PRD_NAME;
+                updated = true;
+            }
+            if (products.PRD_PRICE != prdDto.PRD_PRICE)
+            {
+                products.PRD_PRICE = prdDto.PRD_PRICE;
+                updated = true;
+            }
+            if (products.PRD_QUANTITY != prdDto.PRD_QUANTITY)
+            {
+                products.PRD_QUANTITY = prdDto.PRD_QUANTITY;
+                updated = true;
+            }
+            if (products.PRD_DESCRIPTION != prdDto.PRD_DESCRIPTION)
+            {
+                products.PRD_DESCRIPTION = prdDto.PRD_DESCRIPTION;
+                updated = true;
+            }
+            if (products.PRD_IS_ACTIVE != prdDto.PRD_IS_ACTIVE)
+            {
+                products.PRD_IS_ACTIVE = prdDto.PRD_IS_ACTIVE;
+                updated = true;
+            }
+
+            if (updated)
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { Message = "Datos actualizados correctamente." });
+            }
+            else
+            {
+                return Ok(new { Message = "No hubo cambios en los datos." });
+            }
+        }
+
+        public class UpdateProductDto
+        {
+            public int PRD_ID { get; set; }
+            public string? PRD_NAME { get; set; }
+            public string? PRD_DESCRIPTION { get; set; }
+            public decimal PRD_PRICE { get; set; }
+            public int PRD_QUANTITY { get; set; }
+            public bool PRD_IS_ACTIVE { get; set; }
+        }
+
         public class ProductDto
         {
             public int PRD_ID { get; set; }
