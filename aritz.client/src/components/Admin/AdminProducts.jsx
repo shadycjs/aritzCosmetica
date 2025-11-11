@@ -4,6 +4,7 @@ import axiosInstance from '../../api/axiosConfig';
 import { useState, useEffect } from "react";
 import Modal from './Modal';
 import { CiSearch, CiFilter } from "react-icons/ci";
+import { LuSearchX } from "react-icons/lu";
 function AdminProducts() {
 
     const [products, setProducts] = useState([]);
@@ -11,11 +12,44 @@ function AdminProducts() {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [categories, setCategories] = useState([]);
 
-    useEffect(() => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCategories, setSelectedCategories] = useState([]); // [1, 3, 5]
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filteredActive, setFilteredActive] = useState('all');
 
+    useEffect(() => {
         fetchCategories();
         fetchProducts();
     }, []); 
+
+    useEffect(() => {
+        let result = [...products];
+
+        // 1. Filtro por texto
+        if (searchTerm.trim()) {
+            const term = searchTerm.toLowerCase();
+            result = result.filter(p =>
+                p.PRD_NAME.toLowerCase().includes(term) ||
+                p.PRD_DESCRIPTION.toLowerCase().includes(term)
+            );
+        }
+
+        // 2. Filtro por categorías seleccionadas
+        if (selectedCategories.length > 0) {
+            result = result.filter(p =>
+                selectedCategories.includes(p.Category.CAT_ID)
+            );
+        }
+
+        // 3. Filtro por activo o no
+        if (filteredActive === 'active') {
+            result = result.filter(p => p.PRD_IS_ACTIVE === true);
+        } else if (filteredActive === 'inactive') {
+            result = result.filter(p => p.PRD_IS_ACTIVE === false);
+        }
+
+        setFilteredProducts(result);
+    }, [searchTerm, selectedCategories, products, filteredActive]);
 
     const fetchProducts = async () => {
         try {
@@ -51,12 +85,29 @@ function AdminProducts() {
 
     const categoryGroups = groupCategories(categories);
 
+    // Funcion para filtros en los checkboxes
+    const handleCategoryChange = (catId) => {
+        setSelectedCategories(prev =>
+            prev.includes(catId)
+                ? prev.filter(id => id !== catId)
+                : [...prev, catId]
+        );
+    };
+
     return (
         <>
             <div className={styles.filtrosContainer}>
                 <div className="input-group flex-nowrap">
                     <span className="input-group-text" id="addon-wrapping"><CiSearch /></span>
-                    <input type="search" className="form-control" placeholder="Buscar..." aria-label="Username" aria-describedby="addon-wrapping" />
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Buscar..."
+                        aria-label="Username"
+                        aria-describedby="addon-wrapping"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                 </div>
                 <div className={styles.filter}>
                     <CiFilter
@@ -67,25 +118,75 @@ function AdminProducts() {
                     <h5>Filtros:</h5>
                 </div>
             </div>
-            <div className={`collapse ${styles.filterGroup}`} id="collapseExample">
-                {categoryGroups.map((group, groupIndex) => (
-                    <ul key={`group-${groupIndex}`}>
-                        {group.map((category) => (
-                            <li
-                                className={styles.filterItem}
-                                key={category.CAT_ID}
-                            >
-                                <label>
-                                    <input type="checkbox" />
-                                    {category.CAT_NAME}
-                                </label>
-                            </li>
-                        ))}
+            <div>
+                <div className={`collapse ${styles.filterGroup}`} id="collapseExample">
+                    {categoryGroups.map((group, groupIndex) => (
+                        <ul key={`group-${groupIndex}`}>
+                            {group.map((category) => (
+                                <li
+                                    className={styles.filterItem}
+                                    key={category.CAT_ID}
+                                >
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedCategories.includes(category.CAT_ID)}
+                                            onChange={() => handleCategoryChange(category.CAT_ID)}
+                                        />
+                                        {category.CAT_NAME}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                    ))}
+                </div>
+                
+                <div className="collapse" id="collapseExample">
+                    <hr></hr>
+                    <ul>
+                        <li className={styles.filterItem}>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="filteredActive"
+                                    checked={filteredActive === 'all'}
+                                    onChange={() => setFilteredActive('all')}
+                                />
+                                Todos
+                            </label>
+                        </li>
+                        <li className={styles.filterItem}>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="filteredActive"
+                                    checked={filteredActive === 'active'}
+                                    onChange={() => setFilteredActive('active')}
+                                />
+                                Activo
+                            </label>
+                        </li>
+                        <li className={styles.filterItem}>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="filteredActive"
+                                    checked={filteredActive === 'inactive'}
+                                    onChange={() => setFilteredActive('inactive')}
+                                />
+                                Inactivo
+                            </label>
+                        </li>
                     </ul>
-                ))}
-
+                </div>
             </div>
-            <table className={styles.productsUserTable}>
+            {filteredProducts.length <= 0
+                ?
+                <div>
+                    <LuSearchX size={510} />
+                </div>
+                :
+                <table className={styles.productsUserTable}>
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -97,40 +198,41 @@ function AdminProducts() {
                     </tr>
                 </thead>
                 <tbody>
-                    {products.map((producto) => (
-                        <tr key={producto.PRD_ID}>
-                            <td>
-                                {producto.PRD_ID}
-                            </td>
-                            <td>
-                                {producto.Category.CAT_NAME}
-                            </td>
-                            <td>
-                                {producto.PRD_NAME}
-                            </td>
-                            <td>
-                                $ {producto.PRD_PRICE}
-                            </td>
-                            <td>
-                                {producto.PRD_QUANTITY}
-                            </td>
-                            <td>
-                                {producto.PRD_IS_ACTIVE ? 'Si' : 'No'}
-                            </td>
-                            <td>
-                                <FaEdit
-                                    size={20}
-                                    style={{ cursor: "pointer" }}
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop"
-                                    onClick={() => setSelectedProduct(producto)}
-                                />
-                            </td>
-                            
-                        </tr>
+                    {filteredProducts.map((producto) => (
+                    <tr key={producto.PRD_ID}>
+                        <td>
+                            {producto.PRD_ID}
+                        </td>
+                        <td>
+                            {producto.Category.CAT_NAME}
+                        </td>
+                        <td>
+                            {producto.PRD_NAME}
+                        </td>
+                        <td>
+                            $ {producto.PRD_PRICE}
+                        </td>
+                        <td>
+                            {producto.PRD_QUANTITY}
+                        </td>
+                        <td>
+                            {producto.PRD_IS_ACTIVE ? 'Si' : 'No'}
+                        </td>
+                        <td>
+                            <FaEdit
+                                size={20}
+                                style={{ cursor: "pointer" }}
+                                data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop"
+                                onClick={() => setSelectedProduct(producto)}
+                            />
+                        </td>
+
+                    </tr>
                     ))}
                 </tbody>
-            </table>
+            </table>}
+            
             <Modal
                 productCategory={selectedProduct?.Category.CAT_NAME}
                 productName={selectedProduct?.PRD_NAME}
