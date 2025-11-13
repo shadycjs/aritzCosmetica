@@ -17,6 +17,7 @@
     width: 20%;
     border-radius: 5px;
     cursor: pointer;
+    padding: 10px;
 }
 
     .iconsDivUserPoducts:hover{
@@ -24,7 +25,7 @@
     }
 
 .iconsDivUserPoducts.selected {
-    background-color: #1976d2; /* Azul primario */
+    background-color: rgb(179, 222, 167); /* Azul primario */
     color: white;
     box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
 }
@@ -68,11 +69,22 @@ productsUserTable thead {
     justify-content: center;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
+
+    .filter:hover{
+        color: rgb(208, 208, 208);
+    }
 
 .filterGroup{
     display: flex;
     justify-content: space-around;
+}
+
+.filterGroup2 {
+    display: flex;
+    justify-content: start;
+    margin-left: 70px;
 }
 
 .filterItem {
@@ -84,4 +96,18 @@ productsUserTable thead {
         display: flex;
         width: 100%;
         gap: 10px;
+    }
+
+.addPrdBtn {
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    background-color: rgb(179, 222, 167);
+    border-radius: 5px;
+}
+
+    .addPrdBtn:hover{
+        color: #fff;
     }

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Modal from './Modal';
 import { CiSearch, CiFilter } from "react-icons/ci";
 import { LuSearchX } from "react-icons/lu";
+import { IoMdAdd } from "react-icons/io";
 function AdminProducts() {
 
     const [products, setProducts] = useState([]);
@@ -109,11 +110,21 @@ function AdminProducts() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div className={styles.filter}>
+                <button className={styles.addPrdBtn}>
+                    <IoMdAdd
+                        size={20}
+                    />
+                    Agregar Producto
+                </button>
+                <div
+                    className={styles.filter}
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseExample"
+                    aria-expanded="false"
+                    aria-controls="collapseExample"
+                >
                     <CiFilter
                         size={40}
-                        style={{ cursor: "pointer" }}
-                        data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
                     />
                     <h5>Filtros:</h5>
                 </div>
@@ -141,7 +152,7 @@ function AdminProducts() {
                     ))}
                 </div>
                 
-                <div className="collapse" id="collapseExample">
+                <div className={`collapse ${styles.filterGroup2}`} id="collapseExample">
                     <hr></hr>
                     <ul>
                         <li className={styles.filterItem}>
@@ -183,6 +194,7 @@ function AdminProducts() {
             {filteredProducts.length <= 0
                 ?
                 <div>
+                    <h1>No se encontraron coincidencias...</h1>
                     <LuSearchX size={510} />
                 </div>
                 :
