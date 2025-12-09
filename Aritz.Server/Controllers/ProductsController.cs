@@ -142,6 +142,69 @@ namespace Aritz.Server.Controllers
             }
         }
 
+        [HttpPost("addPrd")]
+        public async Task<IActionResult> AddProduct([FromForm] AddProductDto prdDto)
+        {
+            try
+            {
+                // 1. Validar que llegue imagen
+                if (prdDto.PRD_IMAGE == null || prdDto.PRD_IMAGE.Length == 0)
+                {
+                    return BadRequest(new { Message = "Debes subir una imagen." });
+                }
+
+                // 2. Definir rutas (Usando la lógica segura que te funcionó)
+                string currentDir = Directory.GetCurrentDirectory();
+                string fileName = $"prod_{Guid.NewGuid()}{Path.GetExtension(prdDto.PRD_IMAGE.FileName)}";
+                string filePath = Path.Combine(currentDir, "wwwroot", "images", fileName);
+
+                // 3. Crear carpeta si no existe
+                string directoryPath = Path.GetDirectoryName(filePath);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                // 4. Guardar archivo en disco
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await prdDto.PRD_IMAGE.CopyToAsync(stream);
+                }
+
+                // 5. Crear Entidad y Guardar en BD
+                var product = new Product
+                {
+                    PRD_NAME = prdDto.PRD_NAME,
+                    PRD_PRICE = prdDto.PRD_PRICE,
+                    PRD_QUANTITY = prdDto.PRD_QUANTITY,
+                    PRD_DESCRIPTION = prdDto.PRD_DESCRIPTION,
+                    PRD_CAT_ID = prdDto.PRD_CAT_ID,
+                    PRD_IS_ACTIVE = prdDto.PRD_IS_ACTIVE,
+                    PRD_IMAGE = $"/images/{fileName}", // Guardamos la URL relativa
+                };
+
+                _context.Products.Add(product);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Message = "Producto creado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
+        }
+
+        public class AddProductDto
+        {
+            public string PRD_NAME { get; set; }
+            public decimal PRD_PRICE { get; set; }
+            public int PRD_QUANTITY { get; set; }
+            public string? PRD_DESCRIPTION { get; set; }
+            public bool PRD_IS_ACTIVE { get; set; }
+            public IFormFile PRD_IMAGE { get; set; } // <--- Aquí llega el archivo
+            public int PRD_CAT_ID { get; set; } 
+        }
+
         public class UpdateProductDto
         {
             public int PRD_ID { get; set; }

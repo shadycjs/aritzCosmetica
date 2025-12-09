@@ -6,13 +6,70 @@ import Swal from 'sweetalert2'; // Importar SweetAlert2
 function ModalProducts() {
 
     const [prdData, setPrdData] = useState({
-        productImg: '',
-        productName: '',
-        productPrice: 0,
-        productQuantity: 1,
-        productDescription: '',
-        productIsActive: 1
+        PRD_IMAGE: null,
+        PRD_NAME: '',
+        PRD_PRICE: 0,
+        PRD_QUANTITY: 1,
+        PRD_DESCRIPTION: '',
+        PRD_CAT_ID: 1,
+        PRD_IS_ACTIVE: 1
     });
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const handlePrdChange = (e) => {
+        const { name, value, type, files } = e.target;
+        setPrdData(prev => ({
+            ...prev,
+            [name]: type === 'file' ? files[0] : value
+        }));
+    }
+
+    const fetchCategories = async () => {
+        try {
+            const response = await axiosInstance.get('Products/by-category'); // Realiza una solicitud GET a /api/products
+            setCategories(response.data); // Actualiza el estado con los datos obtenidos
+            console.log('Categorias obtenidas:', response.data);
+        } catch (err) {
+            console.error("Error al obtener los productos", err); // Muestra el error en consola
+            setError(err.message); // Guarda el mensaje de error en el estado
+        }
+    }
+
+    const handleAddPrd = async () => {
+        try {
+            // 2. Crear FormData (Obligatorio para subir archivos)
+            const formData = new FormData();
+            formData.append('PRD_NAME', prdData.PRD_NAME);
+            formData.append('PRD_PRICE', prdData.PRD_PRICE);
+            formData.append('PRD_QUANTITY', prdData.PRD_QUANTITY);
+            formData.append('PRD_DESCRIPTION', prdData.PRD_DESCRIPTION);
+            // Convertimos el booleano/string a lo que espera el backend
+            formData.append('PRD_IS_ACTIVE', prdData.PRD_IS_ACTIVE === "1" || prdData.PRD_IS_ACTIVE === true);
+
+            // Solo agregamos la imagen si existe
+            if (prdData.PRD_IMAGE) {
+                formData.append('PRD_IMAGE', prdData.PRD_IMAGE);
+            }
+
+            // OJO: Si necesitas enviar Categoría, agrégala aquí también
+            formData.append('PRD_CAT_ID', prdData.PRD_CAT_ID); 
+
+            // 3. Enviar con cabecera multipart/form-data
+            const response = await axiosInstance.post('Products/addPrd', formData);
+
+            Swal.fire('Éxito', 'Producto agregado correctamente', 'success');
+
+            // Aquí podrías llamar a una función para refrescar la lista de productos (props)
+
+        } catch (error) {
+            console.error(error);
+            Swal.fire('Error', 'No se pudo cargar el producto', 'error');
+        }
+    }
 
     return (
 
@@ -40,8 +97,19 @@ function ModalProducts() {
                     </div>
                     <div className="modal-body d-flex flex-column align-items-center">
                         <div className="input-group mb-3">
-                            <input type="file" className="form-control" id="inputGroupFile02" />
-                            <label className="input-group-text" htmlFor="inputGroupFile02">Upload</label>
+                            <input
+                                type="file"
+                                className="form-control"
+                                id="inputGroupFile02"
+                                name="PRD_IMAGE"
+                                onChange={handlePrdChange}
+                                accept="image/*"
+                            />
+                            <label
+                                className="input-group-text"
+                                htmlFor="inputGroupFile02">
+                                Upload
+                            </label>
                         </div>
                         <hr></hr>
                         <div className={styles.infoProductoDiv}>
@@ -55,6 +123,7 @@ function ModalProducts() {
                                         aria-label="Username"
                                         aria-describedby="addon-wrapping"
                                         name="PRD_NAME"
+                                        onChange={handlePrdChange}
                                     />
                                 </div>
                             </div>
@@ -69,6 +138,7 @@ function ModalProducts() {
                                         aria-label="Username"
                                         aria-describedby="addon-wrapping"
                                         name="PRD_PRICE"
+                                        onChange={handlePrdChange}
                                     />
                                 </div>
                             </div>
@@ -82,6 +152,7 @@ function ModalProducts() {
                                         aria-label="Username"
                                         aria-describedby="addon-wrapping"
                                         name="PRD_QUANTITY"
+                                        onChange={handlePrdChange}
                                     />
                                 </div>
                             </div>
@@ -92,7 +163,29 @@ function ModalProducts() {
                                         className="form-control"
                                         aria-label="With textarea"
                                         name="PRD_DESCRIPTION"
+                                        onChange={handlePrdChange}
                                     />
+                                </div>
+                            </div>
+                            <div className="d-flex flex-column">
+                                <p className="text-start">Categoria:</p>
+                                <div className="input-group flex-nowrap">
+                                    <select
+                                        className="form-select"
+                                        aria-label="Default select example"
+                                        name="PRD_CAT_ID"
+                                        onChange={handlePrdChange}
+                                    >
+                                        <option value="">Open this select menu</option>
+                                        {categories.map((category) => (
+                                            <option
+                                                key={category.CAT_ID}
+                                                value={category.CAT_ID}
+                                            >
+                                                {category.CAT_NAME}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
                             <div className="d-flex flex-column">
@@ -102,10 +195,11 @@ function ModalProducts() {
                                         className="form-select"
                                         aria-label="Default select example"
                                         name="PRD_IS_ACTIVE"
+                                        onChange={handlePrdChange}
                                     >
                                         <option value="">Open this select menu</option>
-                                        <option value="true">Yes</option>
-                                        <option value="false">No</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
                                     </select>
                                 </div>
                             </div>
@@ -122,8 +216,9 @@ function ModalProducts() {
                         <button
                             type="button"
                             className="btn btn-primary"
+                            onClick={handleAddPrd}
                         >
-                            Actualizar
+                            Agregar Producto
                         </button>
                     </div>
                 </div>
