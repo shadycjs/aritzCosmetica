@@ -89,7 +89,7 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                     </div>
                     <div className="modal-body d-flex flex-column align-items-center">
                         <div className={styles.imageProductDiv}>
-                            <img src={`../../src/assets/images/${productImg}`} />
+                            <img src={`https://localhost:7273/images/${productImg}`} />
                         </div>
                         <hr></hr>
                         <div className={styles.infoProductoDiv}>

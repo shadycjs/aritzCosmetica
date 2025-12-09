@@ -180,7 +180,7 @@ namespace Aritz.Server.Controllers
                     PRD_DESCRIPTION = prdDto.PRD_DESCRIPTION,
                     PRD_CAT_ID = prdDto.PRD_CAT_ID,
                     PRD_IS_ACTIVE = prdDto.PRD_IS_ACTIVE,
-                    PRD_IMAGE = $"/images/{fileName}", // Guardamos la URL relativa
+                    PRD_IMAGE = fileName, // Guardamos la URL relativa
                 };
 
                 _context.Products.Add(product);

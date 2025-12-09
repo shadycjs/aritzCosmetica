@@ -10,6 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\product1.png" />
+    <Content Remove="wwwroot\images\product2.png" />
+    <Content Remove="wwwroot\images\product3.jpg" />
+    <Content Remove="wwwroot\images\sinImagen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\product1.png" />
+    <None Include="wwwroot\images\product2.png" />
+    <None Include="wwwroot\images\product3.jpg" />
+    <None Include="wwwroot\images\sinImagen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="MailKit" Version="4.13.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
