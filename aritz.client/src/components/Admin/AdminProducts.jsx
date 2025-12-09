@@ -3,6 +3,7 @@ import { FaEdit } from "react-icons/fa";
 import axiosInstance from '../../api/axiosConfig';
 import { useState, useEffect } from "react";
 import Modal from './Modal';
+import ModalProducts from './ModalProducts';
 import { CiSearch, CiFilter } from "react-icons/ci";
 import { LuSearchX } from "react-icons/lu";
 import { IoMdAdd } from "react-icons/io";
@@ -110,7 +111,11 @@ function AdminProducts() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <button className={styles.addPrdBtn}>
+                <button
+                    data-bs-toggle="modal"
+                    data-bs-target="#staticBackdropProducts"
+                    className={styles.addPrdBtn}
+                >
                     <IoMdAdd
                         size={20}
                     />
@@ -255,6 +260,8 @@ function AdminProducts() {
                 productStatus={selectedProduct?.PRD_IS_ACTIVE}
                 productId={selectedProduct?.PRD_ID}
             />
+
+            <ModalProducts /> 
         </>
     )
 }
