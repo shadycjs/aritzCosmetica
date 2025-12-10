@@ -119,7 +119,9 @@ function Products() {
                                         className={`col-md-4 ${styles.columna}`}
                                         >
                                     <div className={`card ${styles.carta}`}>
-                                            <img src={`src/assets/images/${producto.PRD_IMAGE}`} className="card-img-top" alt="Producto 1" />
+                                        <div className={styles.cartaImgContainer}>
+                                            <img src={`https://localhost:7273/images/${producto.PRD_IMAGE}`} className="card-img-top"/>
+                                        </div>
                                         <div className={`card-body ${styles.cuerpoCarta}`}>
                                                 <h5 onClick={() => next(producto.PRD_ID)} className={`card-title ${styles.productTitle}`}>{producto.Category.CAT_NAME} {producto.PRD_NAME}</h5>
                                             <p className="card-text">${producto.PRD_PRICE}</p>

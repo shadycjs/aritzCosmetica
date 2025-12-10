@@ -50,11 +50,25 @@
     margin-bottom: 10px;
 }
 
-.cuerpoCarta{
+.cartaImgContainer {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    width: 100%;
 }
+
+    .cartaImgContainer img {
+        width: 100%;
+        max-width: 400px;
+        aspect-ratio: 3/3; /* Mantiene proporción rectangular (o usa 1/1 para cuadrado) */
+        object-fit: cover;
+        object-position: top;
+    }
+
+    .cuerpoCarta {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
 .productTitle {
     cursor: pointer;

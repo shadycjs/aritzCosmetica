@@ -72,7 +72,7 @@ function ProductDetail() {
             <BreadCrum name={product.PRD_NAME} />
             <div className={styles.container}>
                 <div className={styles.imgContainer}>
-                    <img className={styles.imgMain} src={`/src/assets/images/${product.PRD_IMAGE}`} />
+                    <img className={styles.imgMain} src={`https://localhost:7273/images/${product.PRD_IMAGE}`} />
                     <div className={styles.subImgContainer}>
                         <img src={sinImg} />
                         <img src={sinImg} />
