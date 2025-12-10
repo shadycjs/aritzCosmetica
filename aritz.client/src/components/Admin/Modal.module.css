@@ -18,3 +18,20 @@
     gap: 5px;
     width: 100%;
 }
+
+/* Modal DELETE */
+
+.imageDeleteContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+    .imageDeleteContainer img {
+        width: 100%;
+        max-width: 400px;
+        aspect-ratio: 4/3; /* Mantiene proporción rectangular (o usa 1/1 para cuadrado) */
+        object-fit: cover;
+        border-radius: 8px;
+        object-position: top;
+    }

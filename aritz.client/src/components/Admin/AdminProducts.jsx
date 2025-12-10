@@ -7,6 +7,9 @@ import ModalProducts from './ModalProducts';
 import { CiSearch, CiFilter } from "react-icons/ci";
 import { LuSearchX } from "react-icons/lu";
 import { IoMdAdd } from "react-icons/io";
+import { MdDeleteForever } from "react-icons/md";
+import Swal from 'sweetalert2'; // Importar SweetAlert2
+import DelProduct from './DelProduct';
 function AdminProducts() {
 
     const [products, setProducts] = useState([]);
@@ -95,6 +98,10 @@ function AdminProducts() {
                 : [...prev, catId]
         );
     };
+
+    const handleDelPrd = async () => {
+
+    }
 
     return (
         <>
@@ -244,7 +251,15 @@ function AdminProducts() {
                                 onClick={() => setSelectedProduct(producto)}
                             />
                         </td>
-
+                        <td>
+                            <MdDeleteForever
+                                    size={25}
+                                    style={{ cursor: "pointer" }}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdropDeleteModal"
+                                    onClick={() => setSelectedProduct(producto)}
+                            />
+                        </td>
                     </tr>
                     ))}
                 </tbody>
@@ -262,6 +277,13 @@ function AdminProducts() {
             />
 
             <ModalProducts /> 
+
+            <DelProduct
+                prdDelId={selectedProduct?.PRD_ID}
+                prdDelName={selectedProduct?.PRD_NAME}
+                prdCatName={selectedProduct?.Category.CAT_NAME}
+                prdDelImg={selectedProduct?.PRD_IMAGE}
+            />
         </>
     )
 }
