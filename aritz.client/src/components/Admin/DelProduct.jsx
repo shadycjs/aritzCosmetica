@@ -1,5 +1,23 @@
 import styles from '../Admin/Modal.module.css'
-function DelProduct({prdCatName, prdDelName, prdDelId, prdDelImg}) {
+import axiosInstance from "../../api/axiosConfig";
+import Swal from 'sweetalert2'; // Importar SweetAlert2
+function DelProduct({ prdCatName, prdDelName, prdDelId, prdDelImg }) {
+
+    const handleDeletePrd = async (prdDelId) => {
+        try {
+            const response = await axiosInstance.delete(`Products/delPrd/${prdDelId}`);
+
+            Swal.fire({
+                title: 'Se elimino el producto',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            })
+        } catch (error) {
+            console.error("Error al eliminar el producto del carrito:", error);
+            alert("No se pudo eliminar el producto del carrito.");
+        }
+    }
+
     return (
         <div
             className="modal fade"
@@ -22,7 +40,13 @@ function DelProduct({prdCatName, prdDelName, prdDelId, prdDelImg}) {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-danger">Borrar</button>
+                        <button
+                            type="button"
+                            className="btn btn-danger"
+                            onClick={() => { handleDeletePrd(prdDelId) }}
+                        >
+                            Borrar
+                        </button>
                     </div>
                 </div>
             </div>

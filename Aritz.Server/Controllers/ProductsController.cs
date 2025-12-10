@@ -194,6 +194,30 @@ namespace Aritz.Server.Controllers
             }
         }
 
+        [HttpDelete("delPrd/{prdDelId}")]
+        public async Task<IActionResult> DelPrd(int prdDelId)
+        {
+            try
+            {
+                var product = await _context.Products
+                    .FirstOrDefaultAsync(p => p.PRD_ID == prdDelId);
+
+                if (product == null)
+                {
+                    return NotFound($"No se encontró el producto con ID {prdDelId}");
+                }
+
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+
+                return Ok($"Se elimino el producto con el ID: {prdDelId} correctamente");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Error al intentar eliminar el producto");
+                return StatusCode(500, "Ocurrió un error al intentar eliminar el producto.");
+            }
+        }
         public class AddProductDto
         {
             public string PRD_NAME { get; set; }
