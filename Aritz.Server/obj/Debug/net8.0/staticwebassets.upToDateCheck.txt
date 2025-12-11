@@ -12,3 +12,4 @@ wwwroot\uploads\receipts\receipt_4_89bca484-d6df-465d-bf55-d7ad2633ad76.pdf
 wwwroot\images\prod_d4cd02fb-801e-4d69-b093-df99f0704878.jpeg
 wwwroot\images\prod_d426d25b-526d-40e2-a3fd-67acd5911619.png
 wwwroot\images\prod_e46dbaa2-3a50-4900-8379-49900828fc27.jpeg
+wwwroot\images\prod_e8e9a3e1-0650-47b1-b680-eafcf03f78d4.jpeg

@@ -170,14 +170,20 @@ const Header = () => {
                                             </button>
                                         </ul>
                                     </div>
-                                    <NavLink
-                                        className={styles.carritoContainer}
-                                        to={pageCheckout}
-                                        style={ {color: "#fff"} }
-                                    >
-                                        <FaShoppingCart className={styles.carrito} />
-                                        <p className={styles.carritoContador}>{totalQuantity}</p>
-                                    </NavLink>
+                                    {
+                                        isAdmin
+                                            ?
+                                        ''
+                                            :
+                                        <NavLink
+                                            className={styles.carritoContainer}
+                                            to={pageCheckout}
+                                            style={{ color: "#fff" }}
+                                        >
+                                            <FaShoppingCart className={styles.carrito} />
+                                            <p className={styles.carritoContador}>{totalQuantity}</p>
+                                        </NavLink>
+                                    }
                                 </div   >
                             ) : (
                             <NavLink

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import styles from '../Admin/Modal.module.css'
 import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
@@ -12,6 +13,7 @@ function DelProduct({ prdCatName, prdDelName, prdDelId, prdDelImg }) {
                 icon: 'success',
                 confirmButtonText: 'Ok'
             })
+
         } catch (error) {
             console.error("Error al eliminar el producto del carrito:", error);
             alert("No se pudo eliminar el producto del carrito.");
