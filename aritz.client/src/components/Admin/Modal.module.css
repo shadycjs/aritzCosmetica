@@ -13,7 +13,11 @@
         object-position: top;
     }
 
-.labelsDiv{
+.imageSecondaryProductDiv{
+    display: flex;
+}
+
+.labelsDiv {
     display: flex;
     gap: 2px;
 }

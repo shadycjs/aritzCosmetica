@@ -89,7 +89,38 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                     </div>
                     <div className="modal-body d-flex flex-column align-items-center">
                         <div className={styles.imageProductDiv}>
-                            <img src={`https://localhost:7273/images/${productImg}`} />
+                            <div className="input-group mb-3 d-flex gap-2">
+                                <label>
+                                    Imagen 1:
+                                    <img src={`https://localhost:7273/images/${productImg}`} />
+                                </label>
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    id="inputGroupFile02"
+                                    name=""
+                                    accept="image/*"
+                                />
+                                <label
+                                    className="input-group-text"
+                                    htmlFor="inputGroupFile02">
+                                    Subir imagen
+                                </label>
+                            </div>
+                        </div>
+                        <div className={styles.imageSecondaryProductDiv}>
+                            <label>
+                                Imagen 2:
+                                <img src="" />
+                            </label>
+                            <label>
+                                Imagen 3:
+                                <img src="" />
+                            </label>
+                            <label>
+                                Imagen 4:
+                                <img src="" />
+                            </label>
                         </div>
                         <hr></hr>
                         <div className={styles.infoProductoDiv}>

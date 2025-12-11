@@ -17,5 +17,6 @@ namespace Aritz.Server.Models
         // Propiedad de navegación para la relación con Categories
         [ForeignKey("PRD_CAT_ID")] // Relaciona esta propiedad con PRD_CAT_ID en Categories
         public Category? Category { get; set; } // Relación con la tabla Categories
+        public List<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
     }
 }

@@ -183,6 +183,27 @@ namespace Aritz.Server.Controllers
                     PRD_IMAGE = fileName, // Guardamos la URL relativa
                 };
 
+                if (prdDto.GalleryImages != null && prdDto.GalleryImages.Count > 0)
+                {
+                    foreach (var file in prdDto.GalleryImages)
+                    {
+
+                        string fileName2 = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        string filePath2 = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Agregar a la lista de imágenes del producto
+                        product.ProductImages.Add(new ProductImage
+                        {
+                            IMG_URL = fileName2
+                        });
+                    }
+                }
+
                 _context.Products.Add(product);
                 await _context.SaveChangesAsync();
 
@@ -226,6 +247,7 @@ namespace Aritz.Server.Controllers
             public string? PRD_DESCRIPTION { get; set; }
             public bool PRD_IS_ACTIVE { get; set; }
             public IFormFile PRD_IMAGE { get; set; } // <--- Aquí llega el archivo
+            public List<IFormFile> GalleryImages { get; set; }
             public int PRD_CAT_ID { get; set; } 
         }
 
