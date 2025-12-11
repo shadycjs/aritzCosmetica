@@ -13,3 +13,6 @@ wwwroot\images\prod_d4cd02fb-801e-4d69-b093-df99f0704878.jpeg
 wwwroot\images\prod_d426d25b-526d-40e2-a3fd-67acd5911619.png
 wwwroot\images\prod_e46dbaa2-3a50-4900-8379-49900828fc27.jpeg
 wwwroot\images\prod_e8e9a3e1-0650-47b1-b680-eafcf03f78d4.jpeg
+wwwroot\images\prod_1f166eeb-8425-48f3-8eda-66e4db83a670.png
+wwwroot\images\prod_cd4dfc8f-b18a-4d2a-b4af-a34e8b6ac4b6.png
+wwwroot\images\prod_a7221c4d-f2d8-495d-9dd1-2416fff67c48.jpeg

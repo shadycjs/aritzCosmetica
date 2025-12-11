@@ -15,6 +15,7 @@ function ModalProducts() {
         PRD_IS_ACTIVE: 1
     });
     const [categories, setCategories] = useState([]);
+    const [galleryFiles, setGalleryFiles] = useState([]);
 
     useEffect(() => {
         fetchCategories();
@@ -26,6 +27,18 @@ function ModalProducts() {
             ...prev,
             [name]: type === 'file' ? files[0] : value
         }));
+    }
+
+    const handleGalleryChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const newFiles = Array.from(e.target.files);
+
+            // Usamos el spread operator (...prev) para NO borrar los anteriores
+            setGalleryFiles(prev => [...prev, ...newFiles]);
+
+            // Truco: Limpiamos el input para permitir subir el mismo archivo 2 veces si se desea
+            e.target.value = '';
+        }
     }
 
     const fetchCategories = async () => {
@@ -54,6 +67,10 @@ function ModalProducts() {
             if (prdData.PRD_IMAGE) {
                 formData.append('PRD_IMAGE', prdData.PRD_IMAGE);
             }
+            console.log(galleryFiles);
+            galleryFiles.forEach((file) => {
+                formData.append('GalleryImages', file);
+            });
 
             // OJO: Si necesitas enviar Categoría, agrégala aquí también
             formData.append('PRD_CAT_ID', prdData.PRD_CAT_ID); 
@@ -110,6 +127,27 @@ function ModalProducts() {
                                 htmlFor="inputGroupFile02">
                                 Upload
                             </label>
+                        </div>
+                        <div className="w-100 mb-3">
+                            <label className="form-label fw-bold">Galeria de Imagenes (Opcional):</label>
+                            <div className="input-group">
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    id="inputGallery"
+                                    multiple // <--- CLAVE: Permite seleccionar varios
+                                    onChange={handleGalleryChange}
+                                    accept="image/*"
+                                />
+                                <label className="input-group-text" htmlFor="inputGallery">
+                                    {galleryFiles.length} Seleccionadas
+                                </label>
+                            </div>
+                            {galleryFiles.length > 0 && (
+                                <div className="mt-2 small text-muted">
+                                    Archivos: {galleryFiles.map(f => f.name).join(', ')}
+                                </div>
+                            )}
                         </div>
                         <hr></hr>
                         <div className={styles.infoProductoDiv}>

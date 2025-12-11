@@ -188,10 +188,10 @@ namespace Aritz.Server.Controllers
                     foreach (var file in prdDto.GalleryImages)
                     {
 
-                        string fileName2 = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                        string filePath2 = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                        string galleryFileName = $"gallery_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                        string galleryFilePath = Path.Combine(currentDir, "wwwroot", "images", galleryFileName);
 
-                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        using (var stream = new FileStream(galleryFilePath, FileMode.Create))
                         {
                             await file.CopyToAsync(stream);
                         }
@@ -199,7 +199,7 @@ namespace Aritz.Server.Controllers
                         // Agregar a la lista de imágenes del producto
                         product.ProductImages.Add(new ProductImage
                         {
-                            IMG_URL = fileName2
+                            IMG_URL = galleryFileName
                         });
                     }
                 }
