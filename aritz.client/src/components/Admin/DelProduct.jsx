@@ -2,11 +2,17 @@ import { useState, useEffect } from "react";
 import styles from '../Admin/Modal.module.css'
 import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
-function DelProduct({ prdCatName, prdDelName, prdDelId, prdDelImg }) {
+function DelProduct({ prdCatName, prdDelName, prdDelId, prdDelImg, refresh }) {
 
     const handleDeletePrd = async (prdDelId) => {
         try {
             const response = await axiosInstance.delete(`Products/delPrd/${prdDelId}`);
+            refresh(prev => !prev);
+
+            const closeBtn = document.querySelector('#staticBackdropDeleteModal .btn-close');
+            if (closeBtn) {
+                closeBtn.click();
+            }
 
             Swal.fire({
                 title: 'Se elimino el producto',

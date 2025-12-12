@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Aritz.Server.Data;
+﻿using Aritz.Server.Data;
 using Aritz.Server.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Aritz.Server.Controllers.ProductsController;
 
 namespace Aritz.Server.Controllers
 {
@@ -63,7 +64,12 @@ namespace Aritz.Server.Controllers
                                     {
                                         CAT_ID = p.Category.CAT_ID,
                                         CAT_NAME = p.Category.CAT_NAME
-                                    }
+                                    },
+                                    Gallery = p.ProductImages.Select(img => new ProductImgDto
+                                    {
+                                        IMG_ID = img.IMG_ID,
+                                        IMG_URL = img.IMG_URL
+                                    }).ToList()
                                 })
                                 .FirstOrDefaultAsync();
             if (product == null)
@@ -271,6 +277,13 @@ namespace Aritz.Server.Controllers
             public bool? PRD_IS_ACTIVE { get; set; }
             public string? PRD_IMAGE { get; set; } // Mapea con ImageUrl (puede ser nulo)
             public CategoryDto Category { get; set; }
+            public List<ProductImgDto> Gallery { get; set; } = new List<ProductImgDto>();
+        }
+
+        public class ProductImgDto
+        {
+            public int IMG_ID { get; set; }
+            public string IMG_URL { get; set; }
         }
 
         public class CategoryDto

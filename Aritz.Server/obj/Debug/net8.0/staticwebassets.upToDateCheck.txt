@@ -16,3 +16,6 @@ wwwroot\images\prod_e8e9a3e1-0650-47b1-b680-eafcf03f78d4.jpeg
 wwwroot\images\prod_1f166eeb-8425-48f3-8eda-66e4db83a670.png
 wwwroot\images\prod_cd4dfc8f-b18a-4d2a-b4af-a34e8b6ac4b6.png
 wwwroot\images\prod_a7221c4d-f2d8-495d-9dd1-2416fff67c48.jpeg
+wwwroot\images\gallery_3b8d7d55-893b-4966-aab0-b336d3e373e7.png
+wwwroot\images\gallery_91fb8c97-577c-43ac-8cfc-0f94cfaf6f7b.png
+wwwroot\images\prod_35e9ce3f-ed77-4fb4-a043-c2523fbc99aa.png

@@ -10,6 +10,7 @@ import { IoMdAdd } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import DelProduct from './DelProduct';
+import { LuRefreshCw } from "react-icons/lu";
 function AdminProducts() {
 
     const [products, setProducts] = useState([]);
@@ -21,11 +22,12 @@ function AdminProducts() {
     const [selectedCategories, setSelectedCategories] = useState([]); // [1, 3, 5]
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [filteredActive, setFilteredActive] = useState('all');
+    const [refreshPrd, setRefreshPrd] = useState(false);
 
     useEffect(() => {
         fetchCategories();
         fetchProducts();
-    }, []); 
+    }, [refreshPrd]); 
 
     useEffect(() => {
         let result = [...products];
@@ -60,6 +62,7 @@ function AdminProducts() {
         try {
             const response = await axiosInstance.get('products'); // Realiza una solicitud GET a /api/products
             setProducts(response.data); // Actualiza el estado con los datos obtenidos
+            console.log(products);
             setLoading(false); // Indica que ya terminó la carga
         } catch (err) {
             console.error("Error al obtener los productos", err); // Muestra el error en consola
@@ -99,8 +102,8 @@ function AdminProducts() {
         );
     };
 
-    const handleDelPrd = async () => {
-
+    const handleRefreshPrd = async () => {
+        setRefreshPrd(prev => !prev);
     }
 
     return (
@@ -128,6 +131,13 @@ function AdminProducts() {
                     />
                     Agregar Producto
                 </button>
+                <button
+                    className={styles.addPrdBtn}
+                    style={{ width: "50px" }}
+                    onClick={handleRefreshPrd}
+                >
+                    <LuRefreshCw size={20} />
+                </button>
                 <div
                     className={styles.filter}
                     data-bs-toggle="collapse"
@@ -140,6 +150,7 @@ function AdminProducts() {
                     />
                     <h5>Filtros:</h5>
                 </div>
+
             </div>
             <div>
                 <div className={`collapse ${styles.filterGroup}`} id="collapseExample">
@@ -276,13 +287,16 @@ function AdminProducts() {
                 productId={selectedProduct?.PRD_ID}
             />
 
-            <ModalProducts /> 
+            <ModalProducts
+                refresh={setRefreshPrd}
+            /> 
 
             <DelProduct
                 prdDelId={selectedProduct?.PRD_ID}
                 prdDelName={selectedProduct?.PRD_NAME}
                 prdCatName={selectedProduct?.Category.CAT_NAME}
                 prdDelImg={selectedProduct?.PRD_IMAGE}
+                refresh={setRefreshPrd}
             />
         </>
     )

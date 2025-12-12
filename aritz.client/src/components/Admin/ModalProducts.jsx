@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 
-function ModalProducts() {
+function ModalProducts({ refresh }) {
 
     const [prdData, setPrdData] = useState({
         PRD_IMAGE: null,
@@ -77,6 +77,12 @@ function ModalProducts() {
 
             // 3. Enviar con cabecera multipart/form-data
             const response = await axiosInstance.post('Products/addPrd', formData);
+            refresh(prev => !prev);
+
+            const closeBtn = document.querySelector('#staticBackdropProducts .btn-close');
+            if (closeBtn) {
+                closeBtn.click();
+            }
 
             Swal.fire('Éxito', 'Producto agregado correctamente', 'success');
 
