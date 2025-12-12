@@ -15,6 +15,14 @@
 
 .imageSecondaryProductDiv{
     display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.imageSecondaryProductDivSub{
+    display: flex;
+    gap: 5px;
 }
 
 .labelsDiv {

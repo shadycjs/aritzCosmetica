@@ -37,3 +37,4 @@ wwwroot\images\prod_3bb15ab5-deee-44ae-9127-add59b394039.jpeg
 wwwroot\images\gallery_3310f7dd-a651-4e33-a9b4-3de44fc63201.jpeg
 wwwroot\images\gallery_e577414b-72b5-4eab-b6ca-055788ed0875.png
 wwwroot\images\prod_b3537740-13ba-4978-947d-45240611eac0.jpeg
+wwwroot\images\prod_23f98652-2da2-4478-9034-cbd1750b4ad6.png

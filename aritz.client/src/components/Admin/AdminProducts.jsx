@@ -234,6 +234,7 @@ function AdminProducts() {
                 </thead>
                 <tbody>
                     {filteredProducts.map((producto) => (
+                        console.log(producto),
                     <tr key={producto.PRD_ID}>
                         <td>
                             {producto.PRD_ID}
@@ -286,6 +287,7 @@ function AdminProducts() {
                 productStatus={selectedProduct?.PRD_IS_ACTIVE}
                 productId={selectedProduct?.PRD_ID}
                 refresh={setRefreshPrd}
+                productsGallery={selectedProduct?.Gallery || []}
             />
 
             <ModalProducts

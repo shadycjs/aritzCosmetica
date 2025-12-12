@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
-function Modal({ productName, productCategory, productImg, productPrice, productQuantity, productDescription, productStatus, productId, refresh }) {
-
+function Modal({ productName, productCategory, productImg, productPrice, productQuantity, productDescription, productStatus, productId, refresh, productsGallery }) {
+    console.log(productsGallery);
     const [prdData, setPrdData] = useState({
         PRD_ID: productId ?? '',
         PRD_NAME: productName ?? '',
@@ -101,34 +101,53 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                     Imagen 1:
                                     <img src={`https://localhost:7273/images/${productImg}`} />
                                 </label>
-                                <input
-                                    type="file"
-                                    className="form-control"
-                                    id="inputGroupFile02"
-                                    name=""
-                                    accept="image/*"
-                                />
-                                <label
-                                    className="input-group-text"
-                                    htmlFor="inputGroupFile02">
-                                    Subir imagen
-                                </label>
+                                <div className={styles.imageSecondaryProductDivSub}>
+                                    <input
+                                        type="file"
+                                        className="form-control"
+                                        id="inputGroupFile02"
+                                        name=""
+                                        accept="image/*"
+                                    />
+                                    <label
+                                        className="input-group-text"
+                                        htmlFor="inputGroupFile02">
+                                        Actualizar imagen
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div className={styles.imageSecondaryProductDiv}>
-                            <label>
-                                Imagen 2:
-                                <img src="" />
-                            </label>
-                            <label>
-                                Imagen 3:
-                                <img src="" />
-                            </label>
-                            <label>
-                                Imagen 4:
-                                <img src="" />
-                            </label>
-                        </div>
+                        {productsGallery.length > 0
+                            ?
+                            productsGallery.map((img, index) => (
+                                <div
+                                    key={index}
+                                    className={styles.imageSecondaryProductDiv}
+                                >
+                                    <label>
+                                        Imagen 2:
+                                        <img src={`https://localhost:7273/images/${img.IMG_URL}`} />
+                                    </label>
+                                    <div className={styles.imageSecondaryProductDivSub}>
+                                        <input
+                                            type="file"
+                                            className="form-control"
+                                            id="inputGroupFile03"
+                                            name=""
+                                            accept="image/*"
+                                        />
+                                        <label
+                                            className="input-group-text"
+                                            htmlFor="inputGroupFile03">
+                                            Actualizar imagen {index + 2}
+                                        </label>
+                                    </div>
+                                </div>
+
+                            ))
+                            :
+                            ''
+                        }
                         <hr></hr>
                         <div className={styles.infoProductoDiv}>
                             <div className="d-flex flex-column">

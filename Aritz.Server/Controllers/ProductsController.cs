@@ -38,7 +38,12 @@ namespace Aritz.Server.Controllers
                                     {
                                         CAT_ID = p.Category.CAT_ID,
                                         CAT_NAME = p.Category.CAT_NAME
-                                    }
+                                    },
+                                    Gallery = p.ProductImages.Select(img => new ProductImgDto
+                                    {
+                                        IMG_ID = img.IMG_ID,
+                                        IMG_URL = img.IMG_URL
+                                    }).ToList()
                                 })
                                 .ToListAsync(); // Consulta la tabla "Products" y join con "Categories"
             Console.WriteLine(products);
