@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
+import { IoMdAddCircle } from "react-icons/io";
 function Modal({ productName, productCategory, productImg, productPrice, productQuantity, productDescription, productStatus, productId, refresh, productsGallery }) {
     console.log(productsGallery);
     const [prdData, setPrdData] = useState({
@@ -148,7 +149,21 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                             :
                             ''
                         }
+                        <div className={styles.agregarImgNuevaDiv}>
+                            <IoMdAddCircle
+                                size={50}
+                            />
+                            Agregar una imagen nueva
+                            <input
+                                type="file"
+                                name=""
+                                accept="image/*"
+                                className={styles.agregarImgNuevaInput}
+                            />
+                        </div>
+
                         <hr></hr>
+
                         <div className={styles.infoProductoDiv}>
                             <div className="d-flex flex-column">
                                 <p className="text-start">Titulo:</p>
