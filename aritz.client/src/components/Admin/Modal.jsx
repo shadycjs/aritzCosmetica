@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
-function Modal({ productName, productCategory, productImg, productPrice, productQuantity, productDescription, productStatus, productId }) {
+function Modal({ productName, productCategory, productImg, productPrice, productQuantity, productDescription, productStatus, productId, refresh }) {
 
     const [prdData, setPrdData] = useState({
         PRD_ID: productId ?? '',
@@ -54,6 +54,13 @@ function Modal({ productName, productCategory, productImg, productPrice, product
             };
             console.log("Datos enviados al backend: ", dataToSend);
             const response = await axiosInstance.post('Products/updPrd', dataToSend);
+            refresh(prev => !prev);
+
+            const closeBtn = document.querySelector('#staticBackdrop .btn-close');
+            if (closeBtn) {
+                closeBtn.click();
+            }
+
             Swal.fire({
                 title: 'Informacion actualizada correctamente!',
                 icon: 'success',

@@ -253,7 +253,7 @@ namespace Aritz.Server.Controllers
             public string? PRD_DESCRIPTION { get; set; }
             public bool PRD_IS_ACTIVE { get; set; }
             public IFormFile PRD_IMAGE { get; set; } // <--- Aquí llega el archivo
-            public List<IFormFile> GalleryImages { get; set; }
+            public List<IFormFile>? GalleryImages { get; set; }
             public int PRD_CAT_ID { get; set; } 
         }
 
@@ -277,7 +277,7 @@ namespace Aritz.Server.Controllers
             public bool? PRD_IS_ACTIVE { get; set; }
             public string? PRD_IMAGE { get; set; } // Mapea con ImageUrl (puede ser nulo)
             public CategoryDto Category { get; set; }
-            public List<ProductImgDto> Gallery { get; set; } = new List<ProductImgDto>();
+            public List<ProductImgDto>? Gallery { get; set; } = new List<ProductImgDto>();
         }
 
         public class ProductImgDto

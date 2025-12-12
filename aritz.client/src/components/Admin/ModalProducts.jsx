@@ -68,9 +68,11 @@ function ModalProducts({ refresh }) {
                 formData.append('PRD_IMAGE', prdData.PRD_IMAGE);
             }
             console.log(galleryFiles);
-            galleryFiles.forEach((file) => {
-                formData.append('GalleryImages', file);
-            });
+            if (galleryFiles) {
+                galleryFiles.forEach((file) => {
+                    formData.append('GalleryImages', file);
+                });
+            }
 
             // OJO: Si necesitas enviar Categoría, agrégala aquí también
             formData.append('PRD_CAT_ID', prdData.PRD_CAT_ID); 

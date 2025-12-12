@@ -285,6 +285,7 @@ function AdminProducts() {
                 productDescription={selectedProduct?.PRD_DESCRIPTION}
                 productStatus={selectedProduct?.PRD_IS_ACTIVE}
                 productId={selectedProduct?.PRD_ID}
+                refresh={setRefreshPrd}
             />
 
             <ModalProducts
