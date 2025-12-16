@@ -126,7 +126,7 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                     className={styles.imageSecondaryProductDiv}
                                 >
                                     <label>
-                                        Imagen 2:
+                                        Imagen {index + 2}:
                                         <img src={`https://localhost:7273/images/${img.IMG_URL}`} />
                                     </label>
                                     <div className={styles.imageSecondaryProductDivSub}>
