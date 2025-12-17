@@ -1,8 +1,9 @@
 ﻿import styles from '../Admin/Modal.module.css'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import { IoMdAddCircle } from "react-icons/io";
+import { FiUpload } from "react-icons/fi";
 function Modal({ productName, productCategory, productImg, productPrice, productQuantity, productDescription, productStatus, productId, refresh, productsGallery }) {
 
     const [prdData, setPrdData] = useState({
@@ -38,6 +39,8 @@ function Modal({ productName, productCategory, productImg, productPrice, product
         productDescription,
         productStatus
     ]);
+
+    const fileInputRef = useRef(null); 
 
     const handlePrdData = (e) => {
         const { name, value, type, files } = e.target; // <--- Agregamos type y files
@@ -107,6 +110,7 @@ function Modal({ productName, productCategory, productImg, productPrice, product
             console.log("Datos enviados al backend: ", formData);
             const response = await axiosInstance.post('Products/updPrd', formData);
             refresh(prev => !prev);
+            setAddImg([]); 
 
             const closeBtn = document.querySelector('#staticBackdrop .btn-close');
             if (closeBtn) {
@@ -158,11 +162,6 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                         accept="image/*"
                                         onChange={handlePrdData}
                                     />
-                                    <label
-                                        className="input-group-text"
-                                        htmlFor="inputGroupFile02">
-                                        Actualizar imagen
-                                    </label>
                                 </div>
                                 <label>
                                     Imagen Principal:
@@ -176,7 +175,7 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                             productsGallery.map((img, index) => (
                                 <div
                                     key={index}
-                                    className={styles.imageSecondaryProductDiv}
+                                    className={styles.imageProductDiv}
                                 >
                                     <label>
                                         Imagen {index + 2}
@@ -190,11 +189,6 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                             onChange={(e) => { handleGalleryChange(e, img.IMG_ID) }}
                                             accept="image/*"
                                         />
-                                        <label
-                                            className="input-group-text"
-                                            htmlFor="inputGroupFile03">
-                                            Actualizar imagen {index + 2}
-                                        </label>
                                     </div>
                                         {imagesToUpdate.length > 0 && (
                                             <div className="mt-2 small text-muted">
@@ -218,6 +212,7 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                 className={styles.agregarImgNuevaInput}
                                 onChange={handleAddImg}
                                 multiple
+                                ref={fileInputRef}
                             />
                         </div>
                         {addImg.length > 0 && (

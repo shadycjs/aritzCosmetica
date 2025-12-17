@@ -153,28 +153,39 @@ namespace Aritz.Server.Controllers
                 updated = true;
             }
 
-            if (prdDto.UpdatedGalleryFiles != null && prdDto.UpdatedGalleryFiles.Count > 0)
+            if (prdDto.UpdatedGalleryFiles != null && prdDto.UpdatedGalleryFiles.Count > 0
+                && prdDto.UpdatedGalleryIds != null && prdDto.UpdatedGalleryIds.Count == prdDto.UpdatedGalleryFiles.Count)
             {
-                foreach(var file in prdDto.UpdatedGalleryFiles)
+                // Usamos un FOR normal para ir posición por posición (Paralelo)
+                for (int i = 0; i < prdDto.UpdatedGalleryFiles.Count; i++)
                 {
-                    string UpdGalleryFileName = $"UpdGalleryImg_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-                    string UpdGalleryFilePath = Path.Combine(currentDir, "wwwroot", "images", UpdGalleryFileName);
+                    // 1. Obtenemos el par: El ID y su Archivo correspondiente
+                    int id = prdDto.UpdatedGalleryIds[i];
+                    IFormFile file = prdDto.UpdatedGalleryFiles[i];
 
-                    using (var stream = new FileStream(UpdGalleryFilePath, FileMode.Create))
+                    // 2. Buscamos la imagen en BD
+                    var existingImage = await _context.ProductImages.FirstOrDefaultAsync(pi => pi.IMG_ID == id);
+
+                    if (existingImage != null)
                     {
-                        await file.CopyToAsync(stream);
+                        // 3. Guardar en Servidor
+                        string UpdGalleryFileName = $"UpdGalleryImg_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                        string UpdGalleryFilePath = Path.Combine(currentDir, "wwwroot", "images", UpdGalleryFileName);
+
+                        using (var stream = new FileStream(UpdGalleryFilePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // 4. Actualizar BD (CORREGIDO: Guardar solo el nombre, no la ruta completa)
+                        existingImage.IMG_URL = UpdGalleryFileName;
+
+                        updated = true;
                     }
-
-                    products.ProductImages.Add(new ProductImage
-                    {
-                        IMG_URL = UpdGalleryFileName
-                    });
                 }
-                updated = true;
             }
 
-
-            if(products.PRD_NAME != prdDto.PRD_NAME)
+            if (products.PRD_NAME != prdDto.PRD_NAME)
             {
                 products.PRD_NAME = prdDto.PRD_NAME;
                 updated = true;
