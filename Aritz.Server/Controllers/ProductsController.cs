@@ -110,11 +110,69 @@ namespace Aritz.Server.Controllers
         }
 
         [HttpPost("updPrd")]
-        public async Task<IActionResult> UpdProduct([FromBody] UpdateProductDto prdDto)
+        public async Task<IActionResult> UpdProduct([FromForm] UpdateProductDto prdDto)
         {
             var products = await _context.Products.FirstOrDefaultAsync(p => p.PRD_ID == prdDto.PRD_ID);
+            bool updated = false; // Variable para modificar solo los campos que sufrieron cambios
+            
+            string currentDir = Directory.GetCurrentDirectory(); // Directorio Actual
 
-            bool updated = false;
+            // Si se modifico la imagen PRINCIPAL
+            if (prdDto.MainImageFile != null)
+            {
+                string fileName = $"updMainImg_{Guid.NewGuid()}{Path.GetExtension(prdDto.MainImageFile.FileName)}";
+                string filePath = Path.Combine(currentDir, "wwwroot", "images", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await prdDto.MainImageFile.CopyToAsync(stream);
+                }
+
+                products.PRD_IMAGE = fileName;
+                updated = true;
+            }
+
+            // Si se agrego una imagen NUEVA, se inserta en el servidor y en la base
+            if (prdDto.NewGalleryImages != null && prdDto.NewGalleryImages.Count > 0)
+            {
+                foreach(var file in prdDto.NewGalleryImages)
+                {
+                    string NewGalleryImagesFileName = $"NewGalleryImg_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                    string NewGalleryImagesFilePath = Path.Combine(currentDir, "wwwroot", "images", NewGalleryImagesFileName);
+
+                    using (var stream = new FileStream(NewGalleryImagesFilePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    products.ProductImages.Add(new ProductImage
+                    {
+                        IMG_URL = NewGalleryImagesFileName
+                    });
+                }
+                updated = true;
+            }
+
+            if (prdDto.UpdatedGalleryFiles != null && prdDto.UpdatedGalleryFiles.Count > 0)
+            {
+                foreach(var file in prdDto.UpdatedGalleryFiles)
+                {
+                    string UpdGalleryFileName = $"UpdGalleryImg_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                    string UpdGalleryFilePath = Path.Combine(currentDir, "wwwroot", "images", UpdGalleryFileName);
+
+                    using (var stream = new FileStream(UpdGalleryFilePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    products.ProductImages.Add(new ProductImage
+                    {
+                        IMG_URL = UpdGalleryFileName
+                    });
+                }
+                updated = true;
+            }
+
 
             if(products.PRD_NAME != prdDto.PRD_NAME)
             {
@@ -270,6 +328,7 @@ namespace Aritz.Server.Controllers
             public decimal PRD_PRICE { get; set; }
             public int PRD_QUANTITY { get; set; }
             public bool PRD_IS_ACTIVE { get; set; }
+            public IFormFile? MainImageFile { get; set; }
             public List<IFormFile>? NewGalleryImages { get; set; }
             public List<IFormFile>? UpdatedGalleryFiles { get; set; }
             public List<int>? UpdatedGalleryIds { get; set; }

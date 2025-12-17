@@ -84,14 +84,12 @@ function Modal({ productName, productCategory, productImg, productPrice, product
             formData.append('PRD_DESCRIPTION', prdData.PRD_DESCRIPTION);
             formData.append('PRD_IS_ACTIVE', prdData.PRD_IS_ACTIVE);
 
-            // Solo agregamos la imagen si existe
-            console.log(prdData.PRD_IMAGE?.name);
+            // Cambia la imagen PRINCIPAL por OTRA
             if (prdData.PRD_IMAGE) {
                 formData.append('MainImageFile', prdData.PRD_IMAGE);
             }
-            console.log(addImg); // Para ver si se agrego una imagen
             
-
+            // Agrega una Imagen NUEVA
             if (addImg) {
                 addImg.forEach((file) => {
                     formData.append('NewGalleryImages', file);
@@ -151,10 +149,6 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                     <div className="modal-body d-flex flex-column align-items-center">
                         <div className={styles.imageProductDiv}>
                             <div className="input-group mb-3 d-flex gap-2">
-                                <label>
-                                    Imagen 1:
-                                    <img src={`https://localhost:7273/images/${productImg}`} />
-                                </label>
                                 <div className={styles.imageSecondaryProductDivSub}>
                                     <input
                                         type="file"
@@ -170,6 +164,11 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                         Actualizar imagen
                                     </label>
                                 </div>
+                                <label>
+                                    Imagen Principal:
+                                    <img src={`https://localhost:7273/images/${productImg}`} />
+                                </label>
+
                             </div>
                         </div>
                         {productsGallery.length > 0
@@ -180,7 +179,7 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                     className={styles.imageSecondaryProductDiv}
                                 >
                                     <label>
-                                        Imagen {index + 2}, PRD_ID: {img.IMG_ID}
+                                        Imagen {index + 2}
                                         <img src={`https://localhost:7273/images/${img.IMG_URL}`} />
                                     </label>
                                     <div className={styles.imageSecondaryProductDivSub}>
