@@ -234,7 +234,6 @@ function AdminProducts() {
                 </thead>
                 <tbody>
                     {filteredProducts.map((producto) => (
-                        console.log(producto),
                     <tr key={producto.PRD_ID}>
                         <td>
                             {producto.PRD_ID}

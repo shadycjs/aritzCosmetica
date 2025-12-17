@@ -121,6 +121,7 @@ function ModalProducts({ refresh }) {
                         ></button>
                     </div>
                     <div className="modal-body d-flex flex-column align-items-center">
+                        <label className="form-label fw-bold">Imagen Principal</label>
                         <div className="input-group mb-3">
                             <input
                                 type="file"

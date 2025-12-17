@@ -4,8 +4,9 @@ import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import { IoMdAddCircle } from "react-icons/io";
 function Modal({ productName, productCategory, productImg, productPrice, productQuantity, productDescription, productStatus, productId, refresh, productsGallery }) {
-    console.log(productsGallery);
+
     const [prdData, setPrdData] = useState({
+        PRD_IMAGE: null,
         PRD_ID: productId ?? '',
         PRD_NAME: productName ?? '',
         PRD_PRICE: productPrice ?? '',
@@ -13,10 +14,13 @@ function Modal({ productName, productCategory, productImg, productPrice, product
         PRD_DESCRIPTION: productDescription ?? '',
         PRD_IS_ACTIVE: productStatus != null ? String(productStatus) : ''
     });
+    const [imagesToUpdate, setImagesToUpdate] = useState({}); 
+    const [addImg, setAddImg] = useState([]);
 
     // Sincroniza el estado cuando cambien las props
     useEffect(() => {
         setPrdData({
+            PRD_IMAGE: null,
             PRD_ID: productId ?? '',
             PRD_NAME: productName ?? '',
             PRD_PRICE: productPrice ?? '',
@@ -36,25 +40,74 @@ function Modal({ productName, productCategory, productImg, productPrice, product
     ]);
 
     const handlePrdData = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, files } = e.target; // <--- Agregamos type y files
+
         setPrdData(prev => ({
             ...prev,
-            [name]: value
+            // Si es archivo usamos files[0], si no, usamos value
+            [name]: type === 'file' ? files[0] : value
         }));
     };
 
+    const handleAddImg = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const newFiles = Array.from(e.target.files);
+
+            // Usamos el spread operator (...prev) para NO borrar los anteriores
+            setAddImg(prev => [...prev, ...newFiles]);
+
+            // Truco: Limpiamos el input para permitir subir el mismo archivo 2 veces si se desea
+            e.target.value = '';
+        }
+    }
+
+    const handleGalleryChange = (e, imgId) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+
+            // Guardamos en el objeto: Clave = ID, Valor = Archivo
+            setImagesToUpdate(prev => ({
+                ...prev,
+                [imgId]: file
+            }));
+        }
+    }
+
     const handleUpdPrd = async ()  => {
         try {
-            const dataToSend = {
-                PRD_ID: Number(prdData.PRD_ID),                    // int
-                PRD_NAME: prdData.PRD_NAME?.trim() || null,        // string
-                PRD_PRICE: parseFloat(prdData.PRD_PRICE) || 0,     // decimal
-                PRD_QUANTITY: parseInt(prdData.PRD_QUANTITY, 10) || 0, // int
-                PRD_DESCRIPTION: prdData.PRD_DESCRIPTION?.trim() || null, // string
-                PRD_IS_ACTIVE: prdData.PRD_IS_ACTIVE === 'true'    // bool
-            };
-            console.log("Datos enviados al backend: ", dataToSend);
-            const response = await axiosInstance.post('Products/updPrd', dataToSend);
+            const formData = new FormData();
+
+            formData.append('PRD_ID', prdData.PRD_ID);
+            formData.append('PRD_NAME', prdData.PRD_NAME);
+            formData.append('PRD_PRICE', prdData.PRD_PRICE);
+            formData.append('PRD_QUANTITY', prdData.PRD_QUANTITY);
+            formData.append('PRD_DESCRIPTION', prdData.PRD_DESCRIPTION);
+            formData.append('PRD_IS_ACTIVE', prdData.PRD_IS_ACTIVE);
+
+            // Solo agregamos la imagen si existe
+            console.log(prdData.PRD_IMAGE?.name);
+            if (prdData.PRD_IMAGE) {
+                formData.append('MainImageFile', prdData.PRD_IMAGE);
+            }
+            console.log(addImg); // Para ver si se agrego una imagen
+            
+
+            if (addImg) {
+                addImg.forEach((file) => {
+                    formData.append('NewGalleryImages', file);
+                });
+            }
+
+            Object.keys(imagesToUpdate).forEach((keyId) => {
+                const file = imagesToUpdate[keyId];
+
+                // Enviamos el ID y el Archivo por separado pero en orden
+                formData.append('UpdatedGalleryIds', keyId);
+                formData.append('UpdatedGalleryFiles', file);
+            });
+
+            console.log("Datos enviados al backend: ", formData);
+            const response = await axiosInstance.post('Products/updPrd', formData);
             refresh(prev => !prev);
 
             const closeBtn = document.querySelector('#staticBackdrop .btn-close');
@@ -107,8 +160,9 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                         type="file"
                                         className="form-control"
                                         id="inputGroupFile02"
-                                        name=""
+                                        name="PRD_IMAGE"
                                         accept="image/*"
+                                        onChange={handlePrdData}
                                     />
                                     <label
                                         className="input-group-text"
@@ -126,15 +180,15 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                     className={styles.imageSecondaryProductDiv}
                                 >
                                     <label>
-                                        Imagen {index + 2}:
+                                        Imagen {index + 2}, PRD_ID: {img.IMG_ID}
                                         <img src={`https://localhost:7273/images/${img.IMG_URL}`} />
                                     </label>
                                     <div className={styles.imageSecondaryProductDivSub}>
                                         <input
                                             type="file"
                                             className="form-control"
-                                            id="inputGroupFile03"
-                                            name=""
+                                            id="inputGallery"
+                                            onChange={(e) => { handleGalleryChange(e, img.IMG_ID) }}
                                             accept="image/*"
                                         />
                                         <label
@@ -143,6 +197,11 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                             Actualizar imagen {index + 2}
                                         </label>
                                     </div>
+                                        {imagesToUpdate.length > 0 && (
+                                            <div className="mt-2 small text-muted">
+                                                Archivo: {imagesToUpdate.map(f => f.name)}
+                                            </div>
+                                        )}
                                 </div>
 
                             ))
@@ -156,11 +215,17 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                             Agregar una imagen nueva
                             <input
                                 type="file"
-                                name=""
                                 accept="image/*"
                                 className={styles.agregarImgNuevaInput}
+                                onChange={handleAddImg}
+                                multiple
                             />
                         </div>
+                        {addImg.length > 0 && (
+                            <div className="mt-2 small text-muted">
+                                Archivo: {addImg.map(f => f.name).join(', ')}
+                            </div>
+                        )}
 
                         <hr></hr>
 

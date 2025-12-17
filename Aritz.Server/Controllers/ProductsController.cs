@@ -270,6 +270,9 @@ namespace Aritz.Server.Controllers
             public decimal PRD_PRICE { get; set; }
             public int PRD_QUANTITY { get; set; }
             public bool PRD_IS_ACTIVE { get; set; }
+            public List<IFormFile>? NewGalleryImages { get; set; }
+            public List<IFormFile>? UpdatedGalleryFiles { get; set; }
+            public List<int>? UpdatedGalleryIds { get; set; }
         }
 
         public class ProductDto
