@@ -62,3 +62,10 @@ wwwroot\images\UpdGalleryImg_80305b3c-a257-45a6-aa9e-ad6958cb668d.jpg
 wwwroot\images\UpdGalleryImg_e10ece8f-06c5-4707-827d-9c62444add68.png
 wwwroot\images\UpdGalleryImg_8ec612d5-9850-4df1-a791-8482dd64a75f.png
 wwwroot\images\prod_cf14bfd1-0911-4b1e-845e-b1401f89b4f0.jpg
+wwwroot\images\NewGalleryImg_a912a792-9191-4ac2-841d-58f9cee1280a.jpeg
+wwwroot\images\UpdGalleryImg_9d87be71-40aa-4c57-9209-f753ab59c8bd.png
+wwwroot\images\UpdGalleryImg_4ebfa67b-a31d-4a74-a880-390bce516478.png
+wwwroot\images\NewGalleryImg_8e0569bb-c586-4c35-becf-cf8f5d5fc021.png
+wwwroot\images\UpdGalleryImg_13b609b2-48b1-45e8-81ef-bdb842060c70.png
+wwwroot\images\UpdGalleryImg_81584274-bf84-4070-9a5c-b64ceadd1dad.png
+wwwroot\images\UpdGalleryImg_3e239c65-6ed5-4d1c-9b67-0cb439da8b66.png

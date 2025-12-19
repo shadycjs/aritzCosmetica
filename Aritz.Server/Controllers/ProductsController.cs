@@ -319,6 +319,31 @@ namespace Aritz.Server.Controllers
                 return StatusCode(500, "Ocurrió un error al intentar eliminar el producto.");
             }
         }
+
+        [HttpDelete("delImg/{id}")]
+        public async Task<IActionResult> delImg(int id)
+        {
+            try
+            {
+                var image = await _context.ProductImages.FirstOrDefaultAsync(i => i.IMG_ID == id);
+
+                if (image == null)
+                {
+                    return NotFound($"No se contro la imagen con el ID {id}");
+                }
+
+                _context.ProductImages.Remove(image);
+                await _context.SaveChangesAsync();
+
+                return Ok($"Se elimino correctamente la imagen con ID: ${id}");
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Error al intentar eliminar la imagen");
+                return StatusCode(500, "Ocurrió un error al intentar eliminar la imagen.");
+            }
+        }
         public class AddProductDto
         {
             public string PRD_NAME { get; set; }

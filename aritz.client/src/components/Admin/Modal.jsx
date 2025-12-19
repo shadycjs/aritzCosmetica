@@ -4,6 +4,7 @@ import axiosInstance from "../../api/axiosConfig";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import { IoMdAddCircle } from "react-icons/io";
 import { FiUpload } from "react-icons/fi";
+import { MdDeleteForever } from "react-icons/md";
 function Modal({ productName, productCategory, productImg, productPrice, productQuantity, productDescription, productStatus, productId, refresh, productsGallery }) {
 
     const [prdData, setPrdData] = useState({
@@ -17,9 +18,15 @@ function Modal({ productName, productCategory, productImg, productPrice, product
     });
     const [imagesToUpdate, setImagesToUpdate] = useState({}); 
     const [addImg, setAddImg] = useState([]);
+    const [currentGallery, setCurrentGallery] = useState([]);
 
     // Sincroniza el estado cuando cambien las props
     useEffect(() => {
+        setCurrentGallery(productsGallery || []); 
+
+        setImagesToUpdate({});
+        setAddImg([]);
+
         setPrdData({
             PRD_IMAGE: null,
             PRD_ID: productId ?? '',
@@ -37,7 +44,8 @@ function Modal({ productName, productCategory, productImg, productPrice, product
         productPrice,
         productQuantity,
         productDescription,
-        productStatus
+        productStatus,
+        productsGallery 
     ]);
 
     const fileInputRef = useRef(null); 
@@ -127,6 +135,19 @@ function Modal({ productName, productCategory, productImg, productPrice, product
         }
     }
 
+    const handleDelImg = async (id) => {
+        try {
+            console.log("Id de la imagen a borrar enviado al backend: ", id);
+            const response = await axiosInstance.delete(`Products/delImg/${id}`);
+            refresh(prev => !prev);
+
+            // Filtramos la galería para quitar la imagen con ese ID
+            setCurrentGallery(prev => prev.filter(img => img.IMG_ID !== id));
+        } catch (e) {
+            console.log("Error al borrar los datos: ", e);
+        }
+    }
+
     return (
         <div
             className="modal fade"
@@ -150,37 +171,44 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                             aria-label="Close"
                         ></button>
                     </div>
-                    <div className="modal-body d-flex flex-column align-items-center">
+                    <div className="modal-body d-flex flex-column align-items-center gap-2">
                         <div className={styles.imageProductDiv}>
                             <div className="input-group mb-3 d-flex gap-2">
-                                <div className={styles.imageSecondaryProductDivSub}>
-                                    <input
-                                        type="file"
-                                        className="form-control"
-                                        id="inputGroupFile02"
-                                        name="PRD_IMAGE"
-                                        accept="image/*"
-                                        onChange={handlePrdData}
-                                    />
-                                </div>
+
                                 <label>
-                                    Imagen Principal:
+                                    <b>Imagen Principal</b>
+
                                     <img src={`https://localhost:7273/images/${productImg}`} />
                                 </label>
-
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    id="inputGroupFile02"
+                                    name="PRD_IMAGE"
+                                    accept="image/*"
+                                    onChange={handlePrdData}
+                                />
                             </div>
                         </div>
-                        {productsGallery.length > 0
+                        {currentGallery.length > 0
                             ?
-                            productsGallery.map((img, index) => (
+                            currentGallery.map((img, index) => (
                                 <div
                                     key={index}
-                                    className={styles.imageProductDiv}
+                                    className={styles.imageSecondaryProductDiv}
                                 >
-                                    <label>
-                                        Imagen {index + 2}
+                                    <div className={styles.imageSecondaryProductDivSub}>
+                                        <div className='d-flex justify-content-between'>
+                                            <b>Imagen {index + 2}</b>
+                                            <MdDeleteForever
+                                                className={styles.delIcon}
+                                                size={25}
+                                                style={{ cursor: "pointer" }}
+                                                onClick={() => { handleDelImg(img.IMG_ID) }}
+                                            />
+                                        </div>
                                         <img src={`https://localhost:7273/images/${img.IMG_URL}`} />
-                                    </label>
+                                    </div>
                                     <div className={styles.imageSecondaryProductDivSub}>
                                         <input
                                             type="file"
@@ -293,7 +321,7 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                         onChange={handlePrdData}
                                     >
                                         <option value="">Open this select menu</option>
-                                        <option value="true">Yes</option>
+                                        <option value="true">Si</option>
                                         <option value="false">No</option>
                                     </select>
                                 </div>

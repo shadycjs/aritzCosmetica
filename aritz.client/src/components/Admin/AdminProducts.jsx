@@ -264,6 +264,7 @@ function AdminProducts() {
                         </td>
                         <td>
                             <MdDeleteForever
+                                    className={styles.delIcon}
                                     size={25}
                                     style={{ cursor: "pointer" }}
                                     data-bs-toggle="modal"

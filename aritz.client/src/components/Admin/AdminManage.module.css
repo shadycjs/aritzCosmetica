@@ -111,3 +111,7 @@ productsUserTable thead {
     .addPrdBtn:hover{
         color: #fff;
     }
+
+.delIcon:hover {
+    color: rgb(255, 0, 0);
+}

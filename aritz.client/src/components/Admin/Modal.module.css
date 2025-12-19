@@ -4,8 +4,8 @@
     justify-content: center;
     width: 100%;
     padding: 20px;
-    border: 1px solid #000;
     gap: 5px;
+    background-color: rgb(237, 237, 237);
 }
 
     .imageProductDiv img {
@@ -16,17 +16,23 @@
         object-position: top;
     }
 
-.imageSecondaryProductDiv{
+.imageSecondaryProductDiv {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    width: 90%;
+    padding: 20px;
     gap: 5px;
-    width: 100%;
 }
 
-.imageSecondaryProductDivSub {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
+
+
+.imageSecondaryProductDivSub img {
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 4/3; /* Mantiene proporción rectangular (o usa 1/1 para cuadrado) */
+    object-fit: cover;
+    object-position: top;
 }
 
 .agregarImgNuevaDiv {
@@ -38,6 +44,7 @@
     width: 300px;
     height: 300px;
     position: relative; /* Vital para que el input se posicione respecto a este div */
+    cursor: pointer;
 }
 
     .agregarImgNuevaDiv:hover {
@@ -86,3 +93,7 @@
         border-radius: 8px;
         object-position: top;
     }
+
+.delIcon:hover{
+    color: rgb(255, 0, 0);
+}
