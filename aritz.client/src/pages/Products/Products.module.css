@@ -7,16 +7,14 @@
 /* Contenedor principal de la página */
 .productsPage {
     display: flex; /* Flexbox para organizar el aside y el grid */
-    gap: 20px; /* Espaciado entre aside y grid */
-    margin: 0 auto; /* Centra la página */
     padding: 20px; /* Espaciado interno */
-    max-width: 1200px; /* Ancho máximo */
+    max-width: 1400px; /* Ancho máximo */
 }
 
 /* Aside (barra lateral para filtros) */
 .filters {
     flex: 1; /* Toma espacio proporcional */
-    min-width: 300px;
+    min-width: 250px;
     max-width: 600px; /* Limita el ancho del aside */
     padding: 20px; /* Espaciado interno */
 }
@@ -46,7 +44,7 @@
 /* Grilla de productos */
 
 .carta{
-    height: 400px !important;
+    min-height: 500px !important;
     margin-bottom: 10px;
 }
 

@@ -69,3 +69,7 @@ wwwroot\images\NewGalleryImg_8e0569bb-c586-4c35-becf-cf8f5d5fc021.png
 wwwroot\images\UpdGalleryImg_13b609b2-48b1-45e8-81ef-bdb842060c70.png
 wwwroot\images\UpdGalleryImg_81584274-bf84-4070-9a5c-b64ceadd1dad.png
 wwwroot\images\UpdGalleryImg_3e239c65-6ed5-4d1c-9b67-0cb439da8b66.png
+wwwroot\images\NewGalleryImg_9df3cdef-f89f-4af4-8082-5538302da3a9.png
+wwwroot\images\updMainImg_6322b5c3-f3c9-4428-bf8a-666039fcbaec.png
+wwwroot\images\NewGalleryImg_fbc8db07-6fd5-424e-9f11-7fca63d3dfa5.jpg
+wwwroot\images\NewGalleryImg_1aac6ee9-c2fe-4bed-b333-d4bff2cc405b.png
