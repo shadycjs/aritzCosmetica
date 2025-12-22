@@ -10,6 +10,7 @@ import { useSession } from "../../context/SessionContext";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import BreadCrum from "../../components/BreadCrum/BreadCrum";
 import { CiSearch, CiFilter } from "react-icons/ci";
+import Filters from "./Filters/Filters";
 function Products() {
     
     const navigate = useNavigate();
@@ -84,30 +85,13 @@ function Products() {
                 }
 
             </CenteredContainer>
-            <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center">
             <div className={styles.productsPage}>
                 {/* Aside para los filtros */}
                 <aside className={styles.filters}>
                     <h3 className={styles.filtersTitle}>FILTROS <FaFilter /></h3>
                     <ul className={styles.filterList}>
-                        <li className={styles.filterItem}>
-                            <label>
-                                <input type="checkbox" />
-                                Cuidado Facial
-                            </label>
-                        </li>
-                        <li className={styles.filterItem}>
-                            <label>
-                                <input type="checkbox" />
-                                Cuidado Corporal
-                            </label>
-                        </li>
-                        <li className={styles.filterItem}>
-                            <label>
-                                <input type="checkbox" />
-                                Productos Organicos
-                            </label>
-                        </li>
+                        <Filters />
                     </ul>
                 </aside>
 

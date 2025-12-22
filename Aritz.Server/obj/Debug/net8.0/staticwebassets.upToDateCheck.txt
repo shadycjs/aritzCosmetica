@@ -73,3 +73,4 @@ wwwroot\images\NewGalleryImg_9df3cdef-f89f-4af4-8082-5538302da3a9.png
 wwwroot\images\updMainImg_6322b5c3-f3c9-4428-bf8a-666039fcbaec.png
 wwwroot\images\NewGalleryImg_fbc8db07-6fd5-424e-9f11-7fca63d3dfa5.jpg
 wwwroot\images\NewGalleryImg_1aac6ee9-c2fe-4bed-b333-d4bff2cc405b.png
+wwwroot\images\prod_4329faf2-a18d-4449-ba9a-cd2fc3e634fb.jpg

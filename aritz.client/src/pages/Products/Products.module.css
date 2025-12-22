@@ -14,7 +14,7 @@
 /* Aside (barra lateral para filtros) */
 .filters {
     flex: 1; /* Toma espacio proporcional */
-    min-width: 250px;
+    min-width: 350px;
     max-width: 600px; /* Limita el ancho del aside */
     padding: 20px; /* Espaciado interno */
 }
@@ -57,7 +57,7 @@
     .cartaImgContainer img {
         width: 100%;
         max-width: 400px;
-        aspect-ratio: 3/3; /* Mantiene proporción rectangular (o usa 1/1 para cuadrado) */
+        aspect-ratio: 2/3; /* Mantiene proporción rectangular (o usa 1/1 para cuadrado) */
         object-fit: cover;
         object-position: top;
     }
