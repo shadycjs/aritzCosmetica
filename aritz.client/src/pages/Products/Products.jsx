@@ -19,6 +19,25 @@ function Products() {
     const [loading, setLoading] = useState(true); // Estado para controlar el spinner o carga
     const [error, setError] = useState(null); // Estado para gestionar errores
     const { fetchCountCart } = useCart();
+    const [searchTerm, setSearchTerm] = useState(''); // Estado para manejar la barra de busqueda
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        let result = [...products];
+        // 1. Filtro por texto
+        if (searchTerm.trim()) {
+            const term = searchTerm.toLowerCase();
+            result = result.filter(p =>
+                p.PRD_NAME.toLowerCase().includes(term) ||
+                p.PRD_DESCRIPTION.toLowerCase().includes(term) ||
+                p.Category.CAT_NAME.toLowerCase().includes(term)
+            );
+        }
+
+
+        setFilteredProducts(result);
+    }, [searchTerm, products]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -35,9 +54,12 @@ function Products() {
         };
 
         fetchProducts();
-    }, []); // El uso de un array vacío asegura que solo se ejecute al montar el componente
+    }, [searchTerm]); // El uso de un array vacío asegura que solo se ejecute al montar el componente
+
     if (loading) return <div>Cargando productos...</div>;
     if (error) return <div>Error: {error}</div>;
+
+
 
     const handleAddToCart = async (productId, quantity = 1) => {
         try {
@@ -73,6 +95,14 @@ function Products() {
         navigate(`/product/product-detail/${id}`);
     }
 
+    // Funcion para que las columnas del grid cambien dependiendo de la cantidad de productos que trae
+    const columnClass = (() => {
+        const length = filteredProducts.length;
+        if (length === 1) return 'col-8';
+        if (length === 2) return 'col-12 col-sm-4';
+        return 'col-12 col-sm-6 col-lg-3';
+    })();
+
     return (
         <>
             <CenteredContainer>
@@ -91,7 +121,7 @@ function Products() {
                 <aside className={styles.filters}>
                     <h3 className={styles.filtersTitle}>FILTROS <FaFilter /></h3>
                     <ul className={styles.filterList}>
-                        <Filters />
+                            <Filters />
                     </ul>
                 </aside>
 
@@ -104,17 +134,20 @@ function Products() {
                             placeholder="Buscar..."
                             aria-label="Username"
                             aria-describedby="addon-wrapping"
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
                     <div className="row d-flex justify-content-start">
                         <div className="">
-                            <div className="row">
-                                {products.map((producto) => (
+                                <div className="row" style={{
+                                    maxHeight: '600px'
+                                }}>
+                                {filteredProducts.map((producto) => (
                                 <div
                                     key={producto.PRD_ID}
-                                    className={`col-12 col-sm-6 col-lg-3 ${styles.columna}`}
+                                    className={`col ${columnClass} ${styles.columna}`}
                                 >
-                                    <div className={`card ${styles.carta}`}>
+                                    <div className={`card h-100 ${styles.carta}`}>
                                         <div className={styles.cartaImgContainer}>
                                             <img src={`https://localhost:7273/images/${producto.PRD_IMAGE}`} className="card-img-top"/>
                                         </div>
