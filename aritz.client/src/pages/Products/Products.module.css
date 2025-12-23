@@ -45,18 +45,14 @@
 
 .carta {
     min-height: 500px !important;
-    margin-bottom: 10px;
 }
 
 .cartaImgContainer {
-    display: flex;
     justify-content: center;
-    width: 100%;
 }
 
     .cartaImgContainer img {
         width: 100%;
-        max-width: 400px;
         aspect-ratio: 2/3; /* Mantiene proporción rectangular (o usa 1/1 para cuadrado) */
         object-fit: cover;
         object-position: top;
@@ -72,6 +68,10 @@
     cursor: pointer;
     font-family: "Montserrat", sans-serif;
 }
+
+    .productTitle:hover{
+        color: rgb(179, 222, 167);
+    }
 
 .cartaAddCart {
     min-height: 40px;

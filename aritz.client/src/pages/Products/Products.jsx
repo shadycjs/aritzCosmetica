@@ -110,8 +110,6 @@ function Products() {
         navigate(`/product/product-detail/${id}`);
     }
 
-
-
     // 2. Función que recibirá el dato desde Filters.jsx
     const handleFilterChange = (valorDelHijo) => {
         console.log("Dato recibido del hijo:", valorDelHijo);
@@ -163,15 +161,16 @@ function Products() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <div className="row d-flex justify-content-start">
-                        <div className="">
-                                <div className="row" style={{
-                                    maxHeight: '600px'
-                                }}>
+                    <div className="container d-flex justify-content-start">
+                        <div 
+                            className="row g-3"
+                            //style={{ maxHeight: '600px' }}
+                        >
+
                                 {filteredProducts.map((producto) => (
                                 <div
                                     key={producto.PRD_ID}
-                                    className={`col ${columnClass} ${styles.columna}`}
+                                    className={`${columnClass}`}
                                 >
                                     <div className={`card h-100 ${styles.carta}`}>
                                         <div className={styles.cartaImgContainer}>
@@ -185,7 +184,7 @@ function Products() {
                                     </div>
                                 </div>
                                 ))}
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
