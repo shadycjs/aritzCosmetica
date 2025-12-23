@@ -19,9 +19,13 @@ function Products() {
     const [loading, setLoading] = useState(true); // Estado para controlar el spinner o carga
     const [error, setError] = useState(null); // Estado para gestionar errores
     const { fetchCountCart } = useCart();
-    const [searchTerm, setSearchTerm] = useState(''); // Estado para manejar la barra de busqueda
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+
+    // ESTADOS PARA LOS FILTROS
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterCats, setFilterCats] = useState([]); // Array de IDs de categorías
+    const [filterPrice, setFilterPrice] = useState(''); // 'biggest' o 'smallest'
 
     useEffect(() => {
         let result = [...products];
@@ -35,9 +39,21 @@ function Products() {
             );
         }
 
+        if (filterCats.length > 0) {
+            result = result.filter(p => filterCats.includes(p.Category.CAT_ID));
+            // Asegúrate que en tu objeto producto la propiedad sea PRD_CAT_ID o p.Category.CAT_ID
+        }
+
+        // 3. ORDENAMIENTO POR PRECIO (Lógica nueva)
+        if (filterPrice === 'biggest') {
+            result.sort((a, b) => b.PRD_PRICE - a.PRD_PRICE); // Mayor a menor
+        } else if (filterPrice === 'smallest') {
+            result.sort((a, b) => a.PRD_PRICE - b.PRD_PRICE); // Menor a mayor
+        }
+
 
         setFilteredProducts(result);
-    }, [searchTerm, products]);
+    }, [searchTerm, products, filterCats, filterPrice]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -58,7 +74,6 @@ function Products() {
 
     if (loading) return <div>Cargando productos...</div>;
     if (error) return <div>Error: {error}</div>;
-
 
 
     const handleAddToCart = async (productId, quantity = 1) => {
@@ -95,6 +110,14 @@ function Products() {
         navigate(`/product/product-detail/${id}`);
     }
 
+
+
+    // 2. Función que recibirá el dato desde Filters.jsx
+    const handleFilterChange = (valorDelHijo) => {
+        console.log("Dato recibido del hijo:", valorDelHijo);
+        setFiltroSeleccionado(valorDelHijo);
+    }
+
     // Funcion para que las columnas del grid cambien dependiendo de la cantidad de productos que trae
     const columnClass = (() => {
         const length = filteredProducts.length;
@@ -121,7 +144,10 @@ function Products() {
                 <aside className={styles.filters}>
                     <h3 className={styles.filtersTitle}>FILTROS <FaFilter /></h3>
                     <ul className={styles.filterList}>
-                            <Filters />
+                            <Filters
+                                setCategoriesFilter={setFilterCats}
+                                setPriceFilter={setFilterPrice}
+                            />
                     </ul>
                 </aside>
 

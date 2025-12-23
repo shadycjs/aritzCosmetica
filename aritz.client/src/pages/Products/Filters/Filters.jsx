@@ -1,11 +1,11 @@
 import styles from '../Products.module.css'
 import axiosInstance from "../../../api/axiosConfig";
 import { useState, useEffect } from 'react';
-function Filters() {
+function Filters({ setCategoriesFilter, setPriceFilter }) {
 
     const [categories, setCategories] = useState([]);
-    const [error, setError] = useState(null);
     const [filteredPrice, setFilteredPrice] = useState('all');
+    const [selectedCategories, setSelectedCategories] = useState([]); 
 
     const fetchCategories = async () => {
         try {
@@ -21,6 +21,25 @@ function Filters() {
         fetchCategories();
     }, []);
 
+    const handleCategoryChange = (catId) => {
+        // 1. Calculamos el nuevo array de categorías seleccionadas
+        const newSelection = selectedCategories.includes(catId)
+            ? selectedCategories.filter(id => id !== catId) // Quitar si ya estaba
+            : [...selectedCategories, catId];               // Agregar si no estaba
+
+        // 2. Actualizamos el estado visual local
+        setSelectedCategories(newSelection);
+
+        // 3. ¡IMPORTANTE! Se lo enviamos al padre inmediatamente
+        setCategoriesFilter(newSelection);
+    };
+
+    const handlePriceChange = (order) => {
+        // 1. Actualizamos visualmente
+        setFilteredPrice(order);
+        // 2. Enviamos al padre
+        setPriceFilter(order);
+    };
 
     return (
         <div className="accordion" id="accordionExample">
@@ -40,7 +59,11 @@ function Filters() {
                                     key={cat.CAT_ID}
                                 >
                                     <label>
-                                        <input type="checkbox" />
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedCategories.includes(cat.CAT_ID)}
+                                            onChange={() => handleCategoryChange(cat.CAT_ID)}
+                                        />
                                         {cat.CAT_NAME}
                                     </label>
                                 </li>    
@@ -64,7 +87,7 @@ function Filters() {
                             <input
                                 type="radio"
                                 checked={filteredPrice === 'biggest'}
-                                onChange={() => setFilteredPrice('biggest')}
+                                onChange={() => handlePriceChange('biggest')}
                             /> Mayor Precio
                         </label>
                         <label
@@ -74,7 +97,7 @@ function Filters() {
                                 type="radio"
                                 value="Mayor Precio"
                                 checked={filteredPrice === 'smallest'}
-                                onChange={() => setFilteredPrice('smallest')}
+                                onChange={() => handlePriceChange('smallest')}
                             /> Menor Precio
                         </label>
                     </div>
