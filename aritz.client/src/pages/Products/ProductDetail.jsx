@@ -73,12 +73,26 @@ function ProductDetail() {
             <div className={styles.container}>
                 <div className={styles.imgContainer}>
                     <img className={styles.imgMain} src={`https://localhost:7273/images/${product.PRD_IMAGE}`} />
-                    <div className={styles.subImgContainer}>
-                        <img src={sinImg} />
-                        <img src={sinImg} />
-                        <img src={sinImg} />
-                        <img src={sinImg} />
-                    </div>
+                    {product.Gallery.length > 0 
+                        ?
+                        <div className={styles.subImgContainer}>
+                            {product.Gallery.map((img, index) => (
+
+                                <img
+                                    src={`https://localhost:7273/images/${img.IMG_URL}`}
+                                    key={index}
+                                />
+
+                            ))}
+                        </div>
+                        :
+                        <div className={styles.subImgContainer}>
+                            <img src={sinImg} />
+                            <img src={sinImg} />
+                            <img src={sinImg} />
+                            <img src={sinImg} />
+                        </div>
+                    }
                 </div>
                 <div className={styles.infoContainer}>
                     <h3 className={styles.titleInfo}>{product.Category.CAT_NAME} {product.PRD_NAME}</h3>
