@@ -10,6 +10,7 @@ import { useSession } from "../../context/SessionContext";
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 import BreadCrum from "../BreadCrum/BreadCrum";
 import { useLocation } from 'react-router'
+import { formatPrice } from '../../utils/utils';
 
 function Carrito() {
     const navigate = useNavigate();
@@ -111,7 +112,10 @@ function Carrito() {
                         <ul className={styles.cartList}>
                             {cart.map((car) => (
                                 <li key={car.CAI_ID} className={styles.cartItem}>
-                                    <img src={`src/assets/images/${car.PRD_IMAGE}`} className={styles.itemImage} />
+                                    <img
+                                        src={`https://localhost:7273/images/${car.PRD_IMAGE}`}
+                                        className={styles.itemImage}
+                                    />
                                     <div className={styles.itemDetails}>
                                         <h4>{car.PRD_NAME}</h4>
                                         <p>Precio: ${car.CAI_TOTAL_PRICE}</p>
@@ -128,7 +132,7 @@ function Carrito() {
                         </ul>
 
                         <div className={styles.total}>
-                                <h3>Total: ${totalSumCart}</h3>
+                                <h3>Total: ${formatPrice(totalSumCart)}</h3>
                         </div>
 
                         <div className={styles.actions}>

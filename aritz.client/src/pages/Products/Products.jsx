@@ -11,6 +11,9 @@ import Swal from 'sweetalert2'; // Importar SweetAlert2
 import BreadCrum from "../../components/BreadCrum/BreadCrum";
 import { CiSearch, CiFilter } from "react-icons/ci";
 import Filters from "./Filters/Filters";
+import { LuSearchX } from "react-icons/lu";
+import { formatPrice } from '../../utils/utils';
+
 function Products() {
     
     const navigate = useNavigate();
@@ -119,7 +122,7 @@ function Products() {
     // Funcion para que las columnas del grid cambien dependiendo de la cantidad de productos que trae
     const columnClass = (() => {
         const length = filteredProducts.length;
-        if (length === 1) return 'col-8';
+        if (length === 1) return 'col-3';
         if (length === 2) return 'col-12 col-sm-4';
         return 'col-12 col-sm-6 col-lg-3';
     })();
@@ -165,9 +168,17 @@ function Products() {
                         <div 
                             className="row g-3"
                             //style={{ maxHeight: '600px' }}
-                        >
+                            >
+                                {filteredProducts.length <= 0
+                                    ?
+                                    <div className="d-flex flex-column align-items-center">
+                                        <h1>No se encontraron coincidencias...</h1>
+                                        <LuSearchX size={510} />
+                                    </div>
+                                    :
+                                
 
-                                {filteredProducts.map((producto) => (
+                                filteredProducts.map((producto) => (
                                 <div
                                     key={producto.PRD_ID}
                                     className={`${columnClass}`}
@@ -177,14 +188,17 @@ function Products() {
                                             <img src={`https://localhost:7273/images/${producto.PRD_IMAGE}`} className="card-img-top"/>
                                         </div>
                                         <div className={`card-body ${styles.cuerpoCarta}`}>
-                                            <h5 onClick={() => next(producto.PRD_ID)} className={`card-title ${styles.productTitle}`}>{producto.Category.CAT_NAME} {producto.PRD_NAME}</h5>
-                                            <p className="card-text">${producto.PRD_PRICE}</p>
+                                            <h5 
+                                                onClick={() => next(producto.PRD_ID)}
+                                                className={`card-title ${styles.productTitle}`}>
+                                                {producto.Category.CAT_NAME} {producto.PRD_NAME}
+                                                </h5>
+                                                <p className="card-text">${formatPrice(producto.PRD_PRICE)}</p>
                                         </div>
                                             <button onClick={() => { handleAddToCart(producto.PRD_ID) }} className={styles.cartaAddCart}>Agregar al carrito</button>
                                     </div>
                                 </div>
                                 ))}
-                            
                         </div>
                     </div>
                 </div>

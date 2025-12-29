@@ -26,7 +26,6 @@
     <Folder Include="src\pages\Account\" />
     <Folder Include="src\pages\Products\Filters\" />
     <Folder Include="src\pages\Requests\" />
-    <Folder Include="src\utils\" />
     <Folder Include="src\services\" />
   </ItemGroup>
 </Project>

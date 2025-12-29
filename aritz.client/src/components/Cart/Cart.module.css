@@ -30,17 +30,19 @@
     padding: 10px 0;
 }
 
-.itemImage {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 5px;
-}
+    .itemImage {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        object-position: top;
+        border-radius: 5px;
+    }
 
 .itemDetails h4 {
     margin: 0;
     font-size: 1rem;
     color: #333;
+    min-width: 150px;
 }
 
 .itemDetails p {

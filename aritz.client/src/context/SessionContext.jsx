@@ -32,6 +32,7 @@ export const SessionProvider = ({ children }) => {
         const saved = localStorage.getItem('isAdmin');
         return saved === 'true'; // Convierte string → boolean
     });
+    const [personal, setPersonal] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -260,7 +261,8 @@ export const SessionProvider = ({ children }) => {
         strengthColor,
         passwordStrength,
         strengthMessage,
-        isAdmin
+        isAdmin,
+        setUserName
     };
 
     return (

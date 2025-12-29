@@ -74,3 +74,7 @@ wwwroot\images\updMainImg_6322b5c3-f3c9-4428-bf8a-666039fcbaec.png
 wwwroot\images\NewGalleryImg_fbc8db07-6fd5-424e-9f11-7fca63d3dfa5.jpg
 wwwroot\images\NewGalleryImg_1aac6ee9-c2fe-4bed-b333-d4bff2cc405b.png
 wwwroot\images\prod_4329faf2-a18d-4449-ba9a-cd2fc3e634fb.jpg
+wwwroot\images\NewGalleryImg_fc092a91-d822-4fa7-9afb-883ffb988bb0.png
+wwwroot\images\prod_e3d0ae6d-3e54-4097-b149-eb959fb72081.png
+wwwroot\images\NewGalleryImg_38650225-bb97-49ce-a25a-03caf83d4f42.png
+wwwroot\uploads\receipts\receipt_5_61b2ede8-861a-428a-8509-a95f596d5f10.pdf

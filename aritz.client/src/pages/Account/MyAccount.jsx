@@ -15,7 +15,7 @@ function MyAccount() {
     });
     const [account, setAccount] = useState([]);
     const [error, setError] = useState(null); // Estado para gestionar errores
-    const { userId } = useSession();
+    const { userId, setUserName } = useSession();
     const [formPersonalData, setPersonalData] = useState({
         nombre: '',
         apellido: '',
@@ -51,8 +51,6 @@ function MyAccount() {
             [section]: !prev[section]
         }));
     }
-
-    console.log(formPersonalData.nombre);
 
     const fetchAccount = async () => {
         try {
@@ -135,6 +133,8 @@ function MyAccount() {
                 confirmButtonText: 'Continuar'
             })
             toggleEditMode('personal'); //Cierro el menu de actualizar de datos personales
+            setUserName(formPersonalData.nombre);
+            localStorage.setItem('userName', formPersonalData.nombre);
             fetchAccount();
         } catch (e) {
             console.log("Error al actualizar los datos: ", e);
