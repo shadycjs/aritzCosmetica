@@ -1,6 +1,23 @@
+import { useEffect, useState } from 'react';
+import axiosInstance from '../../api/axiosConfig';
 import styles from '../Admin/AdminManage.module.css'
 import { FaEdit } from "react-icons/fa";
 function AdminUsers() {
+
+    const [users, setUsers] = useState([]);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await axiosInstance.get("Account/users");
+            setUsers(response.data);
+        } catch (err) {
+            console.error("Error al obtener los productos", err);
+        }
+    }
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
     return (
         <table className={styles.productsUserTable}>
@@ -15,36 +32,32 @@ function AdminUsers() {
                     <th>Documento</th>
                     <th>Provincia</th>
                     <th>Ciudad</th>
-                    <th>Codigo postal</th>
-                    <th>Calle</th>
-                    <th>Altura</th>
-                    <th>Casa/Depto</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        1
-                    </td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>
-                        <FaEdit
-                            size={20}
-                            style={{ cursor: "pointer" }}
-                        />
-                    </td>
-                </tr>
+                {users.map((usr) => (
+                    <tr key={usr.USR_ID}>
+                        <td>
+                            {usr.USR_ID}
+                        </td>
+                        <td>{usr.USR_NAME}</td>
+                        <td>{usr.USR_SURNAME}</td>
+                        <td>{usr.USR_EMAIL}</td>
+                        <td>{usr.USR_PHONE_NUMBER}</td>
+                        <td>{usr.USR_IS_ADMIN}</td>
+                        <td>{usr.USR_DOCUMENT_NUMBER}</td>
+                        <td>{usr.USR_PROVINCE}</td>
+                        <td>{usr.USR_CITY}</td>
+
+                        <td>
+                            <FaEdit
+                                size={20}
+                                style={{ cursor: "pointer" }}
+                            />
+                        </td>
+                    </tr>
+                ))}
+
             </tbody>
         </table>
     )

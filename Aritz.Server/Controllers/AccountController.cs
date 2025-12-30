@@ -25,6 +25,21 @@ namespace Aritz.Server.Controllers
             _configuration = configuration;
         }
 
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var user = await _context.Users
+                             .ToArrayAsync();
+
+            if (user == null)
+            {
+                Console.WriteLine($"Usuario no encontrado.");
+                return NotFound(new { Message = "El usuario no existe." });
+            }
+
+            return Ok(user);
+        }
+
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetAccount(int userId)
         {
