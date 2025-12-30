@@ -19,7 +19,6 @@ const Header = () => {
     const { totalQuantity, fetchCountCart } = useCart();
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
-    const [error, setError] = useState(null);
 
     const handleLogout = () => {
         localStorage.removeItem('authToken');
@@ -45,7 +44,22 @@ const Header = () => {
         }
     }
 
+    // 1. Filtramos primero: Solo categorías con productos
+    const activeCategories = categories.filter(
+        cat => cat.Products && cat.Products.length > 0
+    );
 
+    // 2. Función auxiliar para dividir el array en grupos de 3
+    const chunkArray = (array, size) => {
+        const chunks = [];
+        for (let i = 0; i < array.length; i += size) {
+            chunks.push(array.slice(i, i + size));
+        }
+        return chunks;
+    };
+
+    // Creamos los grupos (Filas)
+    const categoryRows = chunkArray(activeCategories, 3);
 
     return (
         <nav className={`navbar navbar-expand-lg ${styles.navbar}`}>
@@ -92,28 +106,34 @@ const Header = () => {
                                 <FaBoxOpen />
                                 Productos
                             </NavLink>
-                            <div className={styles.dropdown}>
-                                <ul>
-                                    {categories.map((category) => (
-                                        <li key={category.CAT_ID}>
-                                            <h5>
-                                                <b>{category.CAT_NAME}</b>
-                                            </h5>
-                                            <ul>
-                                                {category.Products.map((product) => (
-                                                    <li key={product.PRD_ID}>
-                                                        <NavLink
-                                                            to={`/product/product-detail/${product.PRD_ID}`}
-                                                            className={styles.dropdownItem}
-                                                        >
-                                                            {product.PRD_NAME}
-                                                        </NavLink>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </li>
-                                    ))}
-                                </ul>
+                            <div className={`${styles.dropdown}`}>
+                                {categoryRows.map((group, rowIndex) => (
+                                    <ul
+                                        key={rowIndex}
+                                        className="row"
+                                    >
+                                        {group.map((category) => (
+                                    
+                                            <li key={category.CAT_ID}>
+                                                <h5>
+                                                    <b>{category.CAT_NAME}</b>
+                                                </h5>
+                                                    <ul className="list-unstyled">
+                                                        {category.Products.map((product) => (
+                                                            <li key={product.PRD_ID}>
+                                                                <NavLink
+                                                                    to={`/product/product-detail/${product.PRD_ID}`}
+                                                                    className={styles.dropdownItem}
+                                                                >
+                                                                    {product.PRD_NAME}
+                                                                </NavLink>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ))}
                             </div>
                         </li>
                         <li className="nav-item">

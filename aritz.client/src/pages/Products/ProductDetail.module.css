@@ -7,12 +7,13 @@
     padding: 20px; /* Espaciado interno */
     width: 100vw;
 }
+
 .container{
     display: flex;
     justify-content: center;
     gap: 50px;
     width: 100%;
-    max-height: 600px;
+    height: 80vh;
     padding: 2%;
 }
 
@@ -31,9 +32,17 @@
     object-fit: cover;
 }
 
-.imgSubContainer {
+.subImgContainer {
     width: 30%;
+    overflow-y: auto;
 }
+
+    .subImgContainer img {
+        aspect-ratio: 1/1;
+        padding: 10px;
+        object-fit: cover;
+        object-position: top;
+    }
 
 img{
     width: 100%;

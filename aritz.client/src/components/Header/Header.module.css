@@ -50,15 +50,16 @@ ul{
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
     border-radius: 4px; /* Bordes redondeados */
     padding: 10px; /* Espaciado interno */
-    width: 40vw;
     z-index: 10;
     box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.2);
+    min-width: 30vw;
+    justify-content: space-around;
 }
 
 .dropdown ul{
     display: flex;
-    flex-wrap: wrap;
     gap: 30px;
+    width: 200px;
 }
 
 li {
@@ -66,15 +67,15 @@ li {
 }
 
 .dropdown ul li {
-    flex: 1 1 calc(33.33% - 20px); /* Máximo 3 por fila, ajustado por el gap */
     box-sizing: border-box;
     list-style-type: none;
+    height: 85px;
 }
 
 .dropdownItem {
     color: #333;
     text-decoration: none;
-    padding: 10px 20px;
+    padding: 10px 10px;
     display: block; /* Cada item ocupa una línea */
     transition: background-color 0.3s ease, color 0.3s ease;
     font-size: .9rem;
