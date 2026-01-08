@@ -8,6 +8,7 @@ import { useSession } from "../../context/SessionContext";
 import { BiRefresh } from "react-icons/bi";
 import { AiOutlineUpload } from "react-icons/ai";
 import BreadCrum from "../../components/BreadCrum/BreadCrum";
+import { formatPrice } from '../../utils/utils';
 
 function MyRequestDetail() {
 
@@ -133,7 +134,7 @@ function MyRequestDetail() {
                             <hr></hr>
                             <div className={styles.itemsDetail}>
                                 <div className={styles.imageContainer}>
-                                    <img src={`/../src/assets/images/${request.ProductImage}`} />
+                                    <img src={`https://localhost:7273/images/${request.ProductImage}`} />
                                 </div>
                                 <div className={styles.itemsDetailSub}>
                                     <h4>{request.ProductName}</h4>
@@ -142,7 +143,7 @@ function MyRequestDetail() {
                                 </div>
                                 <div className={styles.TotalPrice}>
                                     <b>Subtotal:</b>
-                                    <p>${request.TotalPrice*request.Quantity}</p>
+                                    <p>${formatPrice(request.TotalPrice*request.Quantity)}</p>
                                 </div>
                             </div>
                         </div>
@@ -156,7 +157,7 @@ function MyRequestDetail() {
                         <p>Cantidad de items: {totalQuantity}</p>
                         <p>Costo de envio: </p>
                         <hr></hr>
-                        <p>Total a pagar: ${totalAmount}</p>
+                        <p>Total a pagar: ${formatPrice(totalAmount)}</p>
                     </div>
                     <div className={styles.Comprobante}>
                         <b>{path ? 'Este es el comprobante que subiste' : 'Subi tu comprobante aca'}</b>

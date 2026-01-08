@@ -97,3 +97,15 @@
 .delIcon:hover{
     color: rgb(255, 0, 0);
 }
+
+/* Modal Usuario */
+
+.pedidos {
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+    justify-content: center;
+    align-content: center;
+    color: #000;
+    cursor: pointer;
+}

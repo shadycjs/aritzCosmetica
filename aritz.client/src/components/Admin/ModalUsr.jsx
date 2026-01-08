@@ -1,4 +1,25 @@
+import { useState, useEffect } from "react";
+import styles from '../Admin/Modal.module.css'
+import axiosInstance from "../../api/axiosConfig";
+
 function ModalUsr({ user }) {
+
+    const [dataShow, setDataShow] = useState('Info');
+    const [orderUser, setOrderUser] = useState([]);
+
+    const getOrderUser = async () => {
+        try {
+            const response = await axiosInstance.get(`Order/${user.USR_ID}`);
+            setOrderUser(response.data);
+        } catch (e) {
+            console.error("Error al mostrar las ordenes de compra:", e);
+        }
+    }
+
+    useEffect(() => {
+        getOrderUser();
+    }, [user.USR_ID]);
+
     return (
         <div
             className="modal fade"
@@ -18,53 +39,77 @@ function ModalUsr({ user }) {
                     <div className="modal-body d-flex flex-column gap-3">
 
                         <ul className="nav nav-tabs">
-                            <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="#">Info</a>
+                            <li className={`nav-item ${styles.pedidos}`}>
+                                <p
+                                    aria-current="page"
+                                    href="#"
+                                    onClick={() => { setDataShow('Info') }}
+                                >
+                                    Info
+                                    
+                                </p>
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Pedido</a>
+                            <li className={`nav-item ${styles.pedidos}`}>
+                                <p
+                                    onClick={() => { setDataShow('pedidos') }}
+                                    href="#"
+                                >
+                                    Pedidos
+                                </p>
                             </li>
                         </ul>
+                        {dataShow == 'Info'
+                            ?
+                            <>
+                                <div className="input-group">
+                                    <span className="input-group-text">Nombre</span>
+                                    <input type="text" aria-label="First name" className="form-control" value={user.USR_NAME} readOnly />
+                                </div>
+                                <div className="input-group">
+                                    <span className="input-group-text">Apellido</span>
+                                    <input type="text" aria-label="First name" className="form-control" value={user.USR_SURNAME} readOnly />
+                                </div>
+                                <div className="input-group flex-nowrap">
+                                    <span className="input-group-text" id="addon-wrapping">@</span>
+                                    <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping" value={user.USR_EMAIL} readOnly />
+                                </div>
+                                <div className="input-group">
+                                    <span className="input-group-text">+54</span>
+                                    <input type="text" aria-label="Celular" className="form-control" value={user.USR_PHONE_NUMBER} readOnly />
+                                </div>
+                                <div className="input-group mb-3">
+                                    <label className="input-group-text" htmlFor="inputGroupSelect01">Admin</label>
+                                    <select
+                                        className="form-select"
+                                        id="inputGroupSelect01"
+                                        value={user.USR_IS_ADMIN}
+                                    >
+                                        <option value="1">Si</option>
+                                        <option value="2">No</option>
+                                    </select>
+                                </div>
+                                <div className="input-group">
+                                    <span className="input-group-text">DNI</span>
+                                    <input type="text" aria-label="Documento" className="form-control" value={user.USR_DOCUMENT_NUMBER} readOnly />
+                                </div>
+                                <div className="input-group">
+                                    <span className="input-group-text">Provincia</span>
+                                    <input type="text" aria-label="Provincia" className="form-control" value={user.USR_PROVINCE} readOnly />
+                                </div>
+                                <div className="input-group">
+                                    <span className="input-group-text">Ciudad</span>
+                                    <input type="text" aria-label="Ciudad" className="form-control" value={user.USR_CITY} readOnly />
+                                </div>
+                            </>
+                            :
 
-                        <div className="input-group">
-                            <span className="input-group-text">Nombre</span>
-                            <input type="text" aria-label="First name" className="form-control" value={user.USR_NAME} readonly />
-                        </div>
-                        <div className="input-group">
-                            <span className="input-group-text">Apellido</span>
-                            <input type="text" aria-label="First name" className="form-control" value={user.USR_SURNAME} readonly />
-                        </div>
-                        <div class="input-group flex-nowrap">
-                            <span className="input-group-text" id="addon-wrapping">@</span>
-                            <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping" value={user.USR_EMAIL} readonly />
-                        </div>
-                        <div class="input-group">
-                            <span className="input-group-text">+54</span>
-                            <input type="text" aria-label="Celular" className="form-control" value={user.USR_PHONE_NUMBER} readonly />
-                        </div>
-                        <div className="input-group mb-3">
-                            <label className="input-group-text" for="inputGroupSelect01">Admin</label>
-                            <select
-                                className="form-select"
-                                id="inputGroupSelect01"
-                                value={user.USR_IS_ADMIN}
-                            >
-                                <option  value="1">Si</option>
-                                <option value="2">No</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <span className="input-group-text">DNI</span>
-                            <input type="text" aria-label="Documento" className="form-control" value={user.USR_DOCUMENT_NUMBER} readonly />
-                        </div>
-                        <div class="input-group">
-                            <span className="input-group-text">Provincia</span>
-                            <input type="text" aria-label="Provincia" className="form-control" value={user.USR_PROVINCE} readonly/>
-                        </div>
-                        <div class="input-group">
-                            <span className="input-group-text">Ciudad</span>
-                            <input type="text" aria-label="Ciudad" className="form-control" value={user.USR_CITY} readonly/>
-                        </div>
+                            orderUser.map((ord) => (
+                                <div>
+                                    <p>Nro Orden: {ord.ORD_ID}</p>
+                                </div>
+                            ))
+                        }
+                        
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>

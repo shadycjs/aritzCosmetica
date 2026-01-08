@@ -14,6 +14,8 @@
 
 .items{
     width: 75%;
+    max-height: 70vh;
+    overflow-y: scroll;
 }
 
 .aside {
@@ -25,7 +27,8 @@
 }
 
 .resumen {
-    background-color: rgb(179, 222, 167);
+    background-color: #fff;
+    border: 3px solid rgb(179, 222, 167);
     padding: 20px;
     border-radius: 5px;
 }
@@ -57,7 +60,8 @@
 }
 
 .shiippingData {
-    background-color: rgb(179, 222, 167);
+    background-color: #fff;
+    border: 3px solid rgb(179, 222, 167);
     padding: 20px;
     text-align: start;
     border-radius: 5px;
@@ -67,10 +71,10 @@
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    background-color: rgb(179, 222, 167);
+    background-color: #fff;
     padding: 20px;
     border-radius: 5px;
-
+    border: 3px solid rgb(179, 222, 167);
 }
 
     .itemsContainer b{
@@ -103,5 +107,11 @@
     }
 
 .imageContainer {
-    width: 100px;
+    width: 20%;
+}
+
+.imageContainer img{
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    object-position: top;
 }

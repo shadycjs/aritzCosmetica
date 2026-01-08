@@ -159,6 +159,7 @@ function PaymentInfo() {
             <div className="container" style={{padding: "50px"}}>
                 <div className="row">
                     <div className={`col d-flex flex-column gap-4 ${styles.resumeContainer}`}>
+                        <h3>Tu pedido</h3>
                         {cart.map((car) => (
                             <div
                                 className={styles.cartItem}
@@ -191,7 +192,7 @@ function PaymentInfo() {
                     <div className="col">
                         {paymentMethod === 2 ?
                             <div className={styles.bankContainer}>
-                                <h2>Datos bancarios</h2>
+                                <h2>Datos transferencia</h2>
                                 <div className={styles.bankContainerSub}>
                                     <b>CBU: 0000003100048344628186</b>
                                     <b>Alias: ramiro.unrein </b>
