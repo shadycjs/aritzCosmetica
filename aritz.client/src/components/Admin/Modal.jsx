@@ -320,7 +320,6 @@ function Modal({ productName, productCategory, productImg, productPrice, product
                                         name="PRD_IS_ACTIVE"
                                         onChange={handlePrdData}
                                     >
-                                        <option value="">Open this select menu</option>
                                         <option value="true">Si</option>
                                         <option value="false">No</option>
                                     </select>

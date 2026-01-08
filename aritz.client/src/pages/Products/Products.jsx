@@ -37,7 +37,6 @@ function Products() {
             const term = searchTerm.toLowerCase();
             result = result.filter(p =>
                 p.PRD_NAME.toLowerCase().includes(term) ||
-                p.PRD_DESCRIPTION.toLowerCase().includes(term) ||
                 p.Category.CAT_NAME.toLowerCase().includes(term)
             );
         }
@@ -119,14 +118,6 @@ function Products() {
         setFiltroSeleccionado(valorDelHijo);
     }
 
-    // Funcion para que las columnas del grid cambien dependiendo de la cantidad de productos que trae
-    const columnClass = (() => {
-        const length = filteredProducts.length;
-        if (length === 1) return 'col-3';
-        if (length === 2) return 'col-12 col-sm-4';
-        return 'col-12 col-sm-6 col-lg-3';
-    })();
-
     return (
         <>
             <CenteredContainer>
@@ -164,7 +155,7 @@ function Products() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <div className="container d-flex justify-content-start">
+                    <div className="container">
                         <div 
                             className="row g-3"
                             //style={{ maxHeight: '600px' }}
@@ -181,7 +172,7 @@ function Products() {
                                 filteredProducts.map((producto) => (
                                 <div
                                     key={producto.PRD_ID}
-                                    className={`${columnClass}`}
+                                    className="col-12 col-sm-6 col-lg-3"
                                 >
                                     <div className={`card h-100 ${styles.carta}`}>
                                         <div className={styles.cartaImgContainer}>
