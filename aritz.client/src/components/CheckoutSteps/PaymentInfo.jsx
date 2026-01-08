@@ -13,7 +13,7 @@ import { useSession } from "../../context/SessionContext";
 initMercadoPago('TEST-aa2427a9-e156-4f55-b4c0-d9c5e9b5774c');
 import Swal from 'sweetalert2';
 import { useLocation } from 'react-router'
-
+import { formatPrice } from '../../utils/utils';
 function PaymentInfo() {
     const { paymentMethod, setPaymentMethod } = useCheckout();
     const navigate = useNavigate();
@@ -156,61 +156,72 @@ function PaymentInfo() {
     return (
         <CenteredContainer>
             <TimeLapseCheckout />
-            <div className={`d-flex flex-column ${styles.container}`}>
-                <h4>Detalle de tu compra</h4>
-                <table className={styles.tableDetails}>
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Precio p/u</th>
-                            <th>Cantidad</th>
-                            <th>Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {cart.map((item) => (
-                        <tr key={item.CAI_ID}>
-                            <td>{item.PRD_NAME}</td>
-                            <td>${item.CAI_TOTAL_PRICE}</td>
-                            <td>{item.CAI_QUANTITY}</td>
-                            <td>${item.CAI_QUANTITY*item.CAI_TOTAL_PRICE}</td>
-                        </tr>
+            <div className="container" style={{padding: "50px"}}>
+                <div className="row">
+                    <div className={`col d-flex flex-column gap-4 ${styles.resumeContainer}`}>
+                        {cart.map((car) => (
+                            <div
+                                className={styles.cartItem}
+                            >
+                                <div className={styles.imgItem}>
+                                    <img src={`https://localhost:7273/images/${car.PRD_IMAGE}`} />
+                                </div>
+                                <div className={styles.detailItem}>
+                                    <div className={styles.nameQuantity}>
+                                        <b>{car.PRD_NAME}</b>
+                                        <p>Cantidad: {car.CAI_QUANTITY}</p>
+                                    </div>
+                                    
+                                    <div className={styles.precio}>
+                                        <b>Subtotal</b>
+                                        <p>$ {formatPrice(car.PRD_PRICE * car.CAI_QUANTITY)}</p>
+                                    </div>
+                                </div>
+
+                            </div>
                         ))}
-                        <tr>
-                            <td>Envio</td>
-                            <td>$3000</td>
-                            <td></td>
-                            <td>$3000</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <h2>Total a pagar: <b className={styles.total}>${totalSumCart+3000}</b></h2>
-                {paymentMethod === 2 ?
-                    <div className={styles.bankContainer}>
-                        <h2>Datos bancarios</h2>
-                        <div className={styles.bankContainerSub}>
-                            <b>CBU: 0000003100048344628186</b>
-                            <b>Alias: ramiro.unrein </b>
+                        <div className={styles.envio}>
+                            <p className="d-flex justify-content-between">Envio: <b>${formatPrice(3000)}</b></p>
                         </div>
-                    </div> :
-
-
-                    <div className={styles.mpContainer}>
-                        <Payment
-                            initialization={initialization}
-                            customization={customization}
-                            onSubmit={onSubmit}
-                            onReady={onReady}
-                            onError={onError}
-                        />
+                        <div className={styles.total}>
+                            <p className="d-flex justify-content-between">Total: <b>${formatPrice(totalSumCart)}</b></p>
+                        </div>
                     </div>
-                }
-                <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
-                    <button onClick={back} className={styles.btnShippingBack}>Volver</button>
-                    {paymentMethod === 2 ?
-                        <button className={styles.btnShippingNext} onClick={() => { handleOrderConfirm(totalSumCart) }} type="submit">Confirmar pedido</button>
-                : ''}
-                </label>
+                    
+                    <div className="col">
+                        {paymentMethod === 2 ?
+                            <div className={styles.bankContainer}>
+                                <h2>Datos bancarios</h2>
+                                <div className={styles.bankContainerSub}>
+                                    <b>CBU: 0000003100048344628186</b>
+                                    <b>Alias: ramiro.unrein </b>
+                                </div>
+                            </div> :
+
+
+                            <div className={styles.mpContainer}>
+                                <Payment
+                                    initialization={initialization}
+                                    customization={customization}
+                                    onSubmit={onSubmit}
+                                    onReady={onReady}
+                                    onError={onError}
+                                />
+                            </div>
+                        }
+                    </div>
+                    
+                </div>
+
+                <div className="row">
+                    <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
+                        <button onClick={back} className={styles.btnShippingBack}>Volver</button>
+                        {paymentMethod === 2 ?
+                            <button className={styles.btnShippingNext} onClick={() => { handleOrderConfirm(totalSumCart) }} type="submit">Confirmar pedido</button>
+                            : ''}
+                    </label>
+                </div>
+
 
             </div>
         </CenteredContainer>
