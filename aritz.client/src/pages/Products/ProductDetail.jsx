@@ -17,12 +17,20 @@ function ProductDetail() {
     const { userId } = useSession();
     const { fetchCountCart } = useCart();
 
+    //Estados para el intercambio de imagenes
+    const [displayImage, setDisplayImage] = useState(''); // La imagen grande actual
+    const [displayGallery, setDisplayGallery] = useState([]); // El array de imagenes pequeñas actual
+
     useEffect(() => {
         const fetchProduct = async () => {
             try {
                 const response = await axiosInstance.get(`products/${id}`); 
-                setProduct(response.data); // 
-                console.log(product)
+                setProduct(response.data); //
+
+                //Inicializacion de estados de las imagenes para su swap
+                setDisplayImage(response.data.PRD_IMAGE);
+                setDisplayGallery(response.data.Gallery);
+
                 setLoading(false); // 
             } catch (err) {
                 console.error("Error al obtener los productos", err); 
@@ -63,6 +71,25 @@ function ProductDetail() {
         }
     };
 
+    // FUNCION PARA INTERCAMBIAR IMAGENES
+    const handleImageSwap = (clickedImgUrl, index) => {
+        // 1. Guardamos la imagen que ACTUALMENTE es la principal (antes de cambiarla)
+        const oldMainImage = displayImage;
+
+        // 2. Actualizamos la principal con la que clickeamos
+        setDisplayImage(clickedImgUrl);
+
+        // 3. Actualizamos la galería:
+        // Creamos una copia del array para no mutar el estado directamente
+        const newGallery = [...displayGallery];
+
+        // En la posición donde hicimos click, ponemos la imagen vieja (oldMainImage)
+        // Mantenemos las otras propiedades del objeto (como IDs) y solo cambiamos la URL
+        newGallery[index] = { ...newGallery[index], IMG_URL: oldMainImage };
+
+        setDisplayGallery(newGallery);
+    };
+
     if (loading) return <div>Cargando producto...</div>;
     if (error) return <div>Error: {error}</div>;
 
@@ -72,15 +99,16 @@ function ProductDetail() {
             <BreadCrum name={product.PRD_NAME} />
             <div className={styles.container}>
                 <div className={styles.imgContainer}>
-                    <img className={styles.imgMain} src={`https://localhost:7273/images/${product.PRD_IMAGE}`} />
-                    {product.Gallery.length > 0 
+                    <img className={styles.imgMain} src={`https://localhost:7273/images/${displayImage}`} />
+                    {displayGallery.length > 0 
                         ?
                         <div className={styles.subImgContainer}>
-                            {product.Gallery.map((img, index) => (
+                            {displayGallery.map((img, index) => (
 
                                 <img
                                     src={`https://localhost:7273/images/${img.IMG_URL}`}
                                     key={index}
+                                    onClick={() => handleImageSwap(img.IMG_URL, index)}
                                 />
 
                             ))}
