@@ -99,7 +99,11 @@ function ProductDetail() {
             <BreadCrum name={product.PRD_NAME} />
             <div className={styles.container}>
                 <div className={styles.imgContainer}>
-                    <img className={styles.imgMain} src={`https://localhost:7273/images/${displayImage}`} />
+                    <img
+                        className={styles.imgMain}
+                        src={`https://localhost:7273/images/${displayImage}`}
+                        key={displayImage}
+                    />
                     {displayGallery.length > 0 
                         ?
                         <div className={styles.subImgContainer}>
