@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import styles from '../Admin/Modal.module.css'
 import axiosInstance from "../../api/axiosConfig";
+import { NavLink } from "react-router-dom";
+import { FaRegSadTear } from "react-icons/fa";
 
 function ModalUsr({ user }) {
 
@@ -103,9 +105,46 @@ function ModalUsr({ user }) {
                             </>
                             :
 
+                            orderUser.length <= 0
+                                ?
+                                <div className="d-flex flex-column align-items-center gap-3">
+                                    El cliente no tiene pedidos...
+                                    <FaRegSadTear size={150} />
+                                </div>
+                                :
                             orderUser.map((ord) => (
-                                <div>
-                                    <p>Nro Orden: {ord.ORD_ID}</p>
+                                <div className="d-flex flex-column gap-2">
+                                    <p className="text-start d-flex justify-content-between">Nro Orden: <b>#{ord.ORD_ID}</b></p>
+                                    <div className="d-flex flex-column">
+                                        <b className="text-start">Estado del pedido:</b>
+                                        <div className="input-group flex-nowrap">
+                                            <select
+                                                className="form-select"
+                                                aria-label="Default select example"
+                                                name="ORD_STATUS"
+                                                defaultValue={ord.ORD_STATUS}
+                                            >
+                                                <option value="Pendiente">Pendiente</option>
+                                                <option value="En curso">En curso</option>
+                                                <option value="Finalizado">Finalizado</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex justify-content-between">
+                                        <b>Comprobante de pago:</b>
+                                        {ord.ReceiptPath
+                                            ?
+                                            <a
+                                                href={`${axiosInstance.defaults.baseURL}Order/${ord.ORD_ID}/download-receipt`}
+                                                rel="noopener noreferrer"
+                                            >
+                                            Descargar comprobante
+                                            </a>
+                                        :
+                                            'Sin subir'
+                                        }
+
+                                    </div>
                                 </div>
                             ))
                         }
