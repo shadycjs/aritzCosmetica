@@ -45,6 +45,7 @@ function ModalUsr({ user }) {
                                 <p
                                     aria-current="page"
                                     href="#"
+                                    className={dataShow === 'Info' ? styles.negrita : ''}
                                     onClick={() => { setDataShow('Info') }}
                                 >
                                     Info
@@ -55,6 +56,7 @@ function ModalUsr({ user }) {
                                 <p
                                     onClick={() => { setDataShow('pedidos') }}
                                     href="#"
+                                    className={dataShow === 'pedidos' ? styles.negrita : ''}
                                 >
                                     Pedidos
                                 </p>
@@ -116,7 +118,7 @@ function ModalUsr({ user }) {
                                 <div className="d-flex flex-column gap-2">
                                     <p className="text-start d-flex justify-content-between">Nro Orden: <b>#{ord.ORD_ID}</b></p>
                                     <div className="d-flex flex-column">
-                                        <b className="text-start">Estado del pedido:</b>
+                                        <p className="text-start">Estado del pedido:</p>
                                         <div className="input-group flex-nowrap">
                                             <select
                                                 className="form-select"
@@ -145,6 +147,7 @@ function ModalUsr({ user }) {
                                         }
 
                                     </div>
+                                <hr></hr>
                                 </div>
                             ))
                         }

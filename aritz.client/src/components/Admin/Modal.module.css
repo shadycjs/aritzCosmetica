@@ -109,3 +109,9 @@
     color: #000;
     cursor: pointer;
 }
+
+.negrita {
+    font-weight: bold;
+    color: #000; /* Opcional: cambiar color */
+    text-decoration: underline; /* Opcional */
+}
