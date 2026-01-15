@@ -8,6 +8,7 @@ function ModalUsr({ user }) {
 
     const [dataShow, setDataShow] = useState('Info');
     const [orderUser, setOrderUser] = useState([]);
+    const [status, setStatus] = useState('Pendiente');
 
     const getOrderUser = async () => {
         try {
@@ -21,6 +22,32 @@ function ModalUsr({ user }) {
     useEffect(() => {
         getOrderUser();
     }, [user.USR_ID]);
+
+    const handleStatusChange = async (orderId, newStatus) => {
+        // Actualizamos el estado "orderUser" buscando la orden por su ID
+        setOrderUser(prevOrders => prevOrders.map(order => {
+            // Si es la orden que modificamos, actualizamos su estado
+            if (order.ORD_ID === orderId) {
+                return { ...order, ORD_STATUS: newStatus };
+            }
+            // Si no es, la dejamos igual
+            return order;
+        }));
+
+        console.log("El order ID es: ", orderId);
+        try {
+
+            const bodyData = {
+                OrderId: orderId,      
+                OrderStatus: newStatus
+            };
+
+            const response = await axiosInstance.put(`Order/${orderId}/updOrdStatus`, bodyData);
+            alert('Se actualizo correctamente el estado');
+        } catch (e) {
+            console.log("Error al querer actualizar el estado: ", e);
+        }
+    }
 
     return (
         <div
@@ -115,7 +142,7 @@ function ModalUsr({ user }) {
                                 </div>
                                 :
                             orderUser.map((ord) => (
-                                <div className="d-flex flex-column gap-2">
+                                <div className="d-flex flex-column gap-2" key={ord.ORD_ID}>
                                     <p className="text-start d-flex justify-content-between">Nro Orden: <b>#{ord.ORD_ID}</b></p>
                                     <div className="d-flex flex-column">
                                         <p className="text-start">Estado del pedido:</p>
@@ -125,6 +152,7 @@ function ModalUsr({ user }) {
                                                 aria-label="Default select example"
                                                 name="ORD_STATUS"
                                                 defaultValue={ord.ORD_STATUS}
+                                                onChange={(e) => handleStatusChange(ord.ORD_ID, e.target.value)}
                                             >
                                                 <option value="Pendiente">Pendiente</option>
                                                 <option value="En curso">En curso</option>
@@ -155,7 +183,6 @@ function ModalUsr({ user }) {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Confirmar</button>
                     </div>
                 </div>
             </div>

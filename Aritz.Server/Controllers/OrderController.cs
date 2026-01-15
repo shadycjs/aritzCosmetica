@@ -243,6 +243,28 @@ namespace Aritz.Server.Controllers
             return File(fileBytes, mimeType, fileName);
         }
 
+        [HttpPut("{orderId}/updOrdStatus")]
+        public async Task<IActionResult> UpdOrdStatus([FromBody] OrderStatusDto dto)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.ORD_ID == dto.OrderId);
+            if (order == null)
+            {
+                return BadRequest(new { Message = "No se encontro la Orden de compra" });
+            }
+
+            order.ORD_STATUS = dto.OrderStatus; // Aca actualizo el estado de la orden de compra
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { Message = "Error al actualizar", Error = ex.Message });
+            }
+
+            return Ok(new { Message = "Estado actualizado correctamente" });
+        }
         public class OrderDto
         {
             public int userId { get; set; }
@@ -255,6 +277,12 @@ namespace Aritz.Server.Controllers
         {
             public int userId { get; set; }
             public int OrderId { get; set; }
+        }
+
+        public class OrderStatusDto
+        {
+            public int OrderId { get; set; }
+            public string OrderStatus { get; set; }
         }
     }
 }
