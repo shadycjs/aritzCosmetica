@@ -44,6 +44,7 @@ namespace Aritz.Server.Controllers
                                         IMG_ID = img.IMG_ID,
                                         IMG_URL = img.IMG_URL
                                     }).ToList()
+                                    
                                 })
                                 .ToListAsync(); // Consulta la tabla "Products" y join con "Categories"
             Console.WriteLine(products);

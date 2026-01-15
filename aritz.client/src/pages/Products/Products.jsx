@@ -32,6 +32,9 @@ function Products() {
 
     useEffect(() => {
         let result = [...products];
+
+        result = result.filter(p => !(p.PRD_QUANTITY <= 0 || p.PRD_IS_ACTIVE == 0));
+
         // 1. Filtro por texto
         if (searchTerm.trim()) {
             const term = searchTerm.toLowerCase();
@@ -52,7 +55,6 @@ function Products() {
         } else if (filterPrice === 'smallest') {
             result.sort((a, b) => a.PRD_PRICE - b.PRD_PRICE); // Menor a mayor
         }
-
 
         setFilteredProducts(result);
     }, [searchTerm, products, filterCats, filterPrice]);

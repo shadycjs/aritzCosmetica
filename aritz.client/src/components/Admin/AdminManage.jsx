@@ -5,34 +5,42 @@ import styles from '../Admin/AdminManage.module.css'
 import AdminProducts from "./AdminProducts";
 import { useState } from "react";
 import AdminUsers from "./AdminUsers";
+import { TbShoppingBagSearch } from "react-icons/tb";
 
 
 function AdminManage() {
 
-    const [AdmUsrPrd, setAdmUsrPrd] = useState('products');
+    const [AdmUsrPrd, setAdmUsrPrd] = useState('Productos');
 
     return (
         <CenteredContainer>
-            <h1>Administrar Productos</h1>
+            <h1>Administrar {AdmUsrPrd}</h1>
             <div className={styles.iconsDiv}>
                 <div
-                    onClick={() => {setAdmUsrPrd('users')}}
-                    className={`${styles.iconsDivUserPoducts} ${AdmUsrPrd === 'users' ? styles.selected : ''}`}
+                    onClick={() => {setAdmUsrPrd('Usuarios')}}
+                    className={`${styles.iconsDivUserPoducts} ${AdmUsrPrd === 'Usuarios' ? styles.selected : ''}`}
                 >
                     <CiUser size={70} />
                     <b>Usuarios</b>
                 </div>
                 <div
-                    onClick={() => { setAdmUsrPrd('products') }}
-                    className={`${styles.iconsDivUserPoducts} ${AdmUsrPrd === 'products' ? styles.selected : ''}`}
+                    onClick={() => { setAdmUsrPrd('Productos') }}
+                    className={`${styles.iconsDivUserPoducts} ${AdmUsrPrd === 'Productos' ? styles.selected : ''}`}
                 >
                     <AiOutlineProduct size={70} />
                     <b>Productos</b>
                 </div>
+                <div
+                    onClick={() => { setAdmUsrPrd('Pedidos') }}
+                    className={`${styles.iconsDivUserPoducts} ${AdmUsrPrd === 'Pedidos' ? styles.selected : ''}`}
+                >
+                    <TbShoppingBagSearch size={70} />
+                    <b>Pedidos</b>
+                </div>
             </div>
 
             <div className={styles.productsUsersAdminContainer}>
-                {AdmUsrPrd == 'products'
+                {AdmUsrPrd == 'Productos'
                     ? 
                 <AdminProducts />
                     :

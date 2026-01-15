@@ -129,6 +129,7 @@ function ProductDetail() {
                 <div className={styles.infoContainer}>
                     <h3 className={styles.titleInfo}>{product.Category.CAT_NAME} {product.PRD_NAME}</h3>
                     <b className={styles.priceInfo}>${product.PRD_PRICE}</b>
+                    <p>Stock: {product.PRD_QUANTITY}</p>
                     <p className={styles.descInfo}>{product.PRD_DESCRIPTION}</p>
                     <button
                         className={styles.addCartInfo}

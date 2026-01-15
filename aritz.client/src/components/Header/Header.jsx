@@ -46,7 +46,7 @@ const Header = () => {
 
     // 1. Filtramos primero: Solo categorías con productos
     const activeCategories = categories.filter(
-        cat => cat.Products && cat.Products.length > 0
+        cat => cat.Products && cat.Products.length > 0 && !(cat.Products.PRD_QUANTITY <= 0 || cat.Products.PRD_IS_ACTIVE == 0)
     );
 
     // 2. Función auxiliar para dividir el array en grupos de 3
@@ -119,7 +119,7 @@ const Header = () => {
                                                     <b>{category.CAT_NAME}</b>
                                                 </h5>
                                                     <ul className="list-unstyled">
-                                                        {category.Products.map((product) => (
+                                                    {category.Products.map((product) => (
                                                             <li key={product.PRD_ID}>
                                                                 <NavLink
                                                                     to={`/product/product-detail/${product.PRD_ID}`}

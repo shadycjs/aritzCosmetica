@@ -3,6 +3,7 @@ import styles from '../Admin/Modal.module.css'
 import axiosInstance from "../../api/axiosConfig";
 import { NavLink } from "react-router-dom";
 import { FaRegSadTear } from "react-icons/fa";
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 
 function ModalUsr({ user }) {
 
@@ -43,7 +44,7 @@ function ModalUsr({ user }) {
             };
 
             const response = await axiosInstance.put(`Order/${orderId}/updOrdStatus`, bodyData);
-            alert('Se actualizo correctamente el estado');
+            Swal.fire('Exito', `Se actualizo correctamente el estado a ${bodyData.OrderStatus}`, 'success');
         } catch (e) {
             console.log("Error al querer actualizar el estado: ", e);
         }
