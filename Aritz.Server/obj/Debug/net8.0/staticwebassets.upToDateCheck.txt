@@ -87,3 +87,8 @@ wwwroot\images\NewGalleryImg_8125e36a-7dac-4587-a33a-7692d9431726.png
 wwwroot\images\prod_17917386-cc71-409d-96e3-1ab1a9e74539.png
 wwwroot\images\prod_1681948d-db49-4919-84fc-7a725d96ef52.jpg
 wwwroot\images\NewGalleryImg_fbc826b2-a839-4e04-a805-f6ec614ae7b1.png
+wwwroot\uploads\receipts\receipt_6_98f523d9-015f-4c14-8d79-925b4f59791f.png
+wwwroot\images\NewGalleryImg_6bfc189b-8bdd-4e3a-b556-aace54cacb92.png
+wwwroot\images\updMainImg_2dd98c4b-83b7-4587-87fc-6ff898f60ef6.png
+wwwroot\uploads\receipts\receipt_8_a4c39293-f2df-4935-b2b4-f3fed8eb577f.pdf
+wwwroot\uploads\receipts\receipt_8_96a8f2f7-e2b8-48fc-a76e-f782800cfd59.pdf

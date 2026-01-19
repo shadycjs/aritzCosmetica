@@ -145,6 +145,32 @@ namespace Aritz.Server.Controllers
             return Ok(orderDetail);
         }
 
+        [HttpGet("allOrders")]
+        public async Task<IActionResult> GetAllOrders()
+        {
+
+            var orders = await _context.Orders
+                    .Include(o => o.PaymentMethod)
+                    .Include(o => o.OrderDetails)
+                    .Include(o => o.Users)
+                    .GroupJoin(_context.Receipts,
+                        o => o.ORD_ID,
+                        r => r.RCP_ORD_ID,
+                        (o, receipts) => new
+                        {
+                            o.ORD_ID,
+                            o.ORD_ORDER_DATE,
+                            o.ORD_TOTAL_AMOUNT,
+                            o.ORD_STATUS,
+                            PaymentMethod = o.PaymentMethod.PMT_NAME,
+                            ReceiptPath = receipts.FirstOrDefault() != null ? receipts.FirstOrDefault().RCP_PATH : null,
+                            ClientFullName = o.Users.USR_NAME + " " + o.Users.USR_SURNAME
+                        })
+                    .ToListAsync();
+
+            return Ok(orders);
+        }
+
         [HttpPost("{orderId}/upload-receipt")]
         public async Task<IActionResult> UploadReceipt(int orderId, IFormFile file)
         {

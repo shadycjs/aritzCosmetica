@@ -6,6 +6,7 @@ import AdminProducts from "./AdminProducts";
 import { useState } from "react";
 import AdminUsers from "./AdminUsers";
 import { TbShoppingBagSearch } from "react-icons/tb";
+import AdminOrders from "./AdminOrders";
 
 
 function AdminManage() {
@@ -40,11 +41,11 @@ function AdminManage() {
             </div>
 
             <div className={styles.productsUsersAdminContainer}>
-                {AdmUsrPrd == 'Productos'
-                    ? 
-                <AdminProducts />
-                    :
-                <AdminUsers />
+                {AdmUsrPrd === 'Productos'
+                    ? <AdminProducts />
+                    : AdmUsrPrd === 'Pedidos'
+                        ? <AdminOrders />
+                        : <AdminUsers />
                 }
             </div>
         </CenteredContainer>
