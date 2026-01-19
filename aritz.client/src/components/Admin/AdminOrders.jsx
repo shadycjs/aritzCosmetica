@@ -2,7 +2,7 @@ import styles from '../Admin/AdminManage.module.css'
 import Swal from 'sweetalert2';
 import axiosInstance from '../../api/axiosConfig';
 import { useEffect, useState } from 'react';
-import { formatPrice } from '../../utils/utils';
+import { formatPrice, formatDate } from '../../utils/utils';
 import { CiSearch, CiFilter } from "react-icons/ci";
 function AdminOrders() {
 
@@ -10,15 +10,60 @@ function AdminOrders() {
     const [orderUser, setOrderUser] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [filteredRecent, setFilteredRecent] = useState('all');
-    const [filteredStatus, setFilteredStatus] = useState('pending');
-    const [filteredReceipt, setFilteredReceipt] = useState('no');
+    const [filteredRecent, setFilteredRecent] = useState('recents');
+    const [filteredStatus, setFilteredStatus] = useState('all');
+    const [filteredReceipt, setFilteredReceipt] = useState('all');
     const [filteredAz, setFilteredAz] = useState('az');
+    const [filteredOrders, setFilteredOrders] = useState([]);
     
 
     useEffect(() => {
         fetchAllOrders();
     }, []);
+
+    useEffect(() => {
+        let result = [...allOrders];
+
+        // 1. Filtro por texto
+        if (searchTerm.trim()) {
+            const term = searchTerm.toLowerCase();
+            result = result.filter(o =>
+                o.ClientFullName.toLowerCase().includes(term)
+            );
+        }
+
+        // 2. Filtro por mas reciente o antiguo
+        if (filteredRecent === 'recents') {
+            result.sort((a, b) => new Date(b.ORD_ORDER_DATE) - new Date(a.ORD_ORDER_DATE));
+        } else if (filteredRecent === 'olders') {
+            result.sort((a, b) => new Date(a.ORD_ORDER_DATE) - new Date(b.ORD_ORDER_DATE));
+        }
+
+        // 3. Filtro de estado del pedido
+        if (filteredStatus === 'pending') {
+            result = result.filter(o => o.ORD_STATUS === 'Pendiente')
+        } else if (filteredStatus === 'onCourse') {
+            result = result.filter(o => o.ORD_STATUS === 'En curso');
+        } else if (filteredStatus === 'finish') {
+            result = result.filter(o => o.ORD_STATUS === 'Finalizado');
+        }
+
+        //4. Filtro comprobante subido o no
+        if (filteredReceipt === 'no') {
+            result = result.filter(o => !o.ReceiptPath);
+        } else if (filteredReceipt === 'yes') {
+            result = result.filter(o => o.ReceiptPath);
+        }
+
+        //5. Filtro alfabeticamente
+        if (filteredAz === 'az') {
+            result.sort((a, b) => a.ClientFullName.localeCompare(b.ClientFullName));
+        } else if (filteredAz === 'za') {
+            result.sort((a, b) => b.ClientFullName.localeCompare(a.ClientFullName));
+        }
+
+        setFilteredOrders(result);
+    }, [searchTerm, filteredRecent, allOrders, filteredStatus, filteredReceipt, filteredAz]);
 
     const fetchAllOrders = async () => {
         const response = await axiosInstance.get('Order/allOrders');
@@ -91,17 +136,6 @@ function AdminOrders() {
                             <input
                                 type="radio"
                                 name="filteredRecent"
-                                checked={filteredRecent === 'all'}
-                                onChange={() => setFilteredRecent('all')}
-                            />
-                            Todos
-                        </label>
-                    </li>
-                    <li className={styles.filterItem}>
-                        <label>
-                            <input
-                                type="radio"
-                                name="filteredRecent"
                                 checked={filteredRecent === 'recents'}
                                 onChange={() => setFilteredRecent('recents')}
                             />
@@ -122,6 +156,17 @@ function AdminOrders() {
                 </ul>
 
                 <ul>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredStatus"
+                                checked={filteredStatus === 'all'}
+                                onChange={() => setFilteredStatus('all')}
+                            />
+                            Todos
+                        </label>
+                    </li>
                     <li className={styles.filterItem}>
                         <label>
                             <input
@@ -158,6 +203,17 @@ function AdminOrders() {
                 </ul>
 
                 <ul>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredReceipt"
+                                checked={filteredReceipt === 'all'}
+                                onChange={() => setFilteredReceipt('all')}
+                            />
+                            Todos
+                        </label>
+                    </li>
                     <li className={styles.filterItem}>
                         <label>
                             <input
@@ -223,13 +279,13 @@ function AdminOrders() {
                         </tr>
                     </thead>
                     <tbody>
-                        {allOrders.map((order) => (
+                        {filteredOrders.map((order) => (
                             <tr key={order.ORD_ID}>
                                 <td>
                                     {order.ORD_ID}
                                 </td>
                                 <td>
-                                    {order.ORD_ORDER_DATE}
+                                    {formatDate(order.ORD_ORDER_DATE)}hs
                                 </td>
                                 <td>
                                     {order.ClientFullName}
