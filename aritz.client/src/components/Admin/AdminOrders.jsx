@@ -3,10 +3,18 @@ import Swal from 'sweetalert2';
 import axiosInstance from '../../api/axiosConfig';
 import { useEffect, useState } from 'react';
 import { formatPrice } from '../../utils/utils';
+import { CiSearch, CiFilter } from "react-icons/ci";
 function AdminOrders() {
 
     const [allOrders, setAllOrders] = useState([]);
     const [orderUser, setOrderUser] = useState([]);
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredRecent, setFilteredRecent] = useState('all');
+    const [filteredStatus, setFilteredStatus] = useState('pending');
+    const [filteredReceipt, setFilteredReceipt] = useState('no');
+    const [filteredAz, setFilteredAz] = useState('az');
+    
 
     useEffect(() => {
         fetchAllOrders();
@@ -45,66 +53,224 @@ function AdminOrders() {
     }
 
     return (
-        <div className={styles.containerTableOrders}>
-            <table className={styles.productsUserTable}>
-                <thead>
-                    <tr>
-                        <th>Nro Orden</th>
-                        <th>Fecha de la orden</th>
-                        <th>Cliente</th>
-                        <th>Estado</th>
-                        <th>Monto</th>
-                        <th>Comprobante</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {allOrders.map((order) => (
-                        <tr key={order.ORD_ID}>
-                            <td>
-                                {order.ORD_ID}
-                            </td>
-                            <td>
-                                {order.ORD_ORDER_DATE}
-                            </td>
-                            <td>
-                                {order.ClientFullName}
-                            </td>
-                            <td>
-                                <div className="input-group flex-nowrap">
-                                    <select
-                                        className="form-select"
-                                        aria-label="Default select example"
-                                        name="ORD_STATUS"
-                                        defaultValue={order.ORD_STATUS}
-                                        onChange={(e) => handleStatusChange(order.ORD_ID, e.target.value)}
-                                    >
-                                        <option value="Pendiente">Pendiente</option>
-                                        <option value="En curso">En curso</option>
-                                        <option value="Finalizado">Finalizado</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                ${formatPrice(order.ORD_TOTAL_AMOUNT)}
-                            </td>
-                            <td>
-                                {order.ReceiptPath
-                                    ?
-                                    <a
-                                        href={`${axiosInstance.defaults.baseURL}Order/${order.ORD_ID}/download-receipt`}
-                                        rel="noopener noreferrer"
-                                    >
-                                        Descargar comprobante
-                                    </a>
-                                    :
-                                    'Sin subir'
-                                }
-                            </td>
+        <>
+        <div className={styles.filtrosContainer}>
+                <div className="input-group flex-nowrap">
+                    <span className="input-group-text" id="addon-wrapping"><CiSearch /></span>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Buscar..."
+                        aria-label="Username"
+                        aria-describedby="addon-wrapping"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <div
+                    className={styles.filter}
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseExample"
+                    aria-expanded="false"
+                    aria-controls="collapseExample"
+                >
+                    <CiFilter
+                        size={40}
+                    />
+                    <h5>Filtros:</h5>
+                </div>
+
+            </div>
+
+
+            <div className={`collapse ${styles.filterGroup}`} id="collapseExample">
+                <hr></hr>
+                <ul>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredRecent"
+                                checked={filteredRecent === 'all'}
+                                onChange={() => setFilteredRecent('all')}
+                            />
+                            Todos
+                        </label>
+                    </li>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredRecent"
+                                checked={filteredRecent === 'recents'}
+                                onChange={() => setFilteredRecent('recents')}
+                            />
+                            Mas recientes
+                        </label>
+                    </li>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredRecent"
+                                checked={filteredRecent === 'olders'}
+                                onChange={() => setFilteredRecent('olders')}
+                            />
+                            Mas antiguos
+                        </label>
+                    </li>
+                </ul>
+
+                <ul>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredStatus"
+                                checked={filteredStatus === 'pending'}
+                                onChange={() => setFilteredStatus('pending')}
+                            />
+                            Pendientes
+                        </label>
+                    </li>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredStatus"
+                                checked={filteredStatus === 'onCourse'}
+                                onChange={() => setFilteredStatus('onCourse')}
+                            />
+                            En curso
+                        </label>
+                    </li>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredStatus"
+                                checked={filteredStatus === 'finish'}
+                                onChange={() => setFilteredStatus('finish')}
+                            />
+                            Finalizado
+                        </label>
+                    </li>
+                </ul>
+
+                <ul>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredReceipt"
+                                checked={filteredReceipt === 'no'}
+                                onChange={() => setFilteredReceipt('no')}
+                            />
+                            Comprobante sin subir
+                        </label>
+                    </li>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredReceipt"
+                                checked={filteredReceipt === 'yes'}
+                                onChange={() => setFilteredReceipt('yes')}
+                            />
+                            Comprobante subido
+                        </label>
+                    </li>
+
+                </ul>
+
+                <ul>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredAz"
+                                checked={filteredAz === 'az'}
+                                onChange={() => setFilteredAz('az')}
+                            />
+                            Nombre A-Z
+                        </label>
+                    </li>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredActive"
+                                checked={filteredAz === 'za'}
+                                onChange={() => setFilteredAz('za')}
+                            />
+                            Nombre Z-A
+                        </label>
+                    </li>
+
+                </ul>
+            </div>
+        
+            <div className={styles.containerTableOrders}>
+                <table className={styles.productsUserTable}>
+                    <thead>
+                        <tr>
+                            <th>Nro Orden</th>
+                            <th>Fecha de la orden</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                            <th>Monto</th>
+                            <th>Comprobante</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {allOrders.map((order) => (
+                            <tr key={order.ORD_ID}>
+                                <td>
+                                    {order.ORD_ID}
+                                </td>
+                                <td>
+                                    {order.ORD_ORDER_DATE}
+                                </td>
+                                <td>
+                                    {order.ClientFullName}
+                                </td>
+                                <td>
+                                    <div className="input-group flex-nowrap">
+                                        <select
+                                            className="form-select"
+                                            aria-label="Default select example"
+                                            name="ORD_STATUS"
+                                            defaultValue={order.ORD_STATUS}
+                                            onChange={(e) => handleStatusChange(order.ORD_ID, e.target.value)}
+                                        >
+                                            <option value="Pendiente">Pendiente</option>
+                                            <option value="En curso">En curso</option>
+                                            <option value="Finalizado">Finalizado</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    ${formatPrice(order.ORD_TOTAL_AMOUNT)}
+                                </td>
+                                <td>
+                                    {order.ReceiptPath
+                                        ?
+                                        <a
+                                            href={`${axiosInstance.defaults.baseURL}Order/${order.ORD_ID}/download-receipt`}
+                                            rel="noopener noreferrer"
+                                        >
+                                            Descargar comprobante
+                                        </a>
+                                        :
+                                        'Sin subir'
+                                    }
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </>
     )
 }
 export default AdminOrders;

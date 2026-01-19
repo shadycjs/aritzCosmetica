@@ -115,3 +115,12 @@ productsUserTable thead {
 .delIcon:hover {
     color: rgb(255, 0, 0);
 }
+
+/* Admin Orders */
+
+.containerTableOrders{
+    display: flex;
+    justify-content: center;
+    max-height: 50vh;
+    overflow-y: scroll;
+}
