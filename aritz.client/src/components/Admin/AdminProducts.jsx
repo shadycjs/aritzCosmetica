@@ -37,7 +37,7 @@ function AdminProducts() {
             const term = searchTerm.toLowerCase();
             result = result.filter(p =>
                 p.PRD_NAME.toLowerCase().includes(term) ||
-                p.PRD_DESCRIPTION.toLowerCase().includes(term)
+                p.Category.CAT_NAME.toLowerCase().includes(term)
             );
         }
 

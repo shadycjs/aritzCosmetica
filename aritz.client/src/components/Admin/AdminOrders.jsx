@@ -4,10 +4,13 @@ import axiosInstance from '../../api/axiosConfig';
 import { useEffect, useState } from 'react';
 import { formatPrice, formatDate } from '../../utils/utils';
 import { CiSearch, CiFilter } from "react-icons/ci";
+import { LuSearchX } from "react-icons/lu";
+import ModalOrder from './ModalOrder';
 function AdminOrders() {
 
     const [allOrders, setAllOrders] = useState([]);
     const [orderUser, setOrderUser] = useState([]);
+    const [selectedOrder, setSelectedOrder] = useState(null);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredRecent, setFilteredRecent] = useState('recents');
@@ -267,65 +270,80 @@ function AdminOrders() {
             </div>
         
             <div className={styles.containerTableOrders}>
-                <table className={styles.productsUserTable}>
-                    <thead>
-                        <tr>
-                            <th>Nro Orden</th>
-                            <th>Fecha de la orden</th>
-                            <th>Cliente</th>
-                            <th>Estado</th>
-                            <th>Monto</th>
-                            <th>Comprobante</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredOrders.map((order) => (
-                            <tr key={order.ORD_ID}>
-                                <td>
-                                    {order.ORD_ID}
-                                </td>
-                                <td>
-                                    {formatDate(order.ORD_ORDER_DATE)}hs
-                                </td>
-                                <td>
-                                    {order.ClientFullName}
-                                </td>
-                                <td>
-                                    <div className="input-group flex-nowrap">
-                                        <select
-                                            className="form-select"
-                                            aria-label="Default select example"
-                                            name="ORD_STATUS"
-                                            defaultValue={order.ORD_STATUS}
-                                            onChange={(e) => handleStatusChange(order.ORD_ID, e.target.value)}
-                                        >
-                                            <option value="Pendiente">Pendiente</option>
-                                            <option value="En curso">En curso</option>
-                                            <option value="Finalizado">Finalizado</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    ${formatPrice(order.ORD_TOTAL_AMOUNT)}
-                                </td>
-                                <td>
-                                    {order.ReceiptPath
-                                        ?
-                                        <a
-                                            href={`${axiosInstance.defaults.baseURL}Order/${order.ORD_ID}/download-receipt`}
-                                            rel="noopener noreferrer"
-                                        >
-                                            Descargar comprobante
-                                        </a>
-                                        :
-                                        'Sin subir'
-                                    }
-                                </td>
+                {filteredOrders.length <= 0
+                    ?
+                    <div>
+                        <h1>No se encontraron coincidencias...</h1>
+                        <LuSearchX size={510} />
+                    </div>
+                    :
+                    <table className={styles.productsUserTable}>
+                        <thead>
+                            <tr>
+                                <th>Nro Orden</th>
+                                <th>Fecha de la orden</th>
+                                <th>Cliente</th>
+                                <th>Estado</th>
+                                <th>Monto</th>
+                                <th>Comprobante</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {filteredOrders.map((order) => (
+                                <tr key={order.ORD_ID}>
+                                    <td
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop"
+                                        onClick={ () => setSelectedOrder(order) }
+                                    >
+                                        {order.ORD_ID}
+                                    </td>
+                                    <td>
+                                        {formatDate(order.ORD_ORDER_DATE)}hs
+                                    </td>
+                                    <td>
+                                        {order.ClientFullName}
+                                    </td>
+                                    <td>
+                                        <div className="input-group flex-nowrap">
+                                            <select
+                                                className="form-select"
+                                                aria-label="Default select example"
+                                                name="ORD_STATUS"
+                                                defaultValue={order.ORD_STATUS}
+                                                onChange={(e) => handleStatusChange(order.ORD_ID, e.target.value)}
+                                            >
+                                                <option value="Pendiente">Pendiente</option>
+                                                <option value="En curso">En curso</option>
+                                                <option value="Finalizado">Finalizado</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        ${formatPrice(order.ORD_TOTAL_AMOUNT)}
+                                    </td>
+                                    <td>
+                                        {order.ReceiptPath
+                                            ?
+                                            <a
+                                                href={`${axiosInstance.defaults.baseURL}Order/${order.ORD_ID}/download-receipt`}
+                                                rel="noopener noreferrer"
+                                            >
+                                                Descargar comprobante
+                                            </a>
+                                            :
+                                            'Sin subir'
+                                        }
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                }
             </div>
+            <ModalOrder
+                order={selectedOrder?.ORD_ID}
+            />
         </>
     )
 }
