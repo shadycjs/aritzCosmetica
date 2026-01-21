@@ -124,3 +124,8 @@ productsUserTable thead {
     max-height: 50vh;
     overflow-y: scroll;
 }
+
+.filaOrdenDetail:hover{
+    background-color: aliceblue;
+    cursor: pointer;
+}

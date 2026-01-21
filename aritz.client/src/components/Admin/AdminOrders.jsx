@@ -290,18 +290,27 @@ function AdminOrders() {
                         </thead>
                         <tbody>
                             {filteredOrders.map((order) => (
-                                <tr key={order.ORD_ID}>
+                                <tr
+                                    key={order.ORD_ID}
+                                    className={styles.filaOrdenDetail}
+                                    onClick={() => setSelectedOrder(order)}
+                                >
                                     <td
                                         data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop"
-                                        onClick={ () => setSelectedOrder(order) }
                                     >
                                         {order.ORD_ID}
                                     </td>
-                                    <td>
+                                    <td
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop"
+                                    >
                                         {formatDate(order.ORD_ORDER_DATE)}hs
                                     </td>
-                                    <td>
+                                    <td
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop"
+                                    >
                                         {order.ClientFullName}
                                     </td>
                                     <td>
@@ -319,7 +328,10 @@ function AdminOrders() {
                                             </select>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop"
+                                    >
                                         ${formatPrice(order.ORD_TOTAL_AMOUNT)}
                                     </td>
                                     <td>
@@ -342,7 +354,8 @@ function AdminOrders() {
                 }
             </div>
             <ModalOrder
-                order={selectedOrder?.ORD_ID}
+                orderId={selectedOrder?.ORD_ID}
+                orderTotalAmount={selectedOrder?.ORD_TOTAL_AMOUNT}
             />
         </>
     )

@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosConfig";
+import styles from '../Admin/Modal.module.css'
+import { formatPrice } from '../../utils/utils';
 
-function ModalOrder({ order }) {
+function ModalOrder({ orderId, orderTotalAmount }) {
 
     const [ord, setOrd] = useState([]);
 
     useEffect(() => {
-        if (order) {
+        if (orderId) {
             fetchOrder();
         }
-    }, [order]);
+    }, [orderId]);
 
     const fetchOrder = async () => {
         try {
-            const response = await axiosInstance.get(`Order/requestDetail/${order}`);
+            const response = await axiosInstance.get(`Order/requestDetail/${orderId}`);
             setOrd(response.data);
             console.log("Detalles recibidos:", response.data);
         } catch (error) {
@@ -32,22 +34,44 @@ function ModalOrder({ order }) {
             aria-hidden="true"
         >
             <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
+                <div className={`modal-content ${styles.containerGeneralOrder}`}>
                     <div className="modal-header">
-                        <h1 className="modal-title fs-5" id="staticBackdropLabel"></h1>
+                        <h1 className="modal-title fs-5" id="staticBackdropLabel">Detalle de la Orden Nro #{orderId}</h1>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div className="modal-body">
+                    <div className="modal-body d-flex flex-column gap-3">
                         {ord.map((or) => (
-                            <div>
-                                <p>{or.IdOrderDetail}</p>
-                                <p>{or.ProductName}</p>
+                            <div
+                                className="d-flex justify-content-evenly"
+                                key={or.ORD_ID}
+                            >
+                                <div className={styles.orderDetailImgContainer}>
+                                    <img src={`https://localhost:7273/images/${or.ProductImage}`} />
+                                </div>
+                                <div className={`d-flex flex-column justify-content-center ${styles.infoOrderContainer}`}>
+                                    <div>
+                                        <p className="d-flex justify-content-between">Id:<b>#{or.IdOrderDetail}</b></p>
+                                    </div>
+                                    <div>
+                                        <p className="d-flex justify-content-start">{or.ProductName}</p>
+                                    </div>
+                                    <div className="d-flex flex-column">
+                                        <p className="d-flex justify-content-between">Cantidad: <b>{or.Quantity}</b></p>
+                                        <p className="d-flex justify-content-between">Precio unitario: <b>${formatPrice(or.TotalPrice)}</b></p>
+                                    </div>
+                                    <div className="d-flex flex-column">
+                                        <p className="d-flex justify-content-between">Subtotal: <b>${formatPrice(or.Quantity * or.TotalPrice) }</b></p>
+                                    </div>
+                                </div>
                             </div>
                         ))}
                     </div>
+                    <hr></hr>
+                    <div>
+                        <h5>Total: <b>${formatPrice(orderTotalAmount)}</b></h5>
+                    </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Understood</button>
                     </div>
                 </div>
             </div>
