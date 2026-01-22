@@ -6,9 +6,6 @@
     display: flex;
     justify-content: center;
     padding: 10px;
-}
-
-.requestsTable {
     max-height: 50vh;
     overflow-y: scroll;
 }
@@ -76,3 +73,8 @@
         color: blue;
         text-decoration: underline;
     }
+
+.filaOrdenDetailUser:hover {
+    background-color: aliceblue;
+    cursor: pointer;
+}

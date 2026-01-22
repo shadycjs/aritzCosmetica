@@ -11,6 +11,7 @@ import { useLocation, Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { BiConfused } from "react-icons/bi";
 import BreadCrum from "../../components/BreadCrum/BreadCrum";
+import { formatPrice } from '../../utils/utils';
 function MyRequests() {
 
     const [orders, setOrders] = useState([]);
@@ -129,7 +130,10 @@ function MyRequests() {
                     </thead>
                     <tbody>
                         {orders.map((order) => (
-                            <tr key={order.ORD_ID}>
+                            <tr
+                                key={order.ORD_ID}
+                                className={styles.filaOrdenDetailUser}
+                            >
                                 <td>
                                     <NavLink
                                         to={`/user/my-requests/my-order/${order.ORD_ID}`}
@@ -139,7 +143,7 @@ function MyRequests() {
                                     </NavLink> 
                                 </td>
                                 <td>{formatDate(order.ORD_ORDER_DATE)}</td>
-                                <td>${order.ORD_TOTAL_AMOUNT}</td>
+                                <td>${formatPrice(order.ORD_TOTAL_AMOUNT)}</td>
                                 <td>{order.ORD_STATUS}</td>
                                 <td>{order.PaymentMethod}</td>
                                 <td>

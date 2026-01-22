@@ -139,7 +139,7 @@ function MyRequestDetail() {
                                 <div className={styles.itemsDetailSub}>
                                     <h4>{request.ProductName}</h4>
                                     <p>Cantidad: {request.Quantity}</p>
-                                    <p>c/u ${request.TotalPrice}</p>
+                                    <p>c/u ${formatPrice(request.TotalPrice)}</p>
                                 </div>
                                 <div className={styles.TotalPrice}>
                                     <b>Subtotal:</b>
