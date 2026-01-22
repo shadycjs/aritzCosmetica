@@ -267,7 +267,37 @@ namespace Aritz.Server.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return Ok(new { Message = "Comprobante subido exitosamente.", ReceiptPath = $"/uploads/receipts/{fileName}" });
+            var user = await _context.Users.FindAsync(order.ORD_USR_ID);
+
+            try
+            {
+                var baseUrl = $"{Request.Scheme}://{Request.Host}";
+                var downloadLink = $"{baseUrl}/Order/{orderId}/download-receipt";
+
+                var emailBodyBuilder = new System.Text.StringBuilder();
+                emailBodyBuilder.AppendLine($"<h2>{user.USR_NAME} {user.USR_SURNAME} Subio el comprobante de pago para la orden #{order.ORD_ID}!</h2>");
+                emailBodyBuilder.AppendLine($"<p><strong>Fecha de subida del comprobante:</strong> {DateTime.Now}</p>");
+                emailBodyBuilder.AppendLine($"<p><strong>Nro de orden:</strong> {order.ORD_ID}</p>");
+                emailBodyBuilder.AppendLine($"<p>Descargar el comprobante aca: <strong><a href='{downloadLink}'>aca</a></strong></p>");
+                emailBodyBuilder.AppendLine("<hr>");
+                emailBodyBuilder.AppendLine($"<h3>Monto total de la orden: ${order.ORD_TOTAL_AMOUNT}</h3>");
+
+                var adminEmail = _configuration["EmailSettings:SenderEmail"];
+
+                _ = _emailService.SendEmailAsync(
+                    adminEmail,
+                    $"Subieron el comprobante de una compra! #{order.ORD_ID}",
+                    emailBodyBuilder.ToString()
+                );
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al crear la orden: {ex.Message}");
+                return StatusCode(500, new { Message = "Error al crear la orden." });
+            }
+
+            return Ok(new { Message = "Comprobante subido exitosamente.", ReceiptPath = $"/uploads/receipts/{fileName}" });
             }
 
         [HttpGet("{orderId}/download-receipt")]

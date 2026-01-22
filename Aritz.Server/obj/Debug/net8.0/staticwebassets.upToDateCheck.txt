@@ -96,3 +96,5 @@ wwwroot\images\updMainImg_d2db0d7d-a37b-4b1e-87da-10d41f17c5b8.jpg
 wwwroot\images\updMainImg_68ebbcbe-6cae-4f4a-9899-3def2295051f.png
 wwwroot\images\updMainImg_73cb59c3-30a6-4a64-860a-014c0bb606db.jpg
 wwwroot\images\updMainImg_ef5913ab-ed00-439d-9b66-3350d31f7fc3.png
+wwwroot\uploads\receipts\receipt_7_2025988c-505b-47d7-a922-427442aefa14.pdf
+wwwroot\uploads\receipts\receipt_9_146cdbae-6d3d-4f7a-9ab7-4a0c73ed287e.pdf

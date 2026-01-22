@@ -35,7 +35,6 @@
 
 .fileRefreshDownload {
     display: flex;
-    justify-content: center;
     align-items: center;
     gap: 10px;
 }
@@ -59,13 +58,17 @@
     border-radius: 5px;
 }
 
-.shiippingData {
-    background-color: rgb(179, 222, 167);
-    border: 3px solid rgb(179, 222, 167);
-    padding: 20px;
-    text-align: start;
-    border-radius: 5px;
-}
+    .Comprobante b{
+        text-align: center;
+    }
+
+    .shiippingData {
+        background-color: rgb(179, 222, 167);
+        border: 3px solid rgb(179, 222, 167);
+        padding: 20px;
+        text-align: start;
+        border-radius: 5px;
+    }
 
 .itemsContainer {
     display: flex;
@@ -88,6 +91,7 @@
 
     .itemsDetail p{
         text-align: start;
+        font-weight: 600;
     }
 
 .itemsDetailSub{

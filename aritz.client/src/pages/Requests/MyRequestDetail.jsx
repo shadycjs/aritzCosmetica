@@ -160,7 +160,7 @@ function MyRequestDetail() {
                         <p>Total a pagar: ${formatPrice(totalAmount)}</p>
                     </div>
                     <div className={styles.Comprobante}>
-                        <b>{path ? 'Este es el comprobante que subiste' : 'Subi tu comprobante aca'}</b>
+                        <b>{path ? 'Comprobante subido' : 'Subi tu comprobante aca'}</b>
                         {path ? (
                             <div className={styles.fileRefreshDownload}>
                                 <a
