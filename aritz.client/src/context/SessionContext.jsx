@@ -33,6 +33,7 @@ export const SessionProvider = ({ children }) => {
         return saved === 'true'; // Convierte string → boolean
     });
     const [personal, setPersonal] = useState(false);
+    const [AdmUsrPrd, setAdmUsrPrd] = useState('Productos');
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -262,7 +263,9 @@ export const SessionProvider = ({ children }) => {
         passwordStrength,
         strengthMessage,
         isAdmin,
-        setUserName
+        setUserName,
+        AdmUsrPrd,
+        setAdmUsrPrd
     };
 
     return (

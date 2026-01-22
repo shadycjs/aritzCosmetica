@@ -7,11 +7,12 @@ import { useState } from "react";
 import AdminUsers from "./AdminUsers";
 import { TbShoppingBagSearch } from "react-icons/tb";
 import AdminOrders from "./AdminOrders";
+import { useSession } from "../../context/SessionContext";
 
 
 function AdminManage() {
 
-    const [AdmUsrPrd, setAdmUsrPrd] = useState('Productos');
+    const { AdmUsrPrd, setAdmUsrPrd } = useSession();
 
     return (
         <CenteredContainer>

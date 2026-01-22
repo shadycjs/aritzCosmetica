@@ -3,7 +3,7 @@ import axiosInstance from "../../api/axiosConfig";
 import styles from '../Admin/Modal.module.css'
 import { formatPrice } from '../../utils/utils';
 
-function ModalOrder({ orderId, orderTotalAmount }) {
+function ModalOrder({ orderId, orderTotalAmount, orderStatus }) {
 
     const [ord, setOrd] = useState([]);
 
@@ -39,6 +39,13 @@ function ModalOrder({ orderId, orderTotalAmount }) {
                         <h1 className="modal-title fs-5" id="staticBackdropLabel">Detalle de la Orden Nro #{orderId}</h1>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <p
+                        style={{ paddingTop: "20px" }}
+                    >
+                        Estado del pedido: {orderStatus}
+                    </p>
+                    <hr></hr>
+                    
                     <div className="modal-body d-flex flex-column gap-3">
                         {ord.map((or) => (
                             <div
@@ -67,7 +74,7 @@ function ModalOrder({ orderId, orderTotalAmount }) {
                         ))}
                     </div>
                     <hr></hr>
-                    <div>
+                    <div style={{ padding: "20px" }}>
                         <h5>Total: <b>${formatPrice(orderTotalAmount)}</b></h5>
                     </div>
                     <div className="modal-footer">

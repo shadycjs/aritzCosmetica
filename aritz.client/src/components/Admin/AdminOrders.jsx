@@ -370,6 +370,7 @@ function AdminOrders() {
             <ModalOrder
                 orderId={selectedOrder?.ORD_ID}
                 orderTotalAmount={selectedOrder?.ORD_TOTAL_AMOUNT}
+                orderStatus={selectedOrder?.ORD_STATUS}
             />
         </>
     )
