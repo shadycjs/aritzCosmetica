@@ -49,6 +49,8 @@ function AdminOrders() {
             result = result.filter(o => o.ORD_STATUS === 'En curso');
         } else if (filteredStatus === 'finish') {
             result = result.filter(o => o.ORD_STATUS === 'Finalizado');
+        } else if (filteredStatus === 'canceled') {
+            result = result.filter(o => o.ORD_STATUS === 'Cancelado');
         }
 
         //4. Filtro comprobante subido o no
@@ -203,6 +205,17 @@ function AdminOrders() {
                             Finalizado
                         </label>
                     </li>
+                    <li className={styles.filterItem}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="filteredStatus"
+                                checked={filteredStatus === 'canceled'}
+                                onChange={() => setFilteredStatus('canceled')}
+                            />
+                            Cancelado
+                        </label>
+                    </li>
                 </ul>
 
                 <ul>
@@ -325,6 +338,7 @@ function AdminOrders() {
                                                 <option value="Pendiente">Pendiente</option>
                                                 <option value="En curso">En curso</option>
                                                 <option value="Finalizado">Finalizado</option>
+                                                <option value="Cancelado">Cancelado</option>
                                             </select>
                                         </div>
                                     </td>

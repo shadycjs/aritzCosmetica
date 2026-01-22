@@ -68,6 +68,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IEmailService, EmailService>();
 
+builder.Services.AddHostedService<OrderCleanupService>();
+
 var app = builder.Build();
 
 // Configura el pipeline HTTP
