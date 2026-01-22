@@ -1,8 +1,10 @@
 ﻿using Aritz.Server.Data;
 using Aritz.Server.Models;
+using Aritz.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Configuration;
 using Org.BouncyCastle.Asn1.X500;
 
 namespace Aritz.Server.Controllers
@@ -12,10 +14,14 @@ namespace Aritz.Server.Controllers
     public class OrderController : ControllerBase
     {
         private readonly AritzDbContext _context;
+        private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
-        public OrderController(AritzDbContext context)
+        public OrderController(AritzDbContext context, IEmailService emailService, IConfiguration configuration)
         {
             _context = context;
+            _emailService = emailService;
+            _configuration = configuration;
         }
 
         [HttpPost("confirmOrder")]
@@ -29,6 +35,10 @@ namespace Aritz.Server.Controllers
                 return NotFound(new { Message = "El método de pago no existe." });
             }
 
+            // Verificar si el usuario existe
+            var client = await _context.Users.FindAsync(dto.userId);
+            if (client == null) return BadRequest("Usuario no encontrado");
+
             var Orders = new Orders
             {
                 ORD_USR_ID = dto.userId,
@@ -38,11 +48,37 @@ namespace Aritz.Server.Controllers
                 ORD_PMT_ID = dto.paymentMethod
             };
 
-            _context.Add(Orders);
-            await _context.SaveChangesAsync();
+            
+            try
+            {
+                _context.Add(Orders);
+                await _context.SaveChangesAsync();
 
-            Console.WriteLine($"El order id es: {Orders.ORD_ID}");
-            return Ok(new { Message = "Pedido creado correctamente.", OrderId = Orders.ORD_ID });
+                var emailBodyBuilder = new System.Text.StringBuilder();
+                emailBodyBuilder.AppendLine($"<h2>Nueva Orden de Compra #{Orders.ORD_ID}</h2>");
+                emailBodyBuilder.AppendLine($"<p><strong>Cliente:</strong> {client.USR_NAME} {client.USR_SURNAME} ({client.USR_EMAIL})</p>");
+                emailBodyBuilder.AppendLine($"<p><strong>Fecha:</strong> {Orders.ORD_ORDER_DATE}</p>");
+                emailBodyBuilder.AppendLine($"<p>Clickea <strong><a href=`https://localhost:50833/user/my-requests/my-order/${Orders.ORD_ID}`>aca</a></strong> para ir al pedido</p>");
+                emailBodyBuilder.AppendLine("<hr>");
+                emailBodyBuilder.AppendLine($"<h3>Total: ${dto.totalSumCart}</h3>");
+
+                var adminEmail = _configuration["EmailSettings:SenderEmail"];
+
+                _ = _emailService.SendEmailAsync(
+                    adminEmail,
+                    $"Te hicieron una Nueva Orden de Compra #{Orders.ORD_ID}",
+                    emailBodyBuilder.ToString()
+                );
+
+                return Ok(new { Message = "Pedido creado correctamente.", OrderId = Orders.ORD_ID });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al crear la orden: {ex.Message}");
+                return StatusCode(500, new { Message = "Error al crear la orden." });
+            }
+            
         }
 
         [HttpPost("confirmOrderDetail")]
