@@ -118,7 +118,7 @@ function MyRequests() {
                     <BiConfused size={250} />
                 ): ( 
                 <table className={styles.requestsTable}>
-                    <thead>
+                    <thead className={styles.stickyHeader}>
                         <tr>
                             <th>Nro Orden</th>
                             <th>Fecha</th>

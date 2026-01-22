@@ -2,10 +2,17 @@
     font-family: "Montserrat", sans-serif;
 }
 
+.stickyHeader th {
+    position: sticky;
+    top: 0;
+    z-index: 10; /* Asegura que quede por encima del contenido */
+    background-color: #ffffff; /* Color de fondo OBLIGATORIO para que no sea transparente */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* Opcional: una sombrita para separar */
+}
+
 .requestsContainer {
     display: flex;
     justify-content: center;
-    padding: 10px;
     max-height: 70vh;
     overflow-y: scroll;
 }
