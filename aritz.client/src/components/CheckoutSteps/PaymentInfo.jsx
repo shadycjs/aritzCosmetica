@@ -192,6 +192,10 @@ function PaymentInfo() {
                     <div className="col">
                         {paymentMethod === 2 ?
                             <div className={styles.bankContainer}>
+                                <div>
+                                    <h1 className={styles.logoAritz}>Aritz</h1>
+                                </div>
+
                                 <h2>Datos transferencia</h2>
                                 <div className={styles.bankContainerSub}>
                                     <b>CBU: 0000003100048344628186</b>

@@ -92,3 +92,7 @@ wwwroot\images\NewGalleryImg_6bfc189b-8bdd-4e3a-b556-aace54cacb92.png
 wwwroot\images\updMainImg_2dd98c4b-83b7-4587-87fc-6ff898f60ef6.png
 wwwroot\uploads\receipts\receipt_8_a4c39293-f2df-4935-b2b4-f3fed8eb577f.pdf
 wwwroot\uploads\receipts\receipt_8_96a8f2f7-e2b8-48fc-a76e-f782800cfd59.pdf
+wwwroot\images\updMainImg_d2db0d7d-a37b-4b1e-87da-10d41f17c5b8.jpg
+wwwroot\images\updMainImg_68ebbcbe-6cae-4f4a-9899-3def2295051f.png
+wwwroot\images\updMainImg_73cb59c3-30a6-4a64-860a-014c0bb606db.jpg
+wwwroot\images\updMainImg_ef5913ab-ed00-439d-9b66-3350d31f7fc3.png
