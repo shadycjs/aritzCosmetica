@@ -1,4 +1,4 @@
-import { useSession } from "../../context/SessionContext";
+锘縤mport { useSession } from "../../context/SessionContext";
 import styles from "./Auth.module.css";
 import CenteredContainer from "../CenteredContainer/CenteredContainer";
 
@@ -10,17 +10,17 @@ function Auth() {
     return (
         <CenteredContainer>
             <div className={styles.container}>
-                <h2 className={styles.title}>{isVerifying ? "Verifica tu cuenta" : (screenLogIn ? "Inicia Sesi髇" : "Reg韘trate")}</h2>
+                <h2 className={styles.title}>{isVerifying ? "Verifica tu cuenta" : (screenLogIn ? "Inicia Sesi贸n" : "Reg铆strate")}</h2>
                 {isVerifying ? (
                     <form onSubmit={handleVerify} className={styles.form}>
                         <div className={styles.formGroup}>
-                            <label htmlFor="code">C骴igo de verificaci髇:</label>
+                            <label htmlFor="code">C贸digo de verificaci贸n:</label>
                             <input
                                 type="text"
                                 id="code"
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
-                                placeholder="C骴igo de verificaci髇"
+                                placeholder="C贸digo de verificaci贸n"
                                 required
                             />
                         </div>
@@ -53,7 +53,7 @@ function Auth() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label htmlFor="phoneNumber">Tel閒ono:</label>
+                                    <label htmlFor="phoneNumber">Tel茅fono:</label>
                                     <input
                                         type="text"
                                         id="phoneNumber"
@@ -63,7 +63,7 @@ function Auth() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label htmlFor="address">Direcci髇:</label>
+                                    <label htmlFor="address">Direcci贸n:</label>
                                     <input
                                         type="text"
                                         id="address"
@@ -75,7 +75,7 @@ function Auth() {
                             </>
                         )}
                         <div className={styles.formGroup}>
-                            <label htmlFor="email">Correo Electr髇ico:</label>
+                            <label htmlFor="email">Correo Electr贸nico:</label>
                             <input
                                 type="email"
                                 id="email"
@@ -86,7 +86,7 @@ function Auth() {
                             />
                         </div>
                         <div className={styles.formGroup}>
-                            <label htmlFor="password">Contrase馻:</label>
+                            <label htmlFor="password">Contrase帽a:</label>
                             <input
                                 type="password"
                                 id="password"
@@ -99,7 +99,7 @@ function Auth() {
                             {isRegister && (
                                 <div className='d-flex flex-column gap-3'>
                                 <div className={styles.formGroup}>
-                                    <label htmlFor="confirmPassword">Confirmar Contrase馻:</label>
+                                    <label htmlFor="confirmPassword">Confirmar Contrase帽a:</label>
                                     <input
                                         type="password"
                                         id="confirmPassword"
@@ -134,23 +134,23 @@ function Auth() {
                             </div>
                         )}
                         <button type="submit" className={styles.submitButton}>
-                            {screenLogIn ? "Iniciar Sesi髇" : "Crear Cuenta"}
+                            {screenLogIn ? "Iniciar Sesi贸n" : "Crear Cuenta"}
                         </button>
                     </form>
                 )}
                 <p className={styles.toggleText}>
                     {screenLogIn ? (
                         <>
-                            縉o tienes cuenta?{" "}
+                            驴No tienes cuenta?{" "}
                             <button onClick={() => { screenOut(); setIsRegister(true); }} type="button" className={styles.toggleButton}>
-                                Reg韘trate
+                                Reg铆strate
                             </button>
                         </>
                     ) : (
                         <>
-                            縔a tienes cuenta?{" "}
+                            驴Ya tienes cuenta?{" "}
                             <button onClick={() => { screenIn(); setIsRegister(false); }} type="button" className={styles.toggleButton}>
-                                Inicia Sesi髇
+                                Inicia Sesi贸n
                             </button>
                         </>
                     )}

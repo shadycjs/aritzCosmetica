@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import styles from "./Footer.module.css"
 /*
   Footer.jsx
@@ -13,7 +13,7 @@ function Footer () {
     <footer className="app-footer" role="contentinfo" aria-label="Site footer">
       <div className="app-footer__inner">
         <div className="app-footer__brand">
-          <span className="app-footer__logo" aria-hidden="true">�</span>
+          <span className="app-footer__logo" aria-hidden="true">©</span>
           <span className="app-footer__company">
                 Aritz {year}
           </span>
