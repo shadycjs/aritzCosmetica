@@ -214,68 +214,72 @@ function AdminProducts() {
                     </ul>
                 </div>
             </div>
+            <div className={styles.containerTableOrders}>
             {filteredProducts.length <= 0
                 ?
-                <div>
+                <div className={styles.containerTableOrders}>
                     <h1>No se encontraron coincidencias...</h1>
                     <LuSearchX size={510} />
                 </div>
                 :
-                <table className={styles.productsUserTable}>
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Categoria</th>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th>Activo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredProducts.map((producto) => (
-                    <tr key={producto.PRD_ID}>
-                        <td>
-                            {producto.PRD_ID}
-                        </td>
-                        <td>
-                            {producto.Category.CAT_NAME}
-                        </td>
-                        <td>
-                            {producto.PRD_NAME}
-                        </td>
-                        <td>
-                            $ {producto.PRD_PRICE}
-                        </td>
-                        <td>
-                            {producto.PRD_QUANTITY}
-                        </td>
-                        <td>
-                            {producto.PRD_IS_ACTIVE ? 'Si' : 'No'}
-                        </td>
-                        <td>
-                            <FaEdit
-                                size={20}
-                                style={{ cursor: "pointer" }}
-                                data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop"
-                                onClick={() => setSelectedProduct(producto)}
-                            />
-                        </td>
-                        <td>
-                            <MdDeleteForever
-                                    className={styles.delIcon}
-                                    size={25}
+                
+                    <table className={styles.productsUserTable}>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Categoria</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Activo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredProducts.map((producto) => (
+                        <tr key={producto.PRD_ID}>
+                            <td>
+                                {producto.PRD_ID}
+                            </td>
+                            <td>
+                                {producto.Category.CAT_NAME}
+                            </td>
+                            <td>
+                                {producto.PRD_NAME}
+                            </td>
+                            <td>
+                                $ {producto.PRD_PRICE}
+                            </td>
+                            <td>
+                                {producto.PRD_QUANTITY}
+                            </td>
+                            <td>
+                                {producto.PRD_IS_ACTIVE ? 'Si' : 'No'}
+                            </td>
+                            <td>
+                                <FaEdit
+                                    size={20}
                                     style={{ cursor: "pointer" }}
                                     data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdropDeleteModal"
+                                    data-bs-target="#staticBackdrop"
                                     onClick={() => setSelectedProduct(producto)}
-                            />
-                        </td>
-                    </tr>
-                    ))}
-                </tbody>
-            </table>}
+                                />
+                            </td>
+                            <td>
+                                <MdDeleteForever
+                                        className={styles.delIcon}
+                                        size={25}
+                                        style={{ cursor: "pointer" }}
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdropDeleteModal"
+                                        onClick={() => setSelectedProduct(producto)}
+                                />
+                            </td>
+                        </tr>
+                        ))}
+                    </tbody>
+                    </table>
+                }
+                </div>
             
             <Modal
                 productCategory={selectedProduct?.Category.CAT_NAME}

@@ -22,7 +22,7 @@ function AdminUsers() {
     }, []);
 
     return (
-        <>
+        <div className={styles.containerTableOrders}>
             <table className={styles.productsUserTable}>
                 <thead>
                     <tr>
@@ -70,7 +70,7 @@ function AdminUsers() {
             <ModalUsr
                 user={selectedUser}
             />
-        </>
+        </div>
     )
 }
 

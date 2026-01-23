@@ -1,6 +1,5 @@
 .container {
-    max-width: 1200px; /* Ancho máximo */
-    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    width: 100vw; /* Ancho máximo */
     padding: 20px; /* Espaciado interno */
     text-align: center; /* Centra el contenido si es texto */
 }

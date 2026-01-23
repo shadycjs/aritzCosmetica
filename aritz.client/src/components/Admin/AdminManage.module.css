@@ -36,6 +36,7 @@
 
 .productsUserTable {
     max-height: 50vh;
+    width: 80vw;
     overflow-y: scroll;
 }
 
