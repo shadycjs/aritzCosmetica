@@ -7,13 +7,13 @@ import TimeLapseCheckout from "../CheckoutSteps/Timelapse/TimelapseCheckout";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
-//import { BrickBuilder } from "@mercadopago/sdk-react";
-import { initMercadoPago, Payment } from '@mercadopago/sdk-react'
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { useSession } from "../../context/SessionContext";
-initMercadoPago('TEST-aa2427a9-e156-4f55-b4c0-d9c5e9b5774c');
 import Swal from 'sweetalert2';
 import { useLocation } from 'react-router'
 import { formatPrice } from '../../utils/utils';
+
+initMercadoPago('TEST-aa2427a9-e156-4f55-b4c0-d9c5e9b5774c', { locale: 'es-AR' });
 function PaymentInfo() {
     const { paymentMethod, setPaymentMethod } = useCheckout();
     const navigate = useNavigate();
@@ -23,18 +23,53 @@ function PaymentInfo() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [cart, setCart] = useState([]);
+    const [preferenceId, setPreferenceId] = useState(null);  // Estado para almacenar el preferenceId MercadoPago
+
     const location = useLocation();
 
     const { userId, setPageCheckout } = useSession();
     setPageCheckout(location);
 
-    if (totalSumCart < 20000) {
+    if (totalSumCart < 20000 && !loading) {
         navigate('/cart');
     }
 
     useEffect(() => {
         fetchCart();
     }, [userId]);
+
+    useEffect(() => {
+        if (paymentMethod === 1 && totalSumCart > 0 && cart.length > 0) {
+            createMercadoPagoPreference();
+        }
+    }, [paymentMethod, totalSumCart, cart]);
+
+    // FUNCIÓN PARA PEDIR EL preferenceId AL BACKEND (MercadoPagoController.cs)
+    const createMercadoPagoPreference = async () => {
+        try {
+            // Preparamos los datos para tu backend
+            // Adaptar esto a como espera los datos tu OrderDto en C#
+            const orderData = {
+                userId: userId,
+                totalSumCart: totalSumCart,
+                // Mapeamos el carrito al formato que espera tu DTO Items
+                items: cart.map(item => ({
+                    ProductName: item.PRD_NAME,
+                    Quantity: item.CAI_QUANTITY,
+                    UnitPrice: item.PRD_PRICE
+                }))
+            };
+
+            const response = await axiosInstance.post("MercadoPago/create_preference", orderData);
+
+            if (response.data.preferenceId) {
+                setPreferenceId(response.data.preferenceId);
+                console.log("Preferencia creada ID:", response.data.preferenceId);
+            }
+        } catch (error) {
+            console.error("Error al crear preferencia MP:", error);
+        }
+    }
 
     const fetchCart = async () => {
         try {
@@ -101,54 +136,6 @@ function PaymentInfo() {
         navigate("/checkout/payment-method");
     };
 
-    const initialization = {
-        amount: 100,
-        preferenceId: "<PREFERENCE_ID>",
-    };
-    const customization = {
-        paymentMethods: {
-            ticket: "all",
-            creditCard: "all",
-            prepaidCard: "all",
-            debitCard: "all",
-            mercadoPago: "all",
-            wallet_purchase: "all",
-        },
-    };
-    const onSubmit = async (
-        { selectedPaymentMethod, formData }
-    ) => {
-        // callback called when clicking the submit data button
-        return new Promise((resolve, reject) => {
-            fetch("/process_payment", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            })
-                .then((response) => response.json())
-                .then((response) => {
-                    // receive payment result
-                    resolve();
-                })
-                .catch((error) => {
-                    // handle error response when trying to create payment
-                    reject();
-                });
-        });
-    };
-    const onError = async (error) => {
-        // callback called for all Brick error cases
-        console.log(error);
-    };
-    const onReady = async () => {
-        /*
-          Callback called when Brick is ready.
-          Here you can hide loadings from your site, for example.
-        */
-    };
-
     const next = () => {
         navigate('/checkout/pay-success');
     }
@@ -205,13 +192,16 @@ function PaymentInfo() {
 
 
                             <div className={styles.mpContainer}>
-                                <Payment
-                                    initialization={initialization}
-                                    customization={customization}
-                                    onSubmit={onSubmit}
-                                    onReady={onReady}
-                                    onError={onError}
-                                />
+                                <h3>Pagar con MercadoPago</h3>
+                                {preferenceId ? (
+                                    // AQUÍ RENDERIZAMOS EL BRICK OFICIAL DE REACT
+                                    <Wallet
+                                        initialization={{ preferenceId: preferenceId }}
+                                        customization={{ texts: { valueProp: 'smart_option' } }}
+                                    />
+                                ) : (
+                                    <p>Cargando botón de pago...</p>
+                                )}
                             </div>
                         }
                     </div>

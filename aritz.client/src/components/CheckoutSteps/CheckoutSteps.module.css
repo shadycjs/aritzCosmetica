@@ -244,3 +244,12 @@ input[type=number] {
     font-size: 10rem !important;
     font-family: Dancing Script, cursive;
 }
+
+/* MercadoPago */
+
+.mpContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+}
