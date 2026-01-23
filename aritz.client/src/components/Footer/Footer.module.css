@@ -1,5 +1,31 @@
-footer {
+.footerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
     width: 100vw;
-    height: 20vh;
+    min-height: 20vh;
     background-color: rgb(179, 222, 167);
+}
+
+.aritzFooter {
+    color: #000 !important;
+    border-radius: 100%;
+    padding: 10px;
+    font-weight: bold !important;
+    font-size: 6rem !important;
+    font-family: Dancing Script, cursive;
+}
+
+.listas{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+}
+
+.navLinks {
+    color: #000;
+    text-decoration: none;
 }

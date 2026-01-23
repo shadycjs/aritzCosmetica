@@ -19,6 +19,11 @@ const Header = () => {
     const { totalQuantity, fetchCountCart } = useCart();
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
+    const [clase, setClase] = useState(false);
+
+    const handleToggle = () => {
+        setClase(!clase); //
+    };
 
     const handleLogout = () => {
         localStorage.removeItem('authToken');
@@ -76,18 +81,15 @@ const Header = () => {
                 <button
                     className="navbar-toggler"
                     type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
                     aria-label="Toggle navigation"
+                    onClick={handleToggle}
                 >
-                    <span className="navbar-toggler-icon"></span>
+                    <span className={`navbar-toggler-icon`}></span>
                 </button>
 
                 {/* Enlaces de navegación */}
                 <div className="collapse navbar-collapse d-flex">
-                    <ul className="navbar-nav">
+                    <ul className={`navbar-nav ${styles.navUl} ${clase ? styles.active : ''}`}>
                         <li className={`${styles.navItem} d-flex`}>
                             <NavLink
                                 className={({ isActive }) =>
@@ -98,7 +100,7 @@ const Header = () => {
                                 Inicio
                             </NavLink>
                         </li>
-                        <li className={styles.navItem}>
+                        <li className={`${styles.navItem} d-flex`}>
                             <NavLink
                                 className={({ isActive }) =>
                                     isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`
@@ -136,7 +138,7 @@ const Header = () => {
                                 ))}
                             </div>
                         </li>
-                        <li className="nav-item">
+                        <li className={`${styles.navItem} d-flex`}>
                             <NavLink
                                 className={({ isActive }) =>
                                     isActive ? `${styles.item} nav-link active` : `${styles.item} nav-link`

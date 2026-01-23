@@ -174,4 +174,27 @@ li {
     .navbar{
         height: auto;
     }
+
+    .navUl {
+        display: flex !important;
+        max-height: 0; /* Altura 0 */
+        overflow: hidden; /* Esconde el contenido que no cabe (todo) */
+        opacity: 0;
+        transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    }
+
+        .navUl.active {
+            max-height: 100vh;
+            opacity: 1;
+            width: 100%;
+        }
+
+    .navItem{
+        justify-content: center;
+    }
+
+    .logAndCart {
+        display: none;
+    }
+
 }

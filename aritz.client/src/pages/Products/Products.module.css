@@ -8,7 +8,7 @@
 .productsPage {
     display: flex; /* Flexbox para organizar el aside y el grid */
     padding: 20px; /* Espaciado interno */
-    width: 70vw; /* Ancho máximo */
+    width: 90vw; /* Ancho máximo */
 }
 
 /* Aside (barra lateral para filtros) */
