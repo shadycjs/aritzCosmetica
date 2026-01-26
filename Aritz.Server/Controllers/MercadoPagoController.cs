@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Aritz.Server.Data;
 using MercadoPago.Client.Preference;
 using MercadoPago.Config;
 using MercadoPago.Resource.Preference;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Aritz.Server.Controllers
 {
@@ -10,10 +11,12 @@ namespace Aritz.Server.Controllers
     public class MercadoPagoController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly AritzDbContext _context;
 
-        public MercadoPagoController(IConfiguration configuration)
+        public MercadoPagoController(IConfiguration configuration, AritzDbContext context)
         {
             _configuration = configuration;
+            _context = context;
             // Inicializar MercadoPago con tu Access Token
             MercadoPagoConfig.AccessToken = _configuration["MercadoPago:AccessToken"];
         }
@@ -23,13 +26,27 @@ namespace Aritz.Server.Controllers
         {
             try
             {
+                //// Logica para obtener el mail del usuario con userId
+                var user = await _context.Users.FindAsync(orderData.userId);
+                if (user == null)
+                {
+                    return BadRequest("Usuario no encontrado");
+                }
+
+                var payerEmail = user.USR_EMAIL;
+
+                if (string.IsNullOrEmpty(payerEmail))
+                {
+                    payerEmail = "customer_test@generic.com";
+                }
+
                 // 1. Crear el cliente de preferencias
                 var request = new PreferenceRequest
                 {
                     Items = new List<PreferenceItemRequest>(),
                     Payer = new PreferencePayerRequest
                     {
-                        Email = "test_user_123@test.com" // Puedes pasar el email real del usuario si lo tienes
+                        Email = payerEmail   // Puedes pasar el email real del usuario si lo tienes
                     },
                     BackUrls = new PreferenceBackUrlsRequest
                     {

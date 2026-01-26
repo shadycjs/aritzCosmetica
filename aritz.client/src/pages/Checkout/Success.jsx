@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import CenteredContainer from "../../components/CenteredContainer/CenteredContainer";
 import styles from "./Success.module.css";
 import { useNavigate } from "react-router-dom";
@@ -7,12 +7,83 @@ import { useCart } from "../../context/CartContext";
 import Swal from 'sweetalert2';
 import { NavLink } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
+import axiosInstance from "../../api/axiosConfig";
+import { useCheckout } from "../../context/CheckoutContext";
+import { useSession } from "../../context/SessionContext";
 
 function Success() {
 
     const [searchParams] = useSearchParams();
 
-    const orderId = searchParams.get('orderId');
+    const orderId = searchParams.get('orderId'); // Obtengo el ID de la orden creada
+
+    // Parametros de MercadoPago
+    const paymentStatus = searchParams.get('collection_status'); // 'approved', 'pending', etc.
+    const paymentId = searchParams.get('payment_id'); // ID de la transacción de MP
+    const preferenceId = searchParams.get('preference_id'); // El ID que pedías
+
+    // Estado para evitar dobles posteos (bandera de carga)
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [createdOrderId, setCreatedOrderId] = useState(null);
+    const processedRef = useRef(false);
+
+    const { userId } = useSession(); // Obtengo el ID del usuario
+    const { fetchCountCart, fetchSumTotalCart, totalSumCart, fetchCart } = useCart(); // Obtengo los montos del carrito de compras
+
+
+    useEffect(() => {
+        console.log("PaymentStatus:", paymentStatus, "Flag: ", isProcessing, "TotalSumCart: ", totalSumCart);
+        if (paymentStatus === 'approved' && userId && !isProcessing && !processedRef.curren) {
+            processedRef.current = true; // Marcamos como procesado
+            handleOrderConfirm();
+        }
+    }, [paymentStatus, userId]);
+
+    const handleOrderConfirm = async () => {
+        setIsProcessing(true);
+        try {
+            const cartResponse = await axiosInstance.get(`Cart/user/${userId}`);
+            const cartItems = cartResponse.data;
+
+            // Calculamos el total manualmente para estar 100% seguros
+            const totalCalculado = cartItems.reduce((acc, item) => {
+                return acc + (item.PRD_PRICE * item.CAI_QUANTITY);
+            }, 0);
+
+
+            const orderResponse = await axiosInstance.post("Order/confirmOrder", {
+                userId,
+                paymentMethod: 1,
+                totalSumCart: totalCalculado
+            });
+
+            const newOrderId = orderResponse.data.OrderId;
+
+            if (!newOrderId) {
+                throw new Error('No se recibió el OrderId del backend.');
+            }
+
+            const detailResponse = await axiosInstance.post('order/confirmOrderDetail', {
+                userId,
+                orderId: newOrderId,
+            });
+
+            setCreatedOrderId(newOrderId);
+
+            Swal.fire({
+                title: '¡Exito!',
+                text: detailResponse.data.Message || 'Pedido confirmado correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+            });
+
+            fetchCountCart();
+            fetchSumTotalCart();
+        } catch (error) {
+            console.error("Error al confirmar el pedido:", error);
+            alert("No se pudo confirmar el pedido.");
+        }
+    }
 
     return (
         <CenteredContainer>
@@ -26,7 +97,7 @@ function Success() {
 
                     <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                         <NavLink
-                            to={`/user/my-requests/my-order/${orderId}`}
+                            to={`/user/my-requests/my-order/${createdOrderId ? createdOrderId : orderId}`}
                             className={styles.btnShippingNext}
                         >
                             Ir a mi pedido
