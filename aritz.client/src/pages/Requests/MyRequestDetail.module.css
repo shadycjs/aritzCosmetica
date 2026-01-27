@@ -27,11 +27,16 @@
 }
 
 .resumen {
-    background-color: rgb(179, 222, 167);
-    border: 3px solid rgb(179, 222, 167);
+    background-color: rgb(128, 98, 51);
+    border: 3px solid rgb(128, 98, 51);
     padding: 20px;
     border-radius: 5px;
+    color: #fff;
 }
+
+    .resumen p {
+        color: #fff;
+    }
 
 .fileRefreshDownload {
     display: flex;
@@ -39,8 +44,13 @@
     gap: 10px;
 }
 
-.fileInput{
+.Comprobante b {
+    color: #fff;
+}
+
+.fileInput {
     display: flex;
+    color: #fff;
 }
 
     .fileInput:hover{
@@ -53,7 +63,7 @@
     }
 
 .Comprobante {
-    background-color: rgb(179, 222, 167);
+    background-color: rgb(128, 98, 51);
     padding: 20px;
     border-radius: 5px;
 }
@@ -62,36 +72,40 @@
         text-align: center;
     }
 
-    .shiippingData {
-        background-color: rgb(179, 222, 167);
-        border: 3px solid rgb(179, 222, 167);
-        padding: 20px;
-        text-align: start;
-        border-radius: 5px;
-    }
+.shiippingData {
+    background-color: rgb(128, 98, 51);
+    border: 3px solid rgb(128, 98, 51);
+    padding: 20px;
+    text-align: start;
+    border-radius: 5px;
+    color: #fff;
+}
 
 .itemsContainer {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    background-color: rgb(179, 222, 167);
+    background-color: rgb(128, 98, 51);
     padding: 20px;
     border-radius: 5px;
-    border: 3px solid rgb(179, 222, 167);
+    border: 3px solid rgb(128, 98, 51);
 }
 
-    .itemsContainer b{
+    .itemsContainer b {
         text-align: start;
+        color: #fff;
     }
 
-.itemsDetail{
+.itemsDetail {
     display: flex;
     gap: 20px;
+    color: #fff;
 }
 
     .itemsDetail p{
         text-align: start;
         font-weight: 600;
+        color: #fff;
     }
 
 .itemsDetailSub{
