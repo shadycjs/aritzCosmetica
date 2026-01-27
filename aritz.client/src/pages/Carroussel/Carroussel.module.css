@@ -1,9 +1,9 @@
 .carrouselContainer {
-    height: 85vh;
-    object-fit: contain;
+    height: 80vh;
     overflow: hidden;
     margin-top: 10px;
     z-index: 1;
+    object-position: top;
 }
 
 .carrouselContainerSub {
@@ -11,9 +11,24 @@
     height: 100%;
 }
 
+.carrouselContainerSub :global(.carousel-inner) {
+    height: 100%;
+}
+
+.carrouselContainerSub :global(.carousel-item) {
+    height: 100%;
+}
+
+/* --- ESTILO DE LA IMAGEN --- */
 .carrouselImage {
-    width: 100% !important;
-    height: 100% !important;
+    width: 100%;
+    height: 100%;
+    display: block;
+    /* 
+       cover: Rellena todo el cuadro recortando los bordes si hace falta (No deforma).
+       contain: Muestra la foto entera pero deja espacios vacíos a los lados.
+       fill: Estira la foto (La deforma, queda feo).
+    */
     object-fit: cover;
-    object-position: bottom;
+    object-position: center; /* Centra la imagen */
 }
