@@ -6,6 +6,7 @@
     font-weight: bold !important;
     font-size: 4rem !important;
     font-family: Dancing Script, cursive;
+    color: aliceblue;
 }
 
 .container {
@@ -13,14 +14,19 @@
     width: 60vw;
     gap: 20px;
     padding: 50px;
-    border: 4px solid rgb(179, 222, 167);
-    background-color: rgb(179, 222, 167);
+    border: 4px solid rgb(128, 98, 51);
+    background-color: rgb(128, 98, 51);
     border-radius: 5px;
     margin-top: 5%;
     margin-bottom: 5%;
+    color: #fff;
 }
 
-.containerComprobante{
+    .container p {
+        color: #fff;
+    }
+
+.containerComprobante {
     display: flex;
     flex-direction: column;
     gap: 20px;
