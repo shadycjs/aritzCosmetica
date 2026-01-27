@@ -27,18 +27,17 @@ function Carroussel() {
         <div className={styles.carrouselContainer}>
             <div id="carouselExampleFade" className={`carousel slide carousel-fade ${styles.carrouselContainerSub}`}>
                 <div className="carousel-inner">
-                    {img.map((im, index) => (
-                        <div
-                            className={`imgCarContainer carousel-item ${index === 0 ? "active" : ""}`}
-                            key={im.PRD_ID}
-                        >
-                            <img
-                                src={`https://localhost:7273/images/${im.PRD_IMAGE}`}
-                                className={`${styles.carrouselImage}`}
-                                alt="..."
-                            />
-                        </div>
-                    ))}
+                    <video
+                        style={ {width: "100%"} }
+                        loop preload="auto"
+                        autoPlay
+                        playsInline
+                        muted
+                        src="https://localhost:7273/images/videoCremas.mp4"
+                    >
+                        <source src="https://localhost:7273/images/videoCremas.mp4" type="video/mp4" media="(min-width: 768px)" />
+                        <source src="https://localhost:7273/images/videoCremas.mp4" type="video/mp4" media="(min-width: 768px)" />
+                    </video>
                 </div>
                 <button
                     className="carousel-control-prev"
