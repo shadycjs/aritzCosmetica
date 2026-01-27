@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'; // Importar SweetAlert2
 import { useSession } from "../../context/SessionContext";
 import { useCart } from '../../context/CartContext';
 import BreadCrum from '../../components/BreadCrum/BreadCrum';
+import { formatPrice } from '../../utils/utils';
 
 function ProductDetail() {
     const { id } = useParams();
@@ -128,7 +129,7 @@ function ProductDetail() {
                 </div>
                 <div className={styles.infoContainer}>
                     <h3 className={styles.titleInfo}>{product.Category.CAT_NAME} {product.PRD_NAME}</h3>
-                    <b className={styles.priceInfo}>${product.PRD_PRICE}</b>
+                    <b className={styles.priceInfo}>${formatPrice(product.PRD_PRICE)}</b>
                     <p>Stock: {product.PRD_QUANTITY}</p>
                     <p className={styles.descInfo}>{product.PRD_DESCRIPTION}</p>
                     <button

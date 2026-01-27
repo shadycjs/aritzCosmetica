@@ -2,7 +2,7 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import styles from './Header.module.css';
-import { FaHome, FaBoxOpen, FaEnvelope, FaShoppingCart } from 'react-icons/fa';
+import { FaHome, FaBoxOpen, FaEnvelope, FaShoppingCart, FaUser } from 'react-icons/fa';
 import { CiEdit } from "react-icons/ci";
 import Auth from '../Auth/Auth';
 import { useSession } from '../../context/SessionContext';
@@ -158,7 +158,7 @@ const Header = () => {
                             isLoggedIn ? (
                                 <div className={styles.userLogin}>
                                     <div className={styles.user}>
-                                        <b >{userName}</b>
+                                        <b className={`d-flex align-items-center gap-1 ${styles.userIcon}`}><FaUser />{userName}</b>
                                         <ul className={styles.userDropdown}>
                                             {
                                                 isAdmin

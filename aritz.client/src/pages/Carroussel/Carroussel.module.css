@@ -41,12 +41,15 @@
     border: 1px solid #fff;
     padding: 10px;
     width: 100px;
+    text-decoration: none;
+    color: #000;
+    background-color: #fff;
+    text-align: center;
 }
 
     .shopBtn:hover {
-        border: 1px solid #000;
         color: #fff;
-        background-color: #000;
+        background-color: rgb(128, 98, 51);
     }
     /* --- ESTILO DE LA IMAGEN --- */
     .carrouselImage {

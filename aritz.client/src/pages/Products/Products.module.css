@@ -71,19 +71,19 @@
 }
 
     .productTitle:hover{
-        color: rgb(179, 222, 167);
+        color: rgb(128, 98, 51);
     }
 
 .cartaAddCart {
     min-height: 40px;
-    background-color: rgb(179, 222, 167);
+    background-color: rgb(128, 98, 51);
     border: none;
     color: #fff;
 }
 
-    .cartaAddCart:hover{
+    .cartaAddCart:hover {
         background-color: #fff;
-        color: rgb(179, 222, 167);
+        color: rgb(128, 98, 51);
     }
 
 /* Para pantallas pequeñas */

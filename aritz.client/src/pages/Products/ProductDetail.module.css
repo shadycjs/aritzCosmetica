@@ -70,17 +70,17 @@ img {
     font-size: 2rem;
 }
 
-.addCartInfo{
+.addCartInfo {
     min-height: 40px;
-    background-color: rgb(179, 222, 167);
+    background-color: rgb(128, 98, 51);
     border: none;
     color: #fff;
 }
 
     .addCartInfo:hover {
         background-color: #fff;
-        color: rgb(179, 222, 167);
-        border: 2px solid rgb(179, 222, 167);
+        color: rgb(128, 98, 51);
+        border: 2px solid rgb(128, 98, 51);
     }
 
 @keyframes fadeInScale {
