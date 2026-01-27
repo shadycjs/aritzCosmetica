@@ -58,7 +58,7 @@ namespace Aritz.Server.Controllers
                 emailBodyBuilder.AppendLine($"<h2>Nueva Orden de Compra #{Orders.ORD_ID}</h2>");
                 emailBodyBuilder.AppendLine($"<p><strong>Cliente:</strong> {client.USR_NAME} {client.USR_SURNAME} ({client.USR_EMAIL})</p>");
                 emailBodyBuilder.AppendLine($"<p><strong>Fecha:</strong> {Orders.ORD_ORDER_DATE}</p>");
-                emailBodyBuilder.AppendLine($"<p>Clickea <strong><a href=`https://localhost:50833/user/my-requests/my-order/${Orders.ORD_ID}`>aca</a></strong> para ir al pedido</p>");
+                emailBodyBuilder.AppendLine($"<p>Clickea <strong><a href=`https://localhost:50833/user/my-requests/my-order/{Orders.ORD_ID}`>aca</a></strong> para ir al pedido</p>");
                 emailBodyBuilder.AppendLine("<hr>");
                 emailBodyBuilder.AppendLine($"<h3>Total: ${dto.totalSumCart}</h3>");
 
@@ -272,7 +272,7 @@ namespace Aritz.Server.Controllers
             try
             {
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
-                var downloadLink = $"{baseUrl}/Order/{orderId}/download-receipt";
+                var downloadLink = $"{baseUrl}/api/Order/{orderId}/download-receipt";
 
                 var emailBodyBuilder = new System.Text.StringBuilder();
                 emailBodyBuilder.AppendLine($"<h2>{user.USR_NAME} {user.USR_SURNAME} Subio el comprobante de pago para la orden #{order.ORD_ID}!</h2>");
