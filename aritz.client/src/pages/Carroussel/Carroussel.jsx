@@ -26,9 +26,16 @@ function Carroussel() {
     return (
         <div className={styles.carrouselContainer}>
             <div id="carouselExampleFade" className={`carousel slide carousel-fade ${styles.carrouselContainerSub}`}>
-                <div className="carousel-inner">
+                <div className={styles.titleCarrousel}>
+                    <div className="d-flex flex-column">
+                        <h1>Aritz.</h1>
+                        <b>Lo mejor para cuidar tu piel y estilo de vida</b>
+                    </div>
+                    <button className={styles.shopBtn}>Shop</button>
+                </div>
+                <div className="carousel-inner" style={{ height: "100%" }}>
                     <video
-                        style={ {width: "100%"} }
+                        className={styles.video}
                         loop preload="auto"
                         autoPlay
                         playsInline

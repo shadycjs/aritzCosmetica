@@ -13,22 +13,51 @@
 
 .carrouselContainerSub :global(.carousel-inner) {
     height: 100%;
+    position: relative;
 }
 
 .carrouselContainerSub :global(.carousel-item) {
     height: 100%;
 }
 
-/* --- ESTILO DE LA IMAGEN --- */
-.carrouselImage {
+.titleCarrousel {
+    position: absolute;
+    z-index: 10;
+    color: #fff;
+    top: 20%;
+    left: 50%; /* Lo mueve al 50% a la derecha */
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+}
+
+.video{
     width: 100%;
-    height: 100%;
-    display: block;
-    /* 
+    object-fit: cover;
+    object-position: top;
+}
+
+.shopBtn{
+    border: 1px solid #fff;
+    padding: 10px;
+    width: 100px;
+}
+
+    .shopBtn:hover {
+        border: 1px solid #000;
+        color: #fff;
+        background-color: #000;
+    }
+    /* --- ESTILO DE LA IMAGEN --- */
+    .carrouselImage {
+        width: 100%;
+        height: 100%;
+        display: block;
+        /* 
        cover: Rellena todo el cuadro recortando los bordes si hace falta (No deforma).
        contain: Muestra la foto entera pero deja espacios vacíos a los lados.
        fill: Estira la foto (La deforma, queda feo).
     */
-    object-fit: cover;
-    object-position: center; /* Centra la imagen */
-}
+        object-fit: cover;
+        object-position: center; /* Centra la imagen */
+    }
