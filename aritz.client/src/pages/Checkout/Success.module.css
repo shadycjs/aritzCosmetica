@@ -2,10 +2,22 @@
     font-family: "Montserrat", sans-serif;
 }
 
-.container{
+.artizLogoCompra {
+    font-weight: bold !important;
+    font-size: 4rem !important;
+    font-family: Dancing Script, cursive;
+}
+
+.container {
     display: flex;
+    width: 60vw;
     gap: 20px;
-    padding: 100px;
+    padding: 50px;
+    border: 4px solid rgb(179, 222, 167);
+    background-color: rgb(179, 222, 167);
+    border-radius: 5px;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
 
 .containerComprobante{

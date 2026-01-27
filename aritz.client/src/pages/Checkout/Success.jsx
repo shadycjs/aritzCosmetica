@@ -10,6 +10,7 @@ import { useSearchParams } from 'react-router-dom';
 import axiosInstance from "../../api/axiosConfig";
 import { useCheckout } from "../../context/CheckoutContext";
 import { useSession } from "../../context/SessionContext";
+import { FaClipboardCheck } from "react-icons/fa";
 
 function Success() {
 
@@ -86,9 +87,16 @@ function Success() {
     }
 
     return (
-        <CenteredContainer>
+        <div className="d-flex text-center justify-content-center">
             <div className={`d-flex flex-column ${styles.container}`}>
-                <h1>Muchas gracias por tu compra!</h1>
+                <div>
+                    <p className={styles.artizLogoCompra}>Aritz</p>
+                    <h1>¡Muchas gracias por tu compra!</h1>
+                    <FaClipboardCheck
+                        size={100}
+                        style={ {color: "green"} }
+                    />
+                </div>
                 <p>El pedido se encuentra reservado, recorda cargar el comprobante de pago dentro de las proximas 48hs,
                     sino el mismo se cancelara</p>
 
@@ -105,7 +113,7 @@ function Success() {
                     </label>
                 </div>
             </div>
-        </CenteredContainer>
+        </div>
     );
 }
 

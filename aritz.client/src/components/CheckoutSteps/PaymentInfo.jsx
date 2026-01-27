@@ -5,7 +5,7 @@ import CenteredContainer from "../CenteredContainer/CenteredContainer";
 import styles from "./CheckoutSteps.module.css";
 import TimeLapseCheckout from "../CheckoutSteps/Timelapse/TimelapseCheckout";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { useSession } from "../../context/SessionContext";
@@ -27,6 +27,8 @@ function PaymentInfo() {
 
     const location = useLocation();
 
+    const hasCreatedPreference = useRef(false);
+
     const { userId, setPageCheckout } = useSession();
     setPageCheckout(location);
 
@@ -39,7 +41,8 @@ function PaymentInfo() {
     }, [userId]);
 
     useEffect(() => {
-        if (paymentMethod === 1 && totalSumCart > 0 && cart.length > 0) {
+        if (paymentMethod === 1 && totalSumCart > 0 && cart.length > 0 && !hasCreatedPreference.current) {
+            hasCreatedPreference.current = true;
             createMercadoPagoPreference();
         }
     }, [paymentMethod, totalSumCart, cart]);
@@ -197,6 +200,7 @@ function PaymentInfo() {
                                 {preferenceId ? (
                                     // AQUÍ RENDERIZAMOS EL BRICK OFICIAL DE REACT
                                     <Wallet
+                                        key={preferenceId} 
                                         initialization={{ preferenceId: preferenceId }}
                                         customization={{ texts: { valueProp: 'smart_option' } }}
                                     />
