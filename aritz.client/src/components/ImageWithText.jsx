@@ -1,21 +1,24 @@
-import React from "react";
-import PropTypes from "prop-types"; // Para la validación de props
+ï»¿import React from "react";
+import PropTypes from "prop-types"; // Para la validaciÃ³n de props
 import styles from "./ImageWithText.module.css";
 
 function ImageWithText({ imageSrc, altText, description, textAlign = "center" }) {
     return (
         <div className={`${styles.container}`}>
-            {/* Imagen */}
-            <img src={imageSrc} alt={altText} className={styles.image} />
-            {/* Descripción */}
-            <p className={styles.text} style={{ textAlign: textAlign }}>
-                {description}
-            </p>
+            <div className={styles.imageContainer}>
+                <img src={imageSrc} alt={altText} className={styles.image} />
+            </div>
+            <div className={styles.descriptionContainer}>
+                <h2 className={styles.text}>Â¿Quienes somos?</h2>
+                <p style={{ textAlign: textAlign }}>
+                    {description}
+                </p>
+            </div>
         </div>
     );
 }
 
-// Validación de props con PropTypes
+// ValidaciÃ³n de props con PropTypes
 ImageWithText.propTypes = {
     imageSrc: PropTypes.string.isRequired,
     altText: PropTypes.string.isRequired,

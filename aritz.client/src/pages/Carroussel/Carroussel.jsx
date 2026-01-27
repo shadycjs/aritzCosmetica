@@ -5,7 +5,7 @@ import styles from './Carroussel.module.css'; // Importa el CSS personalizado
 
 function Carroussel() {
     return (
-        <div className={styles['carrouselContainer']}>
+        <div className={styles.carrouselContainer}>
             <div id="carouselExampleFade" className={`carousel slide carousel-fade ${styles.carrouselContainerSub}`}>
                 <div className="carousel-inner" style={{ width: "100%", height: "100%" }}>
                     <div className="carousel-item active" style={{ width: "100%", height: "100%" }}>
