@@ -21,7 +21,7 @@ function MyRequestDetail() {
     const [uploading, setUploading] = useState({}); // Estado de carga por orden
     const { userId } = useSession();
     const [path, setPath] = useState(false);
-
+    const [shippingCost, setShippingCost] = useState(0); 
 
     useEffect(() => {
         // Obtengo el detalle de la orden
@@ -29,20 +29,28 @@ function MyRequestDetail() {
             try {
                 const response = await axiosInstance.get(`Order/requestDetail/${id}`);
                 setRequestDet(response.data);
-                console.log(response.data[0].ReceiptPath);
+
                 if (response.data[0].ReceiptPath) {
                     setPath(true);
                 } else {
                     setPath(false);
                 }
 
+                const firstItem = response.data[0];
+                const finalTotalFromDB = firstItem.OrderTotalAmount; 
+
                 // Cálculo de la cantidad total de items
                 const totalQuantity = response.data.reduce((acc, item) => acc + (item.Quantity || 0), 0);
-                setQuantity(totalQuantity);
 
                 // Calculo el total a pagar
-                const totalAmount = response.data.reduce((acc, item) => acc + item.TotalPrice * item.Quantity, 0);
-                setAmount(totalAmount);//Aca iria el ENVIO cuando tenga hecha esa logica
+                const subTotalAmount = response.data.reduce((acc, item) => acc + item.TotalPrice * item.Quantity, 0);
+
+
+                const calculatedShipping = finalTotalFromDB - subTotalAmount;
+
+                setQuantity(totalQuantity);
+                setAmount(finalTotalFromDB);//Aca iria el ENVIO cuando tenga hecha esa logica
+                setShippingCost(calculatedShipping > 0 ? calculatedShipping : 0);
 
             } catch (error) {
                 console.error("Error al obtener las ordenes", error);
@@ -155,9 +163,9 @@ function MyRequestDetail() {
                         <b>Resumen de compra</b>
                         <p>Nro orden: <b>#{id}</b></p>
                         <p>Cantidad de items: {totalQuantity}</p>
-                        <p>Costo de envio: </p>
+                        <p>Costo de envio: ${formatPrice(shippingCost)}</p>
                         <hr></hr>
-                        <p>Total a pagar: ${formatPrice(totalAmount)}</p>
+                        <p>Total del pedido: ${formatPrice(totalAmount)}</p>
                     </div>
                     <div className={styles.Comprobante}>
                         <b>{path ? 'Comprobante subido' : 'Subi tu comprobante aca'}</b>

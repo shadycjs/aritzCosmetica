@@ -31,6 +31,9 @@ function Success() {
     const { userId } = useSession(); // Obtengo el ID del usuario
     const { fetchCountCart, fetchSumTotalCart, totalSumCart, fetchCart } = useCart(); // Obtengo los montos del carrito de compras
 
+    const { zipPrice, setZipPrice } = useCheckout();
+
+    console.log("Precio del zipPrice antes del llamado a handleOrderConfirm: ", zipPrice);
 
     useEffect(() => {
         console.log("PaymentStatus:", paymentStatus, "Flag: ", isProcessing, "TotalSumCart: ", totalSumCart);
@@ -46,16 +49,25 @@ function Success() {
             const cartResponse = await axiosInstance.get(`Cart/user/${userId}`);
             const cartItems = cartResponse.data;
 
+            // Obtengo el cod postal del cliente
+            const userResponse = await axiosInstance.get(`Account/${userId}`);
+            const codigoPostalReal = userResponse.data.USR_POSTAL_CODE;
+
+            // Calculo nuevamente el precio del envio en base al codigo postal del cliente
+            const responseCodPostal = await axiosInstance.get(`Shipping/calculate?zipCode=${codigoPostalReal}`);
+            const costoEnvioReal = responseCodPostal.data.Price;
+
             // Calculamos el total manualmente para estar 100% seguros
-            const totalCalculado = cartItems.reduce((acc, item) => {
+            const subTotalCarrito = cartItems.reduce((acc, item) => {
                 return acc + (item.PRD_PRICE * item.CAI_QUANTITY);
             }, 0);
 
+            const totalFinal = subTotalCarrito + costoEnvioReal;
 
             const orderResponse = await axiosInstance.post("Order/confirmOrder", {
                 userId,
                 paymentMethod: 1,
-                totalSumCart: totalCalculado
+                totalSumCart: totalFinal
             });
 
             const newOrderId = orderResponse.data.OrderId;

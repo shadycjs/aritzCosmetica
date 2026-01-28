@@ -57,29 +57,15 @@ namespace Aritz.Server.Controllers
                     AutoReturn = "approved",
                 };
 
-                // 2. Agregar los items del carrito a la preferencia
-                // Asumo que orderData tiene una lista de Items, si no, usa el total como un solo item
-                foreach (var item in orderData.Items)
-                {
-                    request.Items.Add(new PreferenceItemRequest
-                    {
-                        Title = item.ProductName,
-                        Quantity = item.Quantity,
-                        CurrencyId = "ARS",
-                        UnitPrice = item.UnitPrice
-                    });
-                }
 
-                // O SI PREFIERES MANDAR SOLO EL TOTAL COMO UN ITEM GENÉRICO:
-                /*
                 request.Items.Add(new PreferenceItemRequest
                 {
                     Title = "Compra en Aritz",
                     Quantity = 1,
                     CurrencyId = "ARS",
-                    UnitPrice = orderData.totalSumCart
+                    UnitPrice = orderData.totalSumCart + orderData.zipPrice
                 });
-                */
+
 
                 // 3. Generar la preferencia
                 var client = new PreferenceClient();
@@ -102,6 +88,7 @@ namespace Aritz.Server.Controllers
             public string? Status { get; set; }
             public int paymentMethod { get; set; }
             public List<OrderItemDto> Items { get; set; } = new();
+            public decimal zipPrice { get; set; }
         }
 
         public class OrderItemDto

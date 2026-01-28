@@ -52,10 +52,10 @@ function PaymentInfo() {
         try {
             // Preparamos los datos para tu backend
             // Adaptar esto a como espera los datos tu OrderDto en C#
-            totalSumCart + zipPrice;
             const orderData = {
                 userId: userId,
                 totalSumCart: totalSumCart,
+                zipPrice: zipPrice,
                 // Mapeamos el carrito al formato que espera tu DTO Items
                 items: cart.map(item => ({
                     ProductName: item.PRD_NAME,
