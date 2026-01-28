@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../../context/CheckoutContext";
 import CenteredContainer from "../CenteredContainer/CenteredContainer";
@@ -34,6 +34,37 @@ function ShippingInfo() {
     const postalRegex = /^\d{4}$/;
     const location = useLocation();
     const { totalSumCart } = useCart();
+    const { zipPrice, setZipPrice } = useCheckout();
+
+    const handleCalculateShipping = async (e) => {
+        e.preventDefault();
+
+        const cp = formShipData.codpostal;
+        if (!cp || !postalRegex.test(String(cp).trim())) {
+            Swal.fire("Error", "Ingresa un Código Postal válido de 4 dígitos", "warning");
+            return;
+        }
+
+        try {
+            // Llamada al endpoint que creamos
+            const response = await axiosInstance.get(`Shipping/calculate?zipCode=${cp}`);
+            const price = response.data.Price;
+
+            // Guardamos en el contexto (para la pantalla de pago)
+            setZipPrice(price);
+
+            // Feedback al usuario
+            Swal.fire({
+                title: "Costo de Envío",
+                text: `El costo aproximado para el CP ${cp} es: $${price}`,
+                icon: "info"
+            });
+
+        } catch (error) {
+            console.error(error);
+            Swal.fire("Error", "No pudimos calcular el envío", "error");
+        }
+    }
 
     if (totalSumCart < 20000) {
         navigate('/cart');
@@ -98,19 +129,24 @@ function ShippingInfo() {
     const handleUpdDom = async () => {
         try {
             console.log("Datos enviados al backend: ", formShipData, userId);
-
+            console.log("Precio cod postal: ", zipPrice);
             //Validacion para el codigo postal
-            if (!postalRegex.test(String(formShipData.codpostal || '').trim())) {
-                // user feedback
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "El codigo postal debe tener al menos y como maximo 4 digitos"
-                });
-                return;
+            if (zipPrice == 0) {
+
+                const cp = formShipData.codpostal;
+                if (!cp || !postalRegex.test(String(cp).trim())) {
+                    Swal.fire("Error", "Ingresa un Código Postal válido de 4 dígitos", "warning");
+                    return;
+                }
+                const response = await axiosInstance.get(`Shipping/calculate?zipCode=${cp}`);
+                const price = response.data.Price;
+                setZipPrice(price);
             }
+
             const response = await axiosInstance.post(`Account/updDom/${userId}`, formShipData);
+
             navigate('/checkout/payment-method');
+        
         } catch (e) {
             console.log("Error al actualizar los datos: ", e);
         }
@@ -210,7 +246,13 @@ function ShippingInfo() {
                             placeholder="Codigo Postal"
                             />
                         </label>
-                        <button className={styles.calcSend}>Calcular Envio</button>
+                        <button
+                            className={styles.calcSend}
+                            onClick={handleCalculateShipping}
+                            type="button"
+                        >
+                            Calcular Envio
+                        </button>
                     </label>
                     <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
                         <input

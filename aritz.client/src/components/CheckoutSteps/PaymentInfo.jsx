@@ -15,7 +15,7 @@ import { formatPrice } from '../../utils/utils';
 
 initMercadoPago('TEST-aa2427a9-e156-4f55-b4c0-d9c5e9b5774c', { locale: 'es-AR' });
 function PaymentInfo() {
-    const { paymentMethod, setPaymentMethod } = useCheckout();
+    const { paymentMethod, setPaymentMethod, zipPrice } = useCheckout();
     const navigate = useNavigate();
 
     const { fetchCountCart, fetchSumTotalCart, totalSumCart } = useCart();
@@ -52,6 +52,7 @@ function PaymentInfo() {
         try {
             // Preparamos los datos para tu backend
             // Adaptar esto a como espera los datos tu OrderDto en C#
+            totalSumCart + zipPrice;
             const orderData = {
                 userId: userId,
                 totalSumCart: totalSumCart,
@@ -94,7 +95,7 @@ function PaymentInfo() {
     if (error) return <div>Error: {error}</div>;
 
     const handleOrderConfirm = async (totalSumCart) => {
-        console.log(paymentMethod);
+        totalSumCart = totalSumCart + zipPrice;
         try {
             const orderResponse = await axiosInstance.post("Order/confirmOrder", {
                 userId,
@@ -173,10 +174,10 @@ function PaymentInfo() {
                             </div>
                         ))}
                         <div className={styles.envio}>
-                            <p className="d-flex justify-content-between">Envio: <b>${formatPrice(3000)}</b></p>
+                            <p className="d-flex justify-content-between">Envio: <b>${formatPrice(zipPrice)}</b></p>
                         </div>
                         <div className={styles.total}>
-                            <p className="d-flex justify-content-between">Total: <b>${formatPrice(totalSumCart)}</b></p>
+                            <p className="d-flex justify-content-between">Total: <b>${formatPrice(totalSumCart + zipPrice)}</b></p>
                         </div>
                     </div>
                     

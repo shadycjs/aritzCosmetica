@@ -15,6 +15,7 @@ export const CheckoutProvider = ({ children }) => {
     });
 
     const [paymentMethod, setPaymentMethod] = useState(1);   // Ejemplo: "Tarjeta" o "PayPal"
+    const [zipPrice, setZipPrice] = useState(0);
 
     return (
         <CheckoutContext.Provider
@@ -23,6 +24,8 @@ export const CheckoutProvider = ({ children }) => {
                 setCustomerInfo,
                 paymentMethod,
                 setPaymentMethod,
+                zipPrice,
+                setZipPrice
             }}
         >
             {children}

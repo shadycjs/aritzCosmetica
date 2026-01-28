@@ -21,6 +21,7 @@ namespace Aritz.Server.Data
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<Receipts> Receipts { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ShippingZone> ShippingZones { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
