@@ -1,11 +1,20 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import styles from "./AdminPostalCode.module.css";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTimes, FaCheck } from "react-icons/fa";
+import { MdSystemUpdateAlt } from "react-icons/md";
 
 function AdminPostalCodes() {
 
     const [postalCodes, setPostalCodes] = useState([]);
+    const [editContactId, setEditContactId] = useState(null);
+    const [editMode, setToggleEditMode] = useState(0);
+    const [editFormData, setEditFormData] = useState({
+        Name: "",
+        MinZipCode: "",
+        MaxZipCode: "",
+        Price: ""
+    });
 
     useEffect(() => {
         fetchPostalCodes();
@@ -21,6 +30,49 @@ function AdminPostalCodes() {
             console.log("Error al obtener los codigos postales", e);
         }
     }
+
+    const handleEditClick = (event, postalCode) => {
+        event.preventDefault();
+        setEditContactId(postalCode.Id);
+
+        const formValues = {
+            Name: postalCode.Name,
+            MinZipCode: postalCode.MinZipCode,
+            MaxZipCode: postalCode.MaxZipCode,
+            Price: postalCode.Price,
+        };
+        setEditFormData(formValues);
+    };
+
+    const handleEditFormChange = (event) => {
+        event.preventDefault();
+        const fieldName = event.target.getAttribute("name");
+        const fieldValue = event.target.value;
+
+        const newFormData = { ...editFormData };
+        newFormData[fieldName] = fieldValue;
+
+        setEditFormData(newFormData);
+    };
+
+    const handleCancelClick = () => {
+        setEditContactId(null);
+    };
+
+    const handleSaveClick = async () => {
+        try {
+            await axiosInstance.post('Shipping/update', {
+                Id: editContactId,
+                ...editFormData
+            });
+
+            fetchPostalCodes();
+            setEditContactId(null);
+
+        } catch (error) {
+            console.error("Error al guardar", error);
+        }
+    };
 
     return (
         <div className={styles.containerPostalCode} >
@@ -38,21 +90,76 @@ function AdminPostalCodes() {
                         </thead>
                         <tbody>
                             {postalCodes.map((postalCode) => (
-                                <tr>
-                                    <td>{postalCode.Name}</td>
-                                    <td>{postalCode.MinZipCode}</td>
-                                    <td>{postalCode.MaxZipCode}</td>
-                                    <td>${postalCode.Price}</td>
-                                    <td>
-                                        <FaEdit
-                                            size={20}
-                                            style={{ cursor: "pointer" }}
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop"
-                                            onClick={() => setSelectedProduct(producto)}
-                                        />
-                                    </td>
-                                </tr>
+                                editContactId == postalCode.Id 
+                                    ?
+                                (
+                                        <tr key={postalCode.Id}>
+                                            <td>
+                                                <input
+                                                    type="Text"
+                                                    name="Name"
+                                                    value={editFormData.Name}
+                                                    onChange={handleEditFormChange}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="Number" 
+                                                    name="MinZipCode" 
+                                                    value={editFormData.MinZipCode}
+                                                    onChange={handleEditFormChange}
+                                                />
+                                            </td>   
+                                            <td>
+                                                <input 
+                                                    type="Number" 
+                                                    name="MaxZipCode" 
+                                                    value={editFormData.MaxZipCode}
+                                                    onChange={handleEditFormChange}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input 
+                                                    type="Number" 
+                                                    name="Price" 
+                                                    value={editFormData.Price}
+                                                    onChange={handleEditFormChange}
+                                                />
+                                            </td>
+                                            <td className="d-flex justify-content-center align-center">
+                                                <FaCheck
+                                                    size={20}
+                                                    color="green"
+                                                    style={{ cursor: "pointer", marginRight: "10px" }}
+                                                    title="Guardar"
+                                                    onClick={handleSaveClick}
+                                                />
+                                                <FaTimes
+                                                    size={20}
+                                                    color="red"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={handleCancelClick}
+                                                    title="Cancelar"
+                                                />
+                                        </td>
+                                    </tr>
+                                )
+                                    :
+                                (
+                                    <tr key={postalCode.Id}>
+                                        <td>{postalCode.Name}</td>
+                                        <td>{postalCode.MinZipCode}</td>
+                                        <td>{postalCode.MaxZipCode}</td>
+                                        <td>${postalCode.Price}</td>
+                                        <td>
+                                            <FaEdit
+                                                size={20}
+                                                style={{ cursor: "pointer" }}
+                                                    onClick={(event) => handleEditClick(event, postalCode)}
+                                            />
+                                        </td>
+                                    </tr>
+                                )
                             ))}
                         </tbody>
                     </table>

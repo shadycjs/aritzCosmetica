@@ -51,7 +51,7 @@ namespace Aritz.Server.Controllers
 
         // POST: api/Shipping/update (Para que puedas editar precios desde Postman o tu Panel Admin)
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateZone([FromBody] ShippingZone zoneDto)
+        public async Task<IActionResult> UpdatePostalCode([FromBody] ShippingZone zoneDto)
         {
             var zone = await _context.ShippingZones.FindAsync(zoneDto.Id);
             if (zone == null) return NotFound("Zona no encontrada");
