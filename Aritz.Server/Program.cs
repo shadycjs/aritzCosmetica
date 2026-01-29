@@ -64,7 +64,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 // Agrega servicios para Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => { c.CustomSchemaIds(type => type.ToString()); });
 
 builder.Services.AddTransient<IEmailService, EmailService>();
 

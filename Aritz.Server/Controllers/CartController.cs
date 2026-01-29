@@ -23,24 +23,20 @@ namespace Aritz.Server.Controllers
         {
             Console.WriteLine($"Verificando si el usuario existe: UserId={request.userId}");
 
-            // Intenta buscar el usuario con FindAsync
-            var user = await _context.Users.FindAsync(request.userId);
-            if (user == null)
-            {
-                Console.WriteLine($"Usuario con ID {request.userId} no encontrado usando FindAsync.");
-            }
-            else
-            {
-                Console.WriteLine($"Usuario encontrado: {user.USR_NAME} {user.USR_SURNAME}");
-            }
 
             // Alternativa: Buscar el usuario con FirstOrDefaultAsync
-            user = await _context.Users
+            var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.USR_ID == request.userId);
             if (user == null)
             {
                 Console.WriteLine($"Usuario con ID {request.userId} no encontrado usando FirstOrDefaultAsync.");
                 return NotFound("El usuario no existe.");
+            }
+
+            var product = await _context.Products.FindAsync(request.productId);
+            if (product == null)
+            {
+                return NotFound("Producto no encontrado.");
             }
 
             // Verifica si ya existe un carrito para el usuario
@@ -58,6 +54,17 @@ namespace Aritz.Server.Controllers
 
             // Verifica si el producto ya existe en el carrito
             var cartItem = cart.Items?.FirstOrDefault(i => i.CAI_PRD_ID == request.productId);
+
+            int cantidadEnCarrito = cartItem?.CAI_QUANTITY ?? 0;
+
+            int cantidadTotalDeseada = cantidadEnCarrito + request.quantity;
+
+            if (cantidadTotalDeseada > product.PRD_QUANTITY)
+            {
+                // Usamos BadRequest (400) porque es un error de lógica de negocio, no un 404
+                return BadRequest($"Stock insuficiente. Stock disponible: {product.PRD_QUANTITY}. Ya tienes {cantidadEnCarrito} en el carrito.");
+            }
+
             if (cartItem != null)
             {
                 // Ya existe: actualiza la cantidad
@@ -66,7 +73,7 @@ namespace Aritz.Server.Controllers
             else
             {
                 // Nuevo producto: agrégalo como un nuevo ítem
-                var product = await _context.Products.FindAsync(request.productId);
+                
                 if (product == null)
                 {
                     return NotFound("Producto no encontrado.");

@@ -9,6 +9,7 @@ import { useSession } from "../../context/SessionContext";
 import { useCart } from '../../context/CartContext';
 import BreadCrum from '../../components/BreadCrum/BreadCrum';
 import { formatPrice } from '../../utils/utils';
+import { useNavigate } from "react-router-dom";
 
 function ProductDetail() {
     const { id } = useParams();
@@ -17,31 +18,49 @@ function ProductDetail() {
     const [error, setError] = useState(null);
     const { userId } = useSession();
     const { fetchCountCart } = useCart();
+    const navigate = useNavigate();
 
     //Estados para el intercambio de imagenes
     const [displayImage, setDisplayImage] = useState(''); // La imagen grande actual
     const [displayGallery, setDisplayGallery] = useState([]); // El array de imagenes pequeñas actual
 
+    const [cart, setCart] = useState([]);
+
     useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const response = await axiosInstance.get(`products/${id}`); 
-                setProduct(response.data); //
-
-                //Inicializacion de estados de las imagenes para su swap
-                setDisplayImage(response.data.PRD_IMAGE);
-                setDisplayGallery(response.data.Gallery);
-
-                setLoading(false); // 
-            } catch (err) {
-                console.error("Error al obtener los productos", err); 
-                setError(err.message);
-                setLoading(false); 
-            }
-        };
-
         fetchProduct();
     }, [id]); // El uso de un array vacío asegura que solo se ejecute al montar el componente
+
+    useEffect(() => {
+        fetchCart();
+    }, [])
+
+    const fetchProduct = async () => {
+        try {
+            const response = await axiosInstance.get(`products/${id}`);
+            setProduct(response.data); //
+
+            //Inicializacion de estados de las imagenes para su swap
+            setDisplayImage(response.data.PRD_IMAGE);
+            setDisplayGallery(response.data.Gallery);
+
+            setLoading(false); // 
+        } catch (err) {
+            console.error("Error al obtener los productos", err);
+            setError(err.message);
+            setLoading(false);
+        }
+    };
+
+    const fetchCart = async () => {
+        try {
+            const response = await axiosInstance.get(`Cart/user/${userId}`);
+            setCart(response.data); // 
+        } catch (err) {
+            console.error("Error al obtener los productos", err);
+            setError(err.message);
+            setLoading(false);
+        }
+    };
 
     const handleAddToCart = async (productId, quantity = 1) => {
         try {
@@ -50,9 +69,14 @@ function ProductDetail() {
                     title: 'Debe iniciar sesion para agregar productos al carrito',
                     icon: 'error',
                     confirmButtonText: 'Ok'
-                })
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/login');
+                    }
+                });
                 return;
             }
+
             const response = await axiosInstance.post("Cart/add-to-cart", {
                 userId,
                 productId,
@@ -67,8 +91,16 @@ function ProductDetail() {
             })
             fetchCountCart();
         } catch (error) {
-            console.error("Error al agregar al carrito:", error);
-            alert("No se pudo agregar el producto al carrito.");
+            if (error.response && error.response.status === 400) {
+                // Aquí atrapamos el "Stock insuficiente" que envía tu C#
+                Swal.fire({
+                    title: 'Sin Stock',
+                    // error.response.data suele contener el string "Stock insuficiente..." que mandaste desde C#
+                    text: error.response.data || 'No hay suficiente stock disponible.',
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+            }
         }
     };
 

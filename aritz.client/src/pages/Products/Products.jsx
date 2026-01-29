@@ -105,8 +105,16 @@ function Products() {
             })
             fetchCountCart();
         } catch (error) {
-            console.error("Error al agregar al carrito:", error);
-            alert("No se pudo agregar el producto al carrito.");
+            if (error.response && error.response.status === 400) {
+                // Aquí atrapamos el "Stock insuficiente" que envía tu C#
+                Swal.fire({
+                    title: 'Sin Stock',
+                    // error.response.data suele contener el string "Stock insuficiente..." que mandaste desde C#
+                    text: error.response.data || 'No hay suficiente stock disponible.',
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+            }
         }
     };
 
