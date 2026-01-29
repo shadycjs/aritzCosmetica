@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosConfig";
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'; // Importar SweetAlert2
+import { FaSignsPost } from "react-icons/fa6";
 
 
 const Header = () => {
@@ -163,13 +164,23 @@ const Header = () => {
                                             {
                                                 isAdmin
                                                     ?
-                                                <NavLink
-                                                    to="/admin/management"
-                                                    className={styles.userNavlink}
-                                                    >
-                                                        <CiEdit size={20} />
-                                                    Administrar
-                                                </NavLink>
+                                                <>
+                                                    <NavLink
+                                                        to="/admin/management"
+                                                        className={styles.userNavlink}
+                                                        >
+                                                            <CiEdit size={20} />
+                                                        Administrar
+                                                        </NavLink>
+
+                                                    <NavLink
+                                                            to="/admin/management/postalCodes"
+                                                        className={styles.userNavlink}
+                                                        >
+                                                            <FaSignsPost />
+                                                        Envios
+                                                    </NavLink>
+                                                </>
                                                     :
                                                 <>
                                                     <NavLink

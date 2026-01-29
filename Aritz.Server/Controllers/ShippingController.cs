@@ -62,5 +62,21 @@ namespace Aritz.Server.Controllers
             await _context.SaveChangesAsync();
             return Ok("Precio actualizado correctamente");
         }
+
+
+        [HttpGet("getPostalCodes")]
+        public async Task<IActionResult> GetPostalCodes()
+        {
+            var postalCodes = await _context.ShippingZones
+                                            .ToListAsync(); // Obtengo todos los codigos postales
+
+            if (postalCodes == null)
+            {
+                return BadRequest(new { Message = "No se encontraron los codigos postales" });
+            }
+
+            return Ok(postalCodes);
+        }
+
     }
 }

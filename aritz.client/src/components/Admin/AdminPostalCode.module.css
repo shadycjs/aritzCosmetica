@@ -1,0 +1,29 @@
+.containerPostalCode{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    text-align: center;
+}
+
+.postalCodeTable {
+    max-height: 50vh;
+    width: 80vw;
+    overflow-y: scroll;
+}
+
+    .postalCodeTable thead {
+        border-bottom: 2px solid #000;
+    }
+
+        .postalCodeTable thead tr th {
+            font-weight: 400;
+            padding: 20px;
+        }
+
+    .postalCodeTable tbody tr td {
+        font-weight: 400;
+        font-size: .9rem;
+        padding: 20px;
+    }

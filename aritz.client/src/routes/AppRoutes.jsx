@@ -17,6 +17,7 @@ import MyAccount from '../pages/Account/MyAccount';
 import AdminManage from '../components/Admin/AdminManage';
 import AdminProducts from '../components/Admin/AdminProducts';
 import AdminUsers from '../components/Admin/AdminUsers';
+import AdminPostalCodes from '../components/Admin/AdminPostalCodes';
 
 const AppRoutes = () => {
     return (
@@ -37,6 +38,7 @@ const AppRoutes = () => {
             <Route path="/admin/management" element={<AdminManage />} />
             <Route path="/admin/management/products" element={<AdminProducts />} />
             <Route path="/admin/management/users" element={<AdminUsers />} />
+            <Route path="/admin/management/postalCodes" element={<AdminPostalCodes />} />
         </Routes>
     );
 };
