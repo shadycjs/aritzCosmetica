@@ -113,6 +113,7 @@ namespace Aritz.Server.Controllers
             return Ok(cart.Items.Select(i => new
             {
                 i.CAI_ID,
+                i.CAI_PRD_ID,
                 i.Product.PRD_ID,
                 i.Product.PRD_NAME,
                 i.Product.PRD_PRICE,

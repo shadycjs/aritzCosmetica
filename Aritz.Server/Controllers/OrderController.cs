@@ -27,57 +27,79 @@ namespace Aritz.Server.Controllers
         [HttpPost("confirmOrder")]
         public async Task<IActionResult> Order([FromBody] OrderDto dto)
         {
-            // Verificar si el método de pago existe
-            var paymentMethod = await _context.PaymentMethods.FindAsync(dto.paymentMethod);
-            if (paymentMethod == null)
-            {
-                Console.WriteLine($"Método de pago con ID {dto.paymentMethod} no encontrado.");
-                return NotFound(new { Message = "El método de pago no existe." });
-            }
 
-            // Verificar si el usuario existe
+            var paymentMethod = await _context.PaymentMethods.FindAsync(dto.paymentMethod);
+            if (paymentMethod == null) return NotFound(new { Message = "El método de pago no existe." });
+
             var client = await _context.Users.FindAsync(dto.userId);
             if (client == null) return BadRequest("Usuario no encontrado");
 
-            var Orders = new Orders
-            {
-                ORD_USR_ID = dto.userId,
-                ORD_ORDER_DATE = DateTime.UtcNow,
-                ORD_TOTAL_AMOUNT = dto.totalSumCart,
-                ORD_STATUS = "Pendiente",
-                ORD_PMT_ID = dto.paymentMethod
-            };
 
-            
-            try
-            {
-                _context.Add(Orders);
-                await _context.SaveChangesAsync();
+                try
+                {
 
-                var emailBodyBuilder = new System.Text.StringBuilder();
-                emailBodyBuilder.AppendLine($"<h2>Nueva Orden de Compra #{Orders.ORD_ID}</h2>");
-                emailBodyBuilder.AppendLine($"<p><strong>Cliente:</strong> {client.USR_NAME} {client.USR_SURNAME} ({client.USR_EMAIL})</p>");
-                emailBodyBuilder.AppendLine($"<p><strong>Fecha:</strong> {Orders.ORD_ORDER_DATE}</p>");
-                emailBodyBuilder.AppendLine($"<p>Clickea <strong><a href=`https://localhost:50833/user/my-requests/my-order/{Orders.ORD_ID}`>aca</a></strong> para ir al pedido</p>");
-                emailBodyBuilder.AppendLine("<hr>");
-                emailBodyBuilder.AppendLine($"<h3>Total: ${dto.totalSumCart}</h3>");
+                    var newOrder = new Orders
+                    {
+                        ORD_USR_ID = dto.userId,
+                        ORD_ORDER_DATE = DateTime.UtcNow,
+                        ORD_TOTAL_AMOUNT = dto.totalSumCart,
+                        ORD_STATUS = "Pendiente",
+                        ORD_PMT_ID = dto.paymentMethod
+                    };
 
-                var adminEmail = _configuration["EmailSettings:SenderEmail"];
 
-                _ = _emailService.SendEmailAsync(
-                    adminEmail,
-                    $"Te hicieron una Nueva Orden de Compra #{Orders.ORD_ID}",
-                    emailBodyBuilder.ToString()
-                );
+                    foreach (var carItem in dto.CartItems)
+                    {
+                        // Buscamos el producto
+                        var product = await _context.Products.FindAsync(carItem.CAI_PRD_ID);
 
-                return Ok(new { Message = "Pedido creado correctamente.", OrderId = Orders.ORD_ID });
+                        if (product == null)
+                        {
+                            // Rollback manual no es necesario si lanzamos excepción o return, 
+                            // pero por limpieza retornamos error.
+                            return BadRequest($"El producto con ID {carItem.CAI_PRD_ID} no existe.");
+                        }
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al crear la orden: {ex.Message}");
-                return StatusCode(500, new { Message = "Error al crear la orden." });
-            }
+                        // VALIDAR STOCK DISPONIBLE
+                        if (product.PRD_QUANTITY < carItem.CAI_QUANTITY)
+                        {
+                            // CORRECCIÓN IMPORTANTE: Agregamos 'return'
+                            return BadRequest($"Stock insuficiente para el producto: {product.PRD_NAME}. Stock actual: {product.PRD_QUANTITY}");
+                        }
+
+                        // Restamos
+                        product.PRD_QUANTITY -= carItem.CAI_QUANTITY;
+                        _context.Products.Update(product);
+                    }
+
+                    // 5. Guardar Orden y Cambios de Stock
+                    _context.Add(newOrder);
+
+                    // Guardamos todo junto (Orden + Updates de Productos)
+                    await _context.SaveChangesAsync();
+
+                    // 6. Enviar Email (Fuera de la transacción critica)
+                    var emailBodyBuilder = new System.Text.StringBuilder();
+                    emailBodyBuilder.AppendLine($"<h2>Nueva Orden de Compra #{newOrder.ORD_ID}</h2>");
+                    emailBodyBuilder.AppendLine($"<p><strong>Cliente:</strong> {client.USR_NAME} {client.USR_SURNAME} ({client.USR_EMAIL})</p>");
+                    emailBodyBuilder.AppendLine($"<p>Clickea <strong><a href='https://localhost:50833/user/my-requests/my-order/{newOrder.ORD_ID}'>acá</a></strong> para ir al pedido</p>");
+                    emailBodyBuilder.AppendLine($"<h3>Total: ${dto.totalSumCart}</h3>");
+
+                    var adminEmail = _configuration["EmailSettings:SenderEmail"];
+
+                    _ = _emailService.SendEmailAsync(
+                        adminEmail,
+                        $"Te hicieron una Nueva Orden de Compra #{newOrder.ORD_ID}",
+                        emailBodyBuilder.ToString()
+                    );
+
+                    return Ok(new { Message = "Pedido creado correctamente.", OrderId = newOrder.ORD_ID });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al crear la orden: {ex.Message}");
+                    return StatusCode(500, new { Message = "Error interno al procesar la orden." });
+                }
             
         }
 
@@ -364,6 +386,7 @@ namespace Aritz.Server.Controllers
             public decimal totalSumCart { get; set; }
             public string? Status { get; set; }
             public int paymentMethod { get; set; }
+            public List<CartItems> CartItems { get;set; }
         }
 
         public class OrderDetailDto

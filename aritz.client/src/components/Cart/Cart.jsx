@@ -26,7 +26,7 @@ function Carrito() {
     }, [userId]);
 
     setPageCheckout(location);
-    console.log(totalSumCart);
+
     const handleProceedToCheckout = () => {
         if (totalSumCart < 20000) {
             Swal.fire({

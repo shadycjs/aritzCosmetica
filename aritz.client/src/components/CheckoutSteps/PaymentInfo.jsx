@@ -93,14 +93,15 @@ function PaymentInfo() {
 
     if (loading) return <div>Cargando carrito...</div>;
     if (error) return <div>Error: {error}</div>;
-
+    console.log(cart);
     const handleOrderConfirm = async (totalSumCart) => {
         totalSumCart = totalSumCart + zipPrice;
         try {
             const orderResponse = await axiosInstance.post("Order/confirmOrder", {
                 userId,
                 paymentMethod,
-                totalSumCart
+                totalSumCart,
+                CartItems: cart
             });
 
             const orderId = orderResponse.data.OrderId;
@@ -125,8 +126,19 @@ function PaymentInfo() {
             fetchSumTotalCart();
             navigate(`/checkout/pay-success?orderId=${orderId}`);
         } catch (error) {
-            console.error("Error al confirmar el pedido:", error);
-            alert("No se pudo confirmar el pedido.");
+            if (error.response && error.response.status === 400) {
+                // Aquí atrapamos el "Stock insuficiente" que envía tu C#
+                Swal.fire({
+                    title: 'Error al restar el producto',
+                    // error.response.data suele contener el string "Stock insuficiente..." que mandaste desde C#
+                    text: error.response.data || 'No hay suficiente stock disponible.',
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+            } else {
+                console.error("Error al confirmar el pedido:", error);
+                alert("No se pudo confirmar el pedido.");
+            }
         }
     }
 
