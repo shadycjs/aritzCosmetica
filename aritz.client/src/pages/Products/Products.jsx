@@ -198,16 +198,22 @@ function Products() {
                                         <LuSearchX size={510} />
                                     </div>
                                     :
-                                
 
-                                filteredProducts.slice(0, visibleCount).map((producto) => (
+
+                                    filteredProducts.slice(0, visibleCount).map((producto, index) => (
                                 <div
                                     key={producto.PRD_ID}
-                                    className="col-12 col-sm-6 col-lg-3"
+                                    className={`col-12 col-sm-6 col-lg-3 ${styles.cardAnimate}`}
+                                    style={{ animationDelay: `${(index % 8) * 0.1}s` }}
                                 >
                                     <div className={`card h-100 ${styles.carta}`}>
                                         <div className={styles.cartaImgContainer}>
-                                            <img src={`https://localhost:7273/images/${producto.PRD_IMAGE}`} className="card-img-top"/>
+                                            <img 
+                                                src={`https://localhost:7273/images/${producto.PRD_IMAGE}`}
+                                                className="card-img-top"
+                                                alt={producto.PRD_NAME}
+                                                loading="lazy"
+                                            />
                                         </div>
                                         <div className={`card-body ${styles.cuerpoCarta}`}>
                                             <h5 
