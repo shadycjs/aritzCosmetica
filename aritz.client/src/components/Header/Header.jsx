@@ -89,7 +89,7 @@ const Header = () => {
                 </button>
 
                 {/* Enlaces de navegación */}
-                <div className="collapse navbar-collapse d-flex">
+                <div className={`collapse navbar-collapse d-flex ${styles.containerNavUl}`}>
                     <ul className={`navbar-nav ${styles.navUl} ${clase ? styles.active : ''}`}>
                         <li className={`${styles.navItem} d-flex`}>
                             <NavLink
@@ -121,7 +121,7 @@ const Header = () => {
                                                 <h5>
                                                     <b>{category.CAT_NAME}</b>
                                                 </h5>
-                                                    <ul className="list-unstyled">
+                                                    <ul className={`list-unstyled ${styles.ulSubCat}`}>
                                                     {category.Products.map((product) => (
                                                             <li key={product.PRD_ID}>
                                                                 <NavLink

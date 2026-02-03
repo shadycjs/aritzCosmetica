@@ -47,43 +47,48 @@ ul{
 /* Dropdown inicial: oculto */
 .dropdown {
     position: absolute;
-    left: 0; /* Aparece alineado al enlace de Products */
+    left: 30%; /* Aparece alineado al enlace de Products */
     top: 100%; /* Aparece justo debajo del enlace */
     display: none; /* Ocultamos el dropdown inicialmente */
     background-color: white;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
     border-radius: 4px; /* Bordes redondeados */
-    padding: 10px; /* Espaciado interno */
+    padding: 25px; /* Espaciado interno */
     z-index: 10;
     box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.2);
     min-width: 30vw;
     justify-content: space-around;
+    gap: 60px;
 }
 
 .dropdown ul{
     display: flex;
-    gap: 30px;
+    flex-direction: column;
+    gap: 10px;
     width: 200px;
 }
 
-li {
-    list-style-type: none;
+.ulSubCat {
+    display: flex;
+    background-color: #f9f9f9;
 }
+
 
 .dropdown ul li {
     box-sizing: border-box;
     list-style-type: none;
-    height: 85px;
+    width: 100%;
+    padding: 0;
 }
 
-.dropdownItem {
-    color: #333;
-    text-decoration: none;
-    padding: 10px 10px;
-    display: block; /* Cada item ocupa una línea */
-    transition: background-color 0.3s ease, color 0.3s ease;
-    font-size: .9rem;
-}
+    .dropdownItem {
+        color: #333;
+        text-decoration: none;
+        padding: 10px 10px;
+        display: block; /* Cada item ocupa una línea */
+        transition: background-color 0.3s ease, color 0.3s ease;
+        font-size: .8rem;
+    }
 
 .dropdownItem:hover {
     background-color: #f8f9fa; /* Fondo al pasar el mouse */
@@ -181,6 +186,8 @@ li {
 /* Responsive: Ajusta para pantallas pequeñas */
 @media (max-width: 992px) {
     .navbar{
+        display: flex;
+        flex-direction: column;
         height: auto;
     }
 
@@ -205,5 +212,37 @@ li {
     .logAndCart {
         display: none;
     }
+
+    .containerNavUl{
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .navUl li{
+        display: flex;
+        flex-direction: column;
+    }
+
+        .navUl li a {
+            justify-content: center;
+        }
+
+    .dropdown {
+        position: relative;
+        left: 0;
+        top: 0; 
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+        .dropdown ul {
+            gap: 0px;
+            width: 100%;
+        }
+
+        .dropdown ul li ul{
+            text-align: center;
+        }
 
 }
