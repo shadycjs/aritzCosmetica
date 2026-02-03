@@ -1,0 +1,9 @@
+.cardBigContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw;
+    padding: 100px;
+    text-align: center;
+    gap: 10px;
+}

@@ -107,3 +107,4 @@ wwwroot\uploads\receipts\receipt_22_0ec0ec01-9b1e-4c8a-ad02-7a5ee71a8b83.jpeg
 wwwroot\uploads\receipts\receipt_22_f63bdb73-71f7-4635-9c30-ee229a4141fb.png
 wwwroot\images\videoCremas.mp4
 wwwroot\uploads\receipts\receipt_35_538502c0-8010-4942-ab5b-c85495fde163.pdf
+wwwroot\uploads\receipts\receipt_39_49ae7ec1-1b4e-4847-8839-94d588cae15a.pdf

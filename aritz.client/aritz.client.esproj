@@ -12,19 +12,16 @@
     <Folder Include="public\assets\" />
     <Folder Include="src\assets\icons\" />
     <Folder Include="src\components\Button\" />
-    <Folder Include="src\components\NavBar\" />
     <Folder Include="src\components\Footer\" />
     <Folder Include="src\components\Header\" />
     <Folder Include="src\components\CenteredContainer\" />
     <Folder Include="src\components\Cart\" />
     <Folder Include="src\components\BreadCrum\" />
     <Folder Include="src\components\Admin\" />
-    <Folder Include="src\layouts\" />
-    <Folder Include="src\hooks\" />
-    <Folder Include="src\pages\Checkout\" />
+    <Folder Include="src\components\CardHome\" />
+    <Folder Include="src\components\LocationMap\" />
     <Folder Include="src\pages\Account\" />
     <Folder Include="src\pages\Products\Filters\" />
     <Folder Include="src\pages\Requests\" />
-    <Folder Include="src\services\" />
   </ItemGroup>
 </Project>

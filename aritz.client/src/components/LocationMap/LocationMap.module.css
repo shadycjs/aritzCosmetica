@@ -1,0 +1,30 @@
+.mapContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 70vh;
+    background-color: #f9f9f9;
+    text-align: center;
+    align-items: center;
+    justify-content: end;
+    gap: 5px;
+    padding: 10px;
+    margin-top: 50px;
+}
+
+    .mapContainer h2 {
+        color: rgb(128, 98, 51); /* Tu color de marca */
+    }
+
+    .mapContainer iframe {
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        max-width: 1000px; /* Para que no se estire infinito en monitores grandes */
+        display: block;
+    }
+
+.descriptionContainer {
+    width: 30%;
+    height: 60%;
+    align-content: center;
+}

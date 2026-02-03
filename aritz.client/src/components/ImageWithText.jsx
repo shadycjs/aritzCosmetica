@@ -2,14 +2,14 @@
 import PropTypes from "prop-types"; // Para la validación de props
 import styles from "./ImageWithText.module.css";
 
-function ImageWithText({ imageSrc, altText, description, textAlign = "center" }) {
+function ImageWithText({ imageSrc, altText, description, textAlign = "center", title, clase }) {
     return (
-        <div className={`${styles.container}`}>
+        <div className={styles[clase]}>
             <div className={styles.imageContainer}>
                 <img src={imageSrc} alt={altText} className={styles.image} />
             </div>
             <div className={styles.descriptionContainer}>
-                <h2 className={styles.text}>¿Quienes somos?</h2>
+                <h2 className={styles.text}>{title}</h2>
                 <p style={{ textAlign: textAlign }}>
                     {description}
                 </p>

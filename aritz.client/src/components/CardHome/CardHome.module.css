@@ -1,0 +1,10 @@
+.cardBig{
+    width: 100%;
+    border: none !important;
+}
+
+.cardBig img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}

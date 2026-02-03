@@ -1,35 +1,55 @@
-.container {
+.leftContainer {
     width: 100%;
-    margin: 20px auto;
+    height: 50vh;
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 25px;
+    justify-content: start;
+    gap: 5px;
     padding: 10px;
-    background-color: aliceblue;
+    margin-left: 40px;
+    margin-top: 50px;
+    background-color: #f9f9f9;
 }
 
-.imageContainer{
-    width: 30%;
-    object-fit: cover;
+.rightContainer {
+    width: 100%;
+    height: 50vh;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 5px;
+    padding: 10px;
+    margin-right: 40px;
+    margin-top: 50px;
+    background-color: #f9f9f9;
+}
 
+.imageContainer {
+    width: 30%;
+    height: 80%;
 }
 
 .image {
     width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    height: 100%;
+    object-fit: cover;
 }
 
-.descriptionContainer{
+.descriptionContainer {
     width: 30%;
+    height: 100%;
+    align-content: center;
 }
 
 .text {
     font-size: 2.2rem;
-    font-family: Dancing Script, cursive;
-    color: #555;
+    font-family: sans-serif, #000;
     line-height: 1.5;
+    color: rgb(128, 98, 51);
+}
+
+.descriptionContainer p {
+    color: #000;
 }

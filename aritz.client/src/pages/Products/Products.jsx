@@ -30,6 +30,24 @@ function Products() {
     const [filterCats, setFilterCats] = useState([]); // Array de IDs de categorías
     const [filterPrice, setFilterPrice] = useState(''); // 'biggest' o 'smallest'
 
+    // Estado para el scroll y mostrar solo 8 productos
+    const [visibleCount, setVisibleCount] = useState(8);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            // Verificamos si el usuario llegó al final de la página (con un margen de 100px)
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
+                // Cargamos 8 más solo si hay más productos para mostrar
+                setVisibleCount((prevCount) => prevCount + 8);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        // Limpiamos el evento cuando el componente se desmonta
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     useEffect(() => {
         let result = [...products];
 
@@ -57,6 +75,9 @@ function Products() {
         }
 
         setFilteredProducts(result);
+
+        setVisibleCount(8);
+
     }, [searchTerm, products, filterCats, filterPrice]);
 
     useEffect(() => {
@@ -74,7 +95,7 @@ function Products() {
         };
 
         fetchProducts();
-    }, [searchTerm]); // El uso de un array vacío asegura que solo se ejecute al montar el componente
+    }, []); // El uso de un array vacío asegura que solo se ejecute al montar el componente
 
     if (loading) return <div>Cargando productos...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -179,7 +200,7 @@ function Products() {
                                     :
                                 
 
-                                filteredProducts.map((producto) => (
+                                filteredProducts.slice(0, visibleCount).map((producto) => (
                                 <div
                                     key={producto.PRD_ID}
                                     className="col-12 col-sm-6 col-lg-3"
