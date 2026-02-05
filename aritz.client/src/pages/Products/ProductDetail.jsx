@@ -132,6 +132,7 @@ function ProductDetail() {
             <BreadCrum name={product.PRD_NAME} />
             <div className={styles.container}>
                 <div className={styles.imgContainer}>
+                <h3 className={styles.responsiveTitle}>{product.Category.CAT_NAME} {product.PRD_NAME}</h3>
                     <img
                         className={styles.imgMain}
                         src={`https://localhost:7273/images/${displayImage}`}

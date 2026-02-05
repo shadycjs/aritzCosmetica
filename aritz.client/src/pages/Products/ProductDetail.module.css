@@ -83,6 +83,10 @@ img {
         border: 2px solid rgb(128, 98, 51);
     }
 
+.responsiveTitle{
+    display: none;
+}
+
 @keyframes fadeInScale {
     from {
         opacity: 0;
@@ -92,5 +96,95 @@ img {
     to {
         opacity: 1;
         transform: scale(1); /* Termina en su tamaño normal */
+    }
+}
+
+@media (max-width: 992px) {
+
+    .container {
+        flex-direction: column;
+        justify-content: center;
+        gap: 50px;
+        width: 100%;
+        height: auto;
+        padding: 2%;
+    }
+
+    .imgContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .imgMain {
+        width: 100%;
+        height: 60vh;
+        order: 1;
+        padding: 5px;
+        aspect-ratio: 4/3; /* Mantiene proporción rectangular (o usa 1/1 para cuadrado) */
+        object-fit: cover;
+        animation: fadeInScale 0.4s ease-in-out;
+    }
+
+    .subImgContainer {
+        width: 100%;
+        height: auto;
+        overflow-y: auto;
+        display: flex;
+        order: 2;
+        padding: 10px;
+    }
+
+        .subImgContainer img {
+            aspect-ratio: 1/1;
+            padding: 10px;
+            object-fit: cover;
+            object-position: top;
+            cursor: pointer;
+            animation: fadeInScale 0.4s ease-in-out;
+        }
+
+    img {
+        width: 100%;
+        object-fit: cover;
+    }
+
+
+    /* Seccion info */
+
+    .infoContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        gap: 30px;
+    }
+
+    .titleInfo {
+        font-size: 3rem;
+        display: none;
+    }
+
+    .priceInfo {
+        font-size: 2rem;
+    }
+
+    .addCartInfo {
+        min-height: 40px;
+        background-color: rgb(128, 98, 51);
+        border: none;
+        color: #fff;
+    }
+
+        .addCartInfo:hover {
+            background-color: #fff;
+            color: rgb(128, 98, 51);
+            border: 2px solid rgb(128, 98, 51);
+        }
+
+    .responsiveTitle {
+        display: block;
+        text-align: center;
+        font-size: 2rem;
     }
 }
