@@ -7,3 +7,20 @@
     text-align: center;
     gap: 10px;
 }
+
+@media (max-width: 992px) {
+
+    .cardBigContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100vw;
+        padding: 30px;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .cardsContainer {
+        flex-direction: column;
+    }
+}

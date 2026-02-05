@@ -28,3 +28,11 @@
     height: 60%;
     align-content: center;
 }
+
+@media (max-width: 992px) {
+
+    .descriptionContainer{
+        width: 100%;
+    }
+
+}

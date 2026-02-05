@@ -64,7 +64,7 @@ function Home() {
                 transition={{ duration: 0.8, ease: "easeOut" }} // Dura 0.8 segundos
             >
                 <h1>¿Por que la gente nos elige?</h1>
-                <div className="d-flex gap-3 text-start">
+                <div className={`d-flex gap-3 text-start ${styles.cardsContainer}`}>
                     <CardHome
                         key={1}
                         img={fotoCuidadoPiel}

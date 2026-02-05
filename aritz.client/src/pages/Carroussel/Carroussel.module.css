@@ -31,6 +31,10 @@
     gap: 80px;
 }
 
+.subTitleCarrousel h2{
+    display: none;
+}
+
 .video {
     width: 100%;
     object-fit: cover;
@@ -64,3 +68,50 @@
         object-fit: cover;
         object-position: center; /* Centra la imagen */
     }
+
+@media (max-width: 992px) {
+
+    .carrouselContainer{
+        height: 100vh;
+    }
+
+    .video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+    }
+
+    .carrouselContainerSub{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .titleCarrousel {
+        position: relative;
+        top: 0%;
+        left: 0%; /* Lo mueve al 50% a la derecha */
+        gap: 10px;
+        color: #000;
+        text-align: center;
+        order: 2;
+        padding: 50px;
+    }
+
+    .subTitleCarrousel h1{
+        display: none;
+    }
+
+    .subTitleCarrousel b{
+        display: none;
+    }
+
+    .subTitleCarrousel h2 {
+        display: block;
+    }
+
+    .shopBtn {
+        display: none;
+    }
+
+}

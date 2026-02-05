@@ -28,7 +28,7 @@ function Carroussel() {
         <div className={styles.carrouselContainer}>
             <div id="carouselExampleFade" className={`carousel slide carousel-fade ${styles.carrouselContainerSub}`}>
                 <div className={styles.titleCarrousel}>
-                    <div className="d-flex flex-column">
+                    <div className={`d-flex flex-column ${styles.subTitleCarrousel}`}>
                         <h1>Aritz.</h1>
                         <b>Lo mejor para cuidar tu piel y estilo de vida</b>
                     </div>

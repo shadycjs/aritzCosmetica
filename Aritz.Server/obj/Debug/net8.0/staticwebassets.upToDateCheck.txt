@@ -108,3 +108,10 @@ wwwroot\uploads\receipts\receipt_22_f63bdb73-71f7-4635-9c30-ee229a4141fb.png
 wwwroot\images\videoCremas.mp4
 wwwroot\uploads\receipts\receipt_35_538502c0-8010-4942-ab5b-c85495fde163.pdf
 wwwroot\uploads\receipts\receipt_39_49ae7ec1-1b4e-4847-8839-94d588cae15a.pdf
+wwwroot\images\prod_b86d9547-cb22-4a90-a3db-cfd086634852.png
+wwwroot\images\prod_1e85e180-62c9-457f-b25a-ecd313e795ca.png
+wwwroot\images\prod_58d8b94d-eaea-461c-9c3c-733c3c57151e.png
+wwwroot\images\prod_89d3411a-a45c-471a-9f0e-cbef5ca4c295.jpeg
+wwwroot\images\prod_a4c3107a-99f6-425b-bba9-98145d5fcbcc.png
+wwwroot\images\prod_ef4ef9a9-88b2-4a23-86d7-f486bfa9800f.jpeg
+wwwroot\images\prod_17359330-8022-42c8-b22b-a7064048bdf9.jpeg
