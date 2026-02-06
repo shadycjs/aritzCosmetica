@@ -82,3 +82,19 @@
     width: 50%;
     padding: 10px;
 }
+
+@media (max-width: 992px) {
+
+    .datosCuentaContainer {
+        width: 100%;
+    }
+
+    .datosPersonalesContainer {
+        width: 100%;
+    }
+
+    .domicilioContainer{
+        width: 100%;
+    }
+
+}
