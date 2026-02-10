@@ -1,4 +1,4 @@
-import CenteredContainer from "../../components/CenteredContainer/CenteredContainer";
+ï»¿import CenteredContainer from "../../components/CenteredContainer/CenteredContainer";
 import { useParams } from 'react-router-dom';
 import styles from "./MyRequestDetail.module.css";
 import { useState, useEffect } from "react";
@@ -9,10 +9,12 @@ import { BiRefresh } from "react-icons/bi";
 import { AiOutlineUpload } from "react-icons/ai";
 import BreadCrum from "../../components/BreadCrum/BreadCrum";
 import { formatPrice } from '../../utils/utils';
+import { useSearchParams } from 'react-router-dom';
 
 function MyRequestDetail() {
 
     const { id } = useParams();
+    const [status, setStatus] = useState('');
     const [requestDet, setRequestDet] = useState([]);
     const [error, setError] = useState(null);
     const [totalQuantity, setQuantity] = useState(0);
@@ -39,7 +41,7 @@ function MyRequestDetail() {
                 const firstItem = response.data[0];
                 const finalTotalFromDB = firstItem.OrderTotalAmount; 
 
-                // Cálculo de la cantidad total de items
+                // CÃ¡lculo de la cantidad total de items
                 const totalQuantity = response.data.reduce((acc, item) => acc + (item.Quantity || 0), 0);
 
                 // Calculo el total a pagar
@@ -52,14 +54,16 @@ function MyRequestDetail() {
                 setAmount(finalTotalFromDB);//Aca iria el ENVIO cuando tenga hecha esa logica
                 setShippingCost(calculatedShipping > 0 ? calculatedShipping : 0);
 
+                console.log(response.data[0]);
+                setStatus(response.data[0].OrderStatus);
+
             } catch (error) {
                 console.error("Error al obtener las ordenes", error);
                 setError(error.message);
             }
         };
         fetchRequestDetail();
-    }, [id]);
-
+    }, [id, status]);
 
 
     const handleFileUpload = async (id, event) => {
@@ -67,7 +71,7 @@ function MyRequestDetail() {
         if (!file) {
             Swal.fire({
                 title: 'Error al subir el comprobante de pago',
-                text: 'Subí un comprobante válido',
+                text: 'SubÃ­ un comprobante vÃ¡lido',
                 icon: 'error',
                 confirmButtonText: 'Aceptar',
             });
@@ -106,7 +110,7 @@ function MyRequestDetail() {
             setPath(true);
 
             Swal.fire({
-                title: '¡Éxito!',
+                title: 'Â¡Ã‰xito!',
                 text: 'Comprobante subido exitosamente',
                 icon: 'success',
                 confirmButtonText: 'Aceptar',
@@ -115,7 +119,7 @@ function MyRequestDetail() {
             console.error('Error al subir el comprobante:', error);
             Swal.fire({
                 title: 'Error al subir el comprobante',
-                text: 'Ocurrió un error al subir el archivo',
+                text: 'OcurriÃ³ un error al subir el archivo',
                 icon: 'error',
                 confirmButtonText: 'Aceptar',
             });
@@ -123,6 +127,20 @@ function MyRequestDetail() {
             setUploading((prev) => ({ ...prev, [id]: false }));
         }
     };
+
+    const handleCancelOrdStatus = async () => {
+        try {
+            const bodyData = {
+                OrderId: id,
+                OrderStatus: 'Cancelado'
+            }
+            const response = await axiosInstance.put(`Order/${id}/updOrdStatus`, bodyData);
+            setStatus('Cancelado'); 
+            Swal.fire('Exito', `Se cancelo correctamente el pedido`, 'success');
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return (
         <div>
@@ -160,6 +178,8 @@ function MyRequestDetail() {
 
                 <div className={styles.aside}>
                     <div className={styles.resumen}>
+                        <p>Estado: {status}</p>
+                        <hr></hr>
                         <b>Resumen de compra</b>
                         <p>Nro orden: <b>#{id}</b></p>
                         <p>Cantidad de items: {totalQuantity}</p>
@@ -208,8 +228,37 @@ function MyRequestDetail() {
                                 </label>
                         )}
                     </div>
-                    <div className={styles.factura}>
+                    {status != 'Cancelado'
+                        ?
+                    <div className={styles.cancelPedido}>
+                            <button
+                                type="button"
+                                className="btn btn-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop"
+                            >
+                                Cancelar pedido
+                            </button>
+                            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div className="modal-dialog modal-dialog-centered">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Â¿Estas seguro que deseas cancelar el pedido?</h1>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" className="btn btn-danger" onClick={handleCancelOrdStatus}>Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                        :
+                    ''
+                    }
 
+                    <div className={styles.factura}>
+                        
                     </div>
                 </div>
             </div>

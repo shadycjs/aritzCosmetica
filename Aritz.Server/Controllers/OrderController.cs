@@ -196,7 +196,8 @@ namespace Aritz.Server.Controllers
                     ProductName = od.Products.PRD_NAME,
                     ProductImage = od.Products.PRD_IMAGE,
                     ReceiptPath = od.Orders.Receipt.RCP_PATH,
-                    OrderTotalAmount = od.Orders.ORD_TOTAL_AMOUNT
+                    OrderTotalAmount = od.Orders.ORD_TOTAL_AMOUNT,
+                    OrderStatus = od.Orders.ORD_STATUS
                 })
                 .ToListAsync();
 

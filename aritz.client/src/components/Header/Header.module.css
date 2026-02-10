@@ -54,7 +54,7 @@ ul{
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
     border-radius: 4px; /* Bordes redondeados */
     padding: 25px; /* Espaciado interno */
-    z-index: 10;
+    z-index: 100;
     box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.2);
     min-width: 30vw;
     justify-content: space-around;
