@@ -5,3 +5,15 @@ p{
 .pathBlack {
     font-weight: bold;
 }
+
+@media (max-width: 992px) {
+
+    .timeLapseContainer{
+        font-size: .6rem;
+    }
+
+    .doubleArrow {
+        font-size: 1.6rem;
+    }
+
+}

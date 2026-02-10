@@ -100,7 +100,7 @@ function Carrito() {
 
     return (
         <CenteredContainer>
-            <BreadCrum />
+            {/*<BreadCrum />*/}
             {cart.length === 0 ? '' : <TimeLapseCheckout />}
             <div className={styles.container}>
                 <h1 className={styles.title}>Tu Carrito</h1>

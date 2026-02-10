@@ -212,6 +212,7 @@ const Header = () => {
                                             className={styles.carritoContainer}
                                             to={pageCheckout}
                                             style={{ color: "#fff" }}
+                                            onClick={() => {setClase(false)} }
                                         >
                                             <FaShoppingCart className={styles.carrito} />
                                             <p className={styles.carritoContador}>{totalQuantity}</p>

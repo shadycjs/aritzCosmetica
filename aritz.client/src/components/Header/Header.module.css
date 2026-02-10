@@ -186,6 +186,9 @@ ul{
         height: auto;
     }
 
+    .containerNavUl{
+        margin-bottom: 30px;
+    }
 
     .navUl {
         display: flex !important;
@@ -207,19 +210,22 @@ ul{
     }
 
     .logAndCart {
-        display: flex;
+        display: none;
         max-height: 0;
         overflow: hidden;
         align-items: center;
         justify-content: center;
-        height: 40px;
+        height: 0;
         width: 100%;
         transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
         font-size: 1.1rem !important;
+        border-bottom: 1px solid black;
+        border-top: .2px solid black;
+        padding: 40px;
     }
 
         .logCartActive{
-            max-height: 100vh;
+            display: flex;
             overflow: inherit;
         }
 
@@ -244,7 +250,7 @@ ul{
     }
 
         .navUl li a {
-            justify-content: center;
+            justify-content: start;
         }
 
     .dropdown {

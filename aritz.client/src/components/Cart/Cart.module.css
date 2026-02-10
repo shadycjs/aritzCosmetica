@@ -1,7 +1,10 @@
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .title {
@@ -103,3 +106,14 @@
     .checkoutButton:hover {
         background-color: #0056b3;
     }
+
+@media (max-width: 992px) {
+
+    .BreadCrumCart {
+        display: none !important;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+}

@@ -107,18 +107,23 @@
 }
 
 /* Para pantallas pequeñas */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .productsPage {
         flex-direction: column; /* El aside y el grid se colocan en una columna */
+        padding: 0;
     }
 
     .filters {
-        max-width: 100%; /* El aside ocupa todo el ancho */
+        width: 100%; /* El aside ocupa todo el ancho */
         margin-bottom: 20px; /* Espaciado debajo del aside */
+        padding: 0;
     }
 
     .carta {
         height: auto !important;
     }
 
+    .title {
+        font-size: 2rem;
+    }
 }
