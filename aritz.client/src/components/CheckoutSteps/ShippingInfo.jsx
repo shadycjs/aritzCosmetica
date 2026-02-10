@@ -156,7 +156,7 @@ function ShippingInfo() {
         <CenteredContainer>
             <TimeLapseCheckout />
             <div className={styles.container}>
-                <div className="d-flex flex-column gap-2">
+                <div className={`${styles.contactContainer} d-flex flex-column gap-2`}>
                     <h6>CONTACTO</h6>
                     <label className={styles.shippingLabels}>
                         <input

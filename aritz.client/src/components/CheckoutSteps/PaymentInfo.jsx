@@ -14,22 +14,19 @@ import { useLocation } from 'react-router'
 import { formatPrice } from '../../utils/utils';
 
 initMercadoPago('TEST-aa2427a9-e156-4f55-b4c0-d9c5e9b5774c', { locale: 'es-AR' });
+
 function PaymentInfo() {
     const { paymentMethod, setPaymentMethod, zipPrice } = useCheckout();
     const navigate = useNavigate();
-
     const { fetchCountCart, fetchSumTotalCart, totalSumCart } = useCart();
-
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [cart, setCart] = useState([]);
-    const [preferenceId, setPreferenceId] = useState(null);  // Estado para almacenar el preferenceId MercadoPago
-
+    const [preferenceId, setPreferenceId] = useState(null);
     const location = useLocation();
-
     const hasCreatedPreference = useRef(false);
-
     const { userId, setPageCheckout } = useSession();
+
     setPageCheckout(location);
 
     if (totalSumCart < 20000 && !loading) {
@@ -47,16 +44,12 @@ function PaymentInfo() {
         }
     }, [paymentMethod, totalSumCart, cart]);
 
-    // FUNCIÓN PARA PEDIR EL preferenceId AL BACKEND (MercadoPagoController.cs)
     const createMercadoPagoPreference = async () => {
         try {
-            // Preparamos los datos para tu backend
-            // Adaptar esto a como espera los datos tu OrderDto en C#
             const orderData = {
                 userId: userId,
                 totalSumCart: totalSumCart,
                 zipPrice: zipPrice,
-                // Mapeamos el carrito al formato que espera tu DTO Items
                 items: cart.map(item => ({
                     ProductName: item.PRD_NAME,
                     Quantity: item.CAI_QUANTITY,
@@ -68,7 +61,6 @@ function PaymentInfo() {
 
             if (response.data.preferenceId) {
                 setPreferenceId(response.data.preferenceId);
-                console.log("Preferencia creada ID:", response.data.preferenceId);
             }
         } catch (error) {
             console.error("Error al crear preferencia MP:", error);
@@ -78,10 +70,8 @@ function PaymentInfo() {
     const fetchCart = async () => {
         try {
             const response = await axiosInstance.get(`Cart/user/${userId}`);
-            setCart(response.data); // 
-            console.log(response.data);
-            setLoading(false); // 
-            // Actualiza la cantidad del carrito dinámicamente desde el backend
+            setCart(response.data);
+            setLoading(false);
             fetchCountCart();
             fetchSumTotalCart();
         } catch (err) {
@@ -91,9 +81,6 @@ function PaymentInfo() {
         }
     };
 
-    if (loading) return <div>Cargando carrito...</div>;
-    if (error) return <div>Error: {error}</div>;
-    console.log(cart);
     const handleOrderConfirm = async (totalSumCart) => {
         totalSumCart = totalSumCart + zipPrice;
         try {
@@ -114,7 +101,6 @@ function PaymentInfo() {
                 orderId,
             });
 
-
             Swal.fire({
                 title: '¡Exito!',
                 text: detailResponse.data.Message || 'Pedido confirmado correctamente.',
@@ -127,10 +113,8 @@ function PaymentInfo() {
             navigate(`/checkout/pay-success?orderId=${orderId}`);
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                // Aquí atrapamos el "Stock insuficiente" que envía tu C#
                 Swal.fire({
                     title: 'Error al restar el producto',
-                    // error.response.data suele contener el string "Stock insuficiente..." que mandaste desde C#
                     text: error.response.data || 'No hay suficiente stock disponible.',
                     icon: 'warning',
                     confirmButtonText: 'Entendido'
@@ -142,47 +126,36 @@ function PaymentInfo() {
         }
     }
 
-
-    const handleSelectMethod = (method) => {
-        setPaymentMethod(method);
-        alert("Pedido completado con éxito!"); // Aquí irías a la lógica de confirmación
-    };
-
     const back = () => {
         navigate("/checkout/payment-method");
     };
 
-    const next = () => {
-        navigate('/checkout/pay-success');
-    }
+    if (loading) return <div>Cargando carrito...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <CenteredContainer>
             <TimeLapseCheckout />
-            <div className="container" style={{padding: "50px"}}>
-                <div className="row">
-                    <div className={`col d-flex flex-column gap-4 ${styles.resumeContainer}`}>
+            <div className={`container ${styles.paymentInfoContainer}`}>
+                <div className={`row ${styles.subPaymentInfoContainer}`}>
+
+                    <div className={`col-12 col-lg-7 d-flex flex-column gap-4 ${styles.resumeContainer}`}>
                         <h3>Tu pedido</h3>
                         {cart.map((car) => (
-                            <div
-                                className={styles.cartItem}
-                                key={car.CAI_ID}
-                            >
+                            <div className={styles.cartItem} key={car.CAI_ID}>
                                 <div className={styles.imgItem}>
-                                    <img src={`https://localhost:7273/images/${car.PRD_IMAGE}`} />
+                                    <img src={`https://localhost:7273/images/${car.PRD_IMAGE}`} alt={car.PRD_NAME} />
                                 </div>
                                 <div className={styles.detailItem}>
                                     <div className={styles.nameQuantity}>
                                         <b>{car.PRD_NAME}</b>
                                         <p>Cantidad: {car.CAI_QUANTITY}</p>
                                     </div>
-                                    
                                     <div className={styles.precio}>
                                         <b>Subtotal</b>
                                         <p>$ {formatPrice(car.PRD_PRICE * car.CAI_QUANTITY)}</p>
                                     </div>
                                 </div>
-
                             </div>
                         ))}
                         <div className={styles.envio}>
@@ -192,28 +165,24 @@ function PaymentInfo() {
                             <p className="d-flex justify-content-between">Total: <b>${formatPrice(totalSumCart + zipPrice)}</b></p>
                         </div>
                     </div>
-                    
-                    <div className="col">
+
+                    <div className="col-12 col-lg-5 mt-5 mt-lg-0">
                         {paymentMethod === 2 ?
                             <div className={styles.bankContainer}>
                                 <div>
                                     <h1 className={styles.logoAritz}>Aritz</h1>
                                 </div>
-
                                 <h2>Datos transferencia</h2>
                                 <div className={styles.bankContainerSub}>
                                     <b>CBU: 0000003100048344628186</b>
                                     <b>Alias: ramiro.unrein </b>
                                 </div>
                             </div> :
-
-
                             <div className={styles.mpContainer}>
                                 <h3>Pagar con MercadoPago</h3>
                                 {preferenceId ? (
-                                    // AQUÍ RENDERIZAMOS EL BRICK OFICIAL DE REACT
                                     <Wallet
-                                        key={preferenceId} 
+                                        key={preferenceId}
                                         initialization={{ preferenceId: preferenceId }}
                                         customization={{ texts: { valueProp: 'smart_option' } }}
                                     />
@@ -223,19 +192,26 @@ function PaymentInfo() {
                             </div>
                         }
                     </div>
-                    
                 </div>
 
-                <div className="row">
-                    <label className={`d-flex gap-3 ${styles.shippingLabels}`}>
-                        <button onClick={back} className={styles.btnShippingBack}>Volver</button>
-                        {paymentMethod === 2 ?
-                            <button className={styles.btnShippingNext} onClick={() => { handleOrderConfirm(totalSumCart) }} type="submit">Confirmar pedido</button>
-                            : ''}
-                    </label>
+                {/* Botones de navegación */}
+                <div className="row mt-4 mb-5">
+                    <div className="col-12 d-flex justify-content-between gap-3">
+                        <button onClick={back} className={styles.btnShippingBack}>
+                            Volver
+                        </button>
+
+                        {paymentMethod === 2 && (
+                            <button
+                                className={styles.btnShippingNext}
+                                onClick={() => { handleOrderConfirm(totalSumCart) }}
+                                type="submit"
+                            >
+                                Confirmar pedido
+                            </button>
+                        )}
+                    </div>
                 </div>
-
-
             </div>
         </CenteredContainer>
     );
