@@ -247,7 +247,12 @@ function MyRequestDetail() {
                                         </div>
                                         <div className="modal-footer">
                                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" className="btn btn-danger" onClick={handleCancelOrdStatus}>Cancelar</button>
+                                            <button
+                                                type="button"
+                                                className="btn btn-danger"
+                                                onClick={handleCancelOrdStatus}
+                                                data-bs-dismiss="modal"
+                                            >Cancelar</button>
                                         </div>
                                     </div>
                                 </div>

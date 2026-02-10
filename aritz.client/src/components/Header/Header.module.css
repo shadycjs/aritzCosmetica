@@ -17,7 +17,6 @@
 a.nav-link {
     display: flex !important;
     margin: 10px;
-
 }
 
 .item {
@@ -29,10 +28,6 @@ a.nav-link {
     text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
-    .item:hover{
-        border-bottom: 4px solid #fff;
-
-    }
 
 /* Dropdown: contenedor principal */
 .navItem {
@@ -191,6 +186,7 @@ ul{
         height: auto;
     }
 
+
     .navUl {
         display: flex !important;
         max-height: 0; /* Altura 0 */
@@ -205,19 +201,39 @@ ul{
             width: 100%;
         }
 
-    .navItem{
-        justify-content: center;
+
+    .item {
+        font-size: 1.3rem !important;
     }
 
     .logAndCart {
         display: flex;
+        max-height: 0;
+        overflow: hidden;
         align-items: center;
         justify-content: center;
         height: 40px;
         width: 100%;
+        transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        font-size: 1.1rem !important;
     }
 
-    .containerNavUl{
+        .logCartActive{
+            max-height: 100vh;
+            overflow: inherit;
+        }
+
+    .logueo{
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .userLogin {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .containerNavUl {
         width: 100%;
         flex-direction: column;
     }

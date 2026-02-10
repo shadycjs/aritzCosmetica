@@ -15,9 +15,9 @@ function Footer () {
       <footer className={`${styles.footerContainer}`} role="contentinfo" aria-label="Site footer">
     <h1 className={styles.aritzFooter}>Aritz</h1>
       <div className="app-footer__inner">
-        <div className="app-footer__brand">
+        <div className={`${styles.company} app-footer__brand`}>
           <span className="app-footer__logo" aria-hidden="true">©</span>
-          <span className="app-footer__company">
+           <span className="app-footer__company">
                       {year} Aritz. All Rights Reserved.
           </span>
         </div>
@@ -25,13 +25,15 @@ function Footer () {
           <nav className="app-footer__nav" aria-label="Footer">
             <ul className="app-footer__list">
                 <li className={styles.listas}>
-                    <FaEnvelope />
-                    <NavLink
-                        className={styles.navLinks}
-                        to="/contact">
+                    <div className={styles.contactContainer}>
+                        <FaEnvelope className={styles.mailLogo} />
+                        <NavLink
+                            className={styles.navLinks}
+                            to="/contact">
                             
-                       Contacto: 
-                    </NavLink>
+                           Contacto: 
+                        </NavLink>
+                    </div>
                           +54 9 11 6483-7901 - aritzCosmetica@gmail.com
                 </li>
             </ul>

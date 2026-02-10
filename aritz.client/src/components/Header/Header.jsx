@@ -153,7 +153,7 @@ const Header = () => {
                 </div>
 
                 {/* Carrito de compras y LogIn */}
-                <div className={styles.logAndCart}>
+                <div className={`${styles.logAndCart} ${clase ? styles.logCartActive : ''}`}>
                     <div className={styles.logueo}>
                         {
                             isLoggedIn ? (
